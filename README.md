@@ -1,2 +1,2 @@
-# Travel_Agency_Desktop_App
+# Travel Agency Desktop App
 Travel Agency Desktop Application 
