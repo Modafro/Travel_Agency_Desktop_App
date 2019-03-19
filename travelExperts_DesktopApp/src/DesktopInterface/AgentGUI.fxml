@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.AgentGUIController">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="291.0" style="-fx-background-color: #373636;">
+         <children>
+            <ImageView fitHeight="124.0" fitWidth="176.0" layoutX="50.0" layoutY="14.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../judy_lisle.jpg" />
+               </image>
+            </ImageView>
+            <Button layoutX="10.0" layoutY="219.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Button layoutX="10.0" layoutY="270.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Button layoutX="10.0" layoutY="320.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Button layoutX="10.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Button layoutX="10.0" layoutY="419.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Button layoutX="11.0" layoutY="467.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
+            <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="151.0" prefHeight="30.0" prefWidth="176.0" text="Welcome back Judy Lisle" textFill="#f5f4f4">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="291.0" prefHeight="38.0" prefWidth="709.0" style="-fx-background-color: #373636;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="4.0" prefHeight="30.0" prefWidth="176.0" text="Travel Experts" textFill="#f5f4f4">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="30.0" fitWidth="144.0" layoutX="612.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../company_logo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
