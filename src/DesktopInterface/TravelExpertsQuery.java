@@ -16,7 +16,7 @@ public class TravelExpertsQuery {
         //prepare connection
         Connection conn = TravelExpertsDB.getConnection();
 
-        String sql = "SELECT count(*) from Agents where AgtUserName=? AND AgtPassword=?";
+        String sql = "SELECT count(*) from Agents where AgtUserName= ? AND AgtPassword=HASHBYTES('SHA1',convert(varchar,?))";
         try
         {
             PreparedStatement stmt = conn.prepareStatement(sql);
