@@ -1,3 +1,9 @@
+/*
+Login controller, user the following users to login
+username: jdelton or jlisle
+password: peace
+ */
+
 package DesktopInterface;
 
 import java.io.IOException;
@@ -7,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -44,10 +51,15 @@ public class LoginGUIController {
         Agents agt = new Agents(txtPassword.getText(), txtUsername.getText());
         verification = TravelExpertsQuery.isLoginVerified(agt);
         if (verification){
-            Parent AgentGUI = FXMLLoader.load(getClass().getResource("AgentGUI.fxml"));
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("AgentGUI.fxml"));
+            Parent AgentGUI = loader.load();
 
             Scene AgentScene = new Scene(AgentGUI);
 
+            AgentGUIController controller = loader.getController();
+            controller.setUserName(agt);
             //get current stage information
             Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
 

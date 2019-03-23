@@ -17,13 +17,13 @@
                         <Image url="@../judy_lisle.jpg" />
                     </image>
                 </ImageView>
-                <Button layoutX="10.0" layoutY="219.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Button layoutX="10.0" layoutY="270.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Button layoutX="10.0" layoutY="320.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Button layoutX="10.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Button layoutX="10.0" layoutY="419.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Button layoutX="11.0" layoutY="467.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button" />
-                <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="151.0" prefHeight="30.0" prefWidth="176.0" text="Welcome back Judy Lisle" textFill="#f5f4f4">
+                <Button layoutX="10.0" layoutY="219.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 1" />
+                <Button layoutX="10.0" layoutY="270.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 2" />
+                <Button layoutX="10.0" layoutY="320.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 3" />
+                <Button layoutX="10.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 4" />
+                <Button layoutX="10.0" layoutY="419.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 5" />
+                <Button layoutX="11.0" layoutY="467.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Button 6" />
+                <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="151.0" prefHeight="30.0" prefWidth="176.0" text="Welcome back AgentName" textFill="#f5f4f4">
                     <font>
                         <Font size="14.0" />
                     </font>
