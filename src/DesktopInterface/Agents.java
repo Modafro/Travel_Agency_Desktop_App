@@ -9,12 +9,14 @@ public class Agents {
     private String AgtBusPhone;
     private String AgtEmail;
     private String AgtPosition;
-    private String AgencyId;
+    private int AgencyId;
     private String AgtPassword;
     private String AgtUserName;
 
+    public  Agents() {}
+
     public Agents(int agentId, String agtFirstName, String agtMiddleInitial, String agtLastName, String agtBusPhone,
-                  String agtEmail, String agtPosition, String agencyId, String agtPassword, String agtUserName) {
+                  String agtEmail, String agtPosition, int agencyId, String agtPassword, String agtUserName) {
         this.AgentId = agentId;
         this.AgtFirstName = agtFirstName;
         this.AgtMiddleInitial = agtMiddleInitial;
@@ -88,11 +90,11 @@ public class Agents {
         AgtPosition = agtPosition;
     }
 
-    public String getAgencyId() {
+    public int getAgencyId() {
         return AgencyId;
     }
 
-    public void setAgencyId(String agencyId) {
+    public void setAgencyId(int agencyId) {
         AgencyId = agencyId;
     }
 
