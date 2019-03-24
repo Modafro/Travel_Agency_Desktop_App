@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -49,7 +48,7 @@ public class LoginGUIController {
     public void loginAgent(ActionEvent actionEvent) throws IOException {
         boolean verification;
         Agents agt = new Agents(txtPassword.getText(), txtUsername.getText());
-        verification = TravelExpertsQuery.isLoginVerified(agt);
+        verification = AgentsQuery.isLoginVerified(agt);
         if (verification){
 
             FXMLLoader loader = new FXMLLoader();

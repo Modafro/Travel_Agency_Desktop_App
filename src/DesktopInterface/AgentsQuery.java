@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TravelExpertsQuery {
+public class AgentsQuery {
 
     //create method to verify customer login
     public static boolean isLoginVerified(Agents agt)
