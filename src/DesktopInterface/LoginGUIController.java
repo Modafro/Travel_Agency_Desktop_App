@@ -51,14 +51,17 @@ public class LoginGUIController {
         verification = AgentsQuery.isLoginVerified(agt);
         if (verification){
 
+            //create FXMLLoader object
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AgentGUI.fxml"));
             Parent AgentGUI = loader.load();
 
             Scene AgentScene = new Scene(AgentGUI);
 
+            //access methods from AgentGUIController
             AgentGUIController controller = loader.getController();
             controller.setUserName(agt);
+
             //get current stage information
             Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
 
