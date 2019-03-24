@@ -12,6 +12,8 @@
 
 # Package Files #
 *.jar
+!mssql-jdbc-7.0.0.jre10.jar
+!mssql-jdbc-7.0.0.jre8.jar
 *.war
 *.nar
 *.ear
