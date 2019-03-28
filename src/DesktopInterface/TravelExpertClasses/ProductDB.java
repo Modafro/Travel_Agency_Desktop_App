@@ -1,5 +1,7 @@
 package DesktopInterface.TravelExpertClasses;
 
+import DesktopInterface.TravelExpertsDB;
+
 import java.sql.*;
 import java.util.ArrayList;
 

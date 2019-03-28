@@ -3,12 +3,12 @@ package DesktopInterface;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import DesktopInterface.TravelExpertClasses.Agents;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 
 public class AgentGUIController {
     Agents loggedAgent;

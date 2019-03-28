@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import DesktopInterface.TravelExpertClasses.AgentsDB;
+import DesktopInterface.TravelExpertClasses.Agents;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -60,7 +62,7 @@ public class LoginGUIController {
     public void loginAgent(ActionEvent actionEvent) throws IOException {
         boolean verification;
         Agents agt = new Agents(txtPassword.getText(), txtUsername.getText());
-        verification = AgentsQuery.isLoginVerified(agt);
+        verification = AgentsDB.isLoginVerified(agt);
         if (verification){
 
             //create FXMLLoader object

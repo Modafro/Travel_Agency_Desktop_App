@@ -1,12 +1,14 @@
 //Objective: Create various queries to manipulate the database based on end-user requests
-package DesktopInterface;
+package DesktopInterface.TravelExpertClasses;
+
+import DesktopInterface.TravelExpertsDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AgentsQuery {
+public class AgentsDB {
 
     //create method to verify customer login
     public static boolean isLoginVerified(Agents agt)
