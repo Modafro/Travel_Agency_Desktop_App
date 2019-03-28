@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -38,10 +41,19 @@ public class LoginGUIController {
     private Button btnLogin;
 
     @FXML
+    private Label lblErrorLogin;
+
+    @FXML
     void initialize() {
         assert txtUsername != null : "fx:id=\"txtUsername\" was not injected: check your FXML file 'LoginGUI.fxml'.";
         assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'LoginGUI.fxml'.";
         assert btnLogin != null : "fx:id=\"btnLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
+        assert lblErrorLogin != null : "fx:id=\"lblErrorLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
+
+        btnLogin.setDisable(true);
+        lblErrorLogin.setVisible(false);
+        hideErrorLabel(txtPassword);
+        hideErrorLabel(txtUsername);
     }
 
     //Create method for agent to login after successful verification
@@ -70,8 +82,34 @@ public class LoginGUIController {
             window.show();
         }
         else{
-            System.out.println("failure");
+            lblErrorLogin.setVisible(true);
         }
+    }
+
+    //Create method to verify if cell is empty on key released from textfield
+    public void verifyEmpty(){
+        if(!Validator.isEmpty(txtUsername) && !Validator.isEmpty(txtPassword))
+        {
+            btnLogin.setDisable(false);
+        }
+        else
+        {
+            btnLogin.setDisable(true);
+        }
+    }
+
+    //Create method to remove error message when end-user re-enters values in relevant textfield
+    public void hideErrorLabel(TextField txtName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(newValue)
+                {
+                    lblErrorLogin.setVisible(false);
+                }
+            }
+        });
     }
 }
 
