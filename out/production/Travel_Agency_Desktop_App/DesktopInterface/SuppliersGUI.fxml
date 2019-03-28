@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="DesktopInterface.SuppliersGUIController"
+            fx:id="vwSuppliers"
+            prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C0C0C0;">
+    <children>
+        <Label prefHeight="17.0" prefWidth="375.0" text="Suppliers Page">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
