@@ -38,16 +38,13 @@ public class AgentGUIController {
     private Button btnProducts;
 
     @FXML
-    private Button btnSettings;
-
-    @FXML
     private Label lblWelcome;
 
     @FXML
     private Button btnLogout;
 
     @FXML
-    private GridPane vwCustomers;
+    private AnchorPane vwCustomers;
 
     @FXML
     private AnchorPane vwPackages;
@@ -62,7 +59,7 @@ public class AgentGUIController {
     private AnchorPane vwSettings;
 
     @FXML
-    private GridPane vwHome;
+    private AnchorPane vwHome;
 
     @FXML
     void initialize() {
@@ -72,7 +69,6 @@ public class AgentGUIController {
         assert btnPackages != null : "fx:id=\"btnPackages\" was not injected: check your FXML file 'AgentGUI.fxml'.";
         assert btnSuppliers != null : "fx:id=\"btnSuppliers\" was not injected: check your FXML file 'AgentGUI.fxml'.";
         assert btnProducts != null : "fx:id=\"btnProducts\" was not injected: check your FXML file 'AgentGUI.fxml'.";
-        assert btnSettings != null : "fx:id=\"btnSettings\" was not injected: check your FXML file 'AgentGUI.fxml'.";
         assert lblWelcome != null : "fx:id=\"lblWelcome\" was not injected: check your FXML file 'AgentGUI.fxml'.";
         assert btnLogout != null : "fx:id=\"btnLogout\" was not injected: check your FXML file 'AgentGUI.fxml'.";
         assert vwCustomers != null : "fx:id=\"vwCustomers\" was not injected: check your FXML file 'AgentGUI.fxml'.";
@@ -119,11 +115,6 @@ public class AgentGUIController {
         {
             lblCurrentDirectory.setText("Products");
             vwProducts.toFront();
-        }
-        else if(event.getSource() == btnSettings)
-        {
-            lblCurrentDirectory.setText("Settings");
-            vwSettings.toFront();
         }
         else if (event.getSource() == btnLogout)
         {

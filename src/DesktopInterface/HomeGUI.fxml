@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="vwHome"
+            fx:controller="DesktopInterface.HomeGUIController"
+            prefHeight="200.0" prefWidth="200.0"
+            style="-fx-background-color: #C0C0C0;">
+    <children>
+    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="331.0" style="-fx-background-color: grey;" text="Home Page">
+        <font>
+            <Font size="24.0" />
+        </font>
+    </Label>
+</children>
+</AnchorPane>
