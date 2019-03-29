@@ -11,7 +11,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:id="vwPackages"
             fx:controller="DesktopInterface.PackagesGUIController"
-            prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C0C0C0;">
+            prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
     <children>
         <Label layoutX="10.0" layoutY="215.0" prefHeight="17.0" prefWidth="375.0" text="Packages Page">
             <font>

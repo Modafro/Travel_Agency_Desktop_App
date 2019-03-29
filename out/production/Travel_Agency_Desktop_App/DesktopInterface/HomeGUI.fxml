@@ -11,7 +11,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:id="vwHome"
             fx:controller="DesktopInterface.HomeGUIController"
-            prefHeight="200.0" prefWidth="200.0"
+            prefHeight="463.0" prefWidth="709.0"
             style="-fx-background-color: #C0C0C0;">
     <children>
     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="331.0" style="-fx-background-color: grey;" text="Home Page">
