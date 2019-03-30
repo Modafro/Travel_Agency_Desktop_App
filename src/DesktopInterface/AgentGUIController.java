@@ -86,9 +86,6 @@ public class AgentGUIController {
     {
         loggedAgent = agent;
         lblWelcome.setText("Welcome back " +loggedAgent.getAgtFirstName()+ " " + loggedAgent.getAgtLastName());
-
-        CustomersGUIController controller = new CustomersGUIController();
-        controller.initialize(loggedAgent);
     }
 
     @FXML
@@ -101,6 +98,8 @@ public class AgentGUIController {
         }
         else if(event.getSource() == btnCustomers)
         {
+            //CustomersGUIController controller = new CustomersGUIController();
+            //controller.setAgentinCustomersGUI(loggedAgent);
             lblCurrentDirectory.setText("Customers");
             vwCustomers.toFront();
         }

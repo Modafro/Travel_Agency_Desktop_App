@@ -48,6 +48,14 @@ public class Customer {
         CustEmail = custEmail;
     }
 
+    public String getCustBusPhone() {
+        return CustBusPhone;
+    }
+
+    public void setCustBusPhone(String custBusPhone) {
+        CustBusPhone = custBusPhone;
+    }
+
     public String getCustEmail() {
         return CustEmail;
     }
