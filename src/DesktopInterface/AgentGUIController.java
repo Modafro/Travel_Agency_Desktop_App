@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class AgentGUIController {
-    Agents loggedAgent;
+    private Agents loggedAgent;
 
     @FXML
     private ResourceBundle resources;
@@ -82,7 +82,7 @@ public class AgentGUIController {
 
     //method to be called in LoginGUIController. Method will set current agents object (loggedAgent) to the object agents
     //instantiated in LoginGUIController
-    public void setUserName(Agents agent)
+    public void setAgentinAgentGUI(Agents agent)
     {
         loggedAgent = agent;
         lblWelcome.setText("Welcome back " +loggedAgent.getAgtFirstName()+ " " + loggedAgent.getAgtLastName());
@@ -98,6 +98,8 @@ public class AgentGUIController {
         }
         else if(event.getSource() == btnCustomers)
         {
+            //CustomersGUIController controller = new CustomersGUIController();
+            //controller.setAgentinCustomersGUI(loggedAgent);
             lblCurrentDirectory.setText("Customers");
             vwCustomers.toFront();
         }

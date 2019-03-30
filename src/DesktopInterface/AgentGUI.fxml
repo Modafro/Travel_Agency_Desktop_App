@@ -57,7 +57,7 @@
             </Label>
          </children>
       </Pane>
-      <StackPane layoutX="291.0" layoutY="138.0" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
+      <StackPane layoutX="291.0" layoutY="138.0" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" fx:id="vwStackPane">
          <children>
             <fx:include fx:id="vwCustomers" source="CustomersGUI.fxml"/>
             <fx:include fx:id="vwPackages" source="PackagesGUI.fxml"/>

@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:id="vwCustomers"
-            fx:controller="DesktopInterface.CustomersGUIController"
-            prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C0C0C0;">
+<AnchorPane fx:id="vwCustomers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersGUIController">
     <children>
-        <Label layoutX="10.0" layoutY="215.0" prefHeight="17.0" prefWidth="375.0" text="Customers Page">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
+      <TableView fx:id="tvCustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
+        <columns>
+          <TableColumn fx:id="colCustFirstName" text="First Name" />
+          <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
+            <TableColumn fx:id="colCustAddress" prefWidth="157.0" text="Address" />
+            <TableColumn fx:id="colCustCIty" prefWidth="84.0" text="City" />
+            <TableColumn fx:id="colCustProv" prefWidth="56.0" text="Province" />
+            <TableColumn fx:id="colCustPostal" prefWidth="64.0" text="Postal" />
+            <TableColumn fx:id="colCustCountry" prefWidth="64.0" text="Country" />
+            <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
+            <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
+            <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
+        </columns>
+      </TableView>
+      <TextField fx:id="txtSearch" layoutX="493.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
     </children>
 </AnchorPane>

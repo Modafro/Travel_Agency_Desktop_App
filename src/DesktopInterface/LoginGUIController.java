@@ -15,6 +15,8 @@ import DesktopInterface.TravelExpertClasses.Agents;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +25,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class LoginGUIController {
@@ -32,6 +36,9 @@ public class LoginGUIController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private CustomersGUIController customersGUIController;
 
     @FXML
     private TextField txtUsername;
@@ -58,8 +65,25 @@ public class LoginGUIController {
         hideErrorLabel(txtUsername);
     }
 
-    //Create method for agent to login after successful verification
+    //Create method for agent to login after successful verification if enter keyboard is pressed
+    private void loginOnEnterKeyPressed(TextField txtName){
+        txtName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(!Validator.isEmpty(txtPassword) && event.getCode().equals(KeyCode.ENTER)){
+                    verification(event);
+                }
+            }
+        });
+    }
+
+    //Create method for agent to login after successful verification if button is clicked
     public void loginAgent(ActionEvent actionEvent) throws IOException {
+        verification(actionEvent);
+    }
+
+    //method to be passed for the keypressed event (loginOnEnterKeyPressed) and on button click  (loginAgent)
+    private void verification(Event event){
         boolean verification;
         Agents agt = new Agents(txtPassword.getText(), txtUsername.getText());
         verification = AgentsDB.isLoginVerified(agt);
@@ -68,16 +92,24 @@ public class LoginGUIController {
             //create FXMLLoader object
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AgentGUI.fxml"));
-            Parent AgentGUI = loader.load();
+            Parent AgentGUI = null;
+            try {
+                AgentGUI = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             Scene AgentScene = new Scene(AgentGUI);
 
             //access methods from AgentGUIController
-            AgentGUIController controller = loader.getController();
-            controller.setUserName(agt);
+            AgentGUIController controllerAgtGUI = loader.getController();
+            controllerAgtGUI.setAgentinAgentGUI(agt);
+
+            //access methods from CustomersGUIController
+            //customersGUIController.setAgentinCustomersGUI();
 
             //get current stage information
-            Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
             //switch scenes
             window.setScene(AgentScene);
@@ -100,7 +132,8 @@ public class LoginGUIController {
         }
     }
 
-    //Create method to remove error message when end-user re-enters values in relevant textfield
+    //Create listener method to remove error message when end-user re-enters values in relevant textfield and execute
+    // loginOnEnterKeyPressed method
     public void hideErrorLabel(TextField txtName)
     {
         txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -109,6 +142,7 @@ public class LoginGUIController {
                 if(newValue)
                 {
                     lblErrorLogin.setVisible(false);
+                    loginOnEnterKeyPressed(txtName);
                 }
             }
         });
