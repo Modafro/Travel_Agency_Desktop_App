@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import DesktopInterface.TravelExpertClasses.Agents;
 import DesktopInterface.TravelExpertClasses.Customer;
-import DesktopInterface.TravelExpertClasses.CustomerDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,9 +17,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 
-public class CustomersGUIController {
+public class CustomersController {
     private Agents loggedAgent;
 
     @FXML
@@ -30,10 +28,10 @@ public class CustomersGUIController {
     private URL location;
 
     @FXML
-    private AnchorPane vwCustomers;
+    private AnchorPane customers;
 
     @FXML
-    private TableView<Customer> tvCustomers;
+    private TableView<Customer> tvcustomers;
 
     @FXML
     private TableColumn<Customer, String> colCustFirstName;
@@ -88,30 +86,28 @@ public class CustomersGUIController {
 //        assert txtSearch != null : "fx:id=\"txtSearch\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 
 //        loggedAgent = agent;
-        getCustomers();
-
-
+        //getCustomersByAgtID();
     }
 
     public void setAgentinCustomersGUI(Agents agent)
     {
-        //loggedAgent = agent;
-        //getCustomers();
+       loggedAgent = agent;
+       getCustomersByAgtID();
     }
 
-    public void getCustomers()
+    public void getCustomersByAgtID()
     {
         Connection conn = TravelExpertsDB.getConnection();
 
         String sql = "select CustFirstName, CustLastName, CustAddress, CustCity, " +
                 "CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail from Customers where " +
-                "AgentId=1";
+                "AgentId=?";
 
         try
         {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            //stmt.setInt(1, loggedAgent.getAgentId());
-            //int agtId = loggedAgent.getAgencyId();
+            stmt.setInt(1, loggedAgent.getAgentId());
+            int agtId = loggedAgent.getAgentId();
             //System.out.println(agtId);
 
             ResultSet res = stmt.executeQuery();
@@ -145,7 +141,7 @@ public class CustomersGUIController {
                 colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustHomePhone"));
                 colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustBusPhone"));
                 colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustEmail"));
-                tvCustomers.setItems(custData);
+                tvcustomers.setItems(custData);
             }
             catch (Exception e) {
                 System.out.println(e);

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.AgentGUIController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.AgentController">
     <children>
         <Pane prefHeight="600.0" prefWidth="291.0" style="-fx-background-color: #373636;">
             <children>
@@ -59,11 +59,11 @@
       </Pane>
       <StackPane layoutX="291.0" layoutY="138.0" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" fx:id="vwStackPane">
          <children>
-            <fx:include fx:id="vwCustomers" source="CustomersGUI.fxml"/>
-            <fx:include fx:id="vwPackages" source="PackagesGUI.fxml"/>
-            <fx:include source="SuppliersGUI.fxml" fx:id="vwSuppliers"/>
-            <fx:include fx:id="vwProducts" source="ProductsGUI.fxml"/>
-            <fx:include fx:id="vwHome" source="HomeGUI.fxml"/>
+            <fx:include fx:id="customers" source="Customers.fxml"/>
+            <fx:include fx:id="packages" source="Packages.fxml"/>
+            <fx:include source="Suppliers.fxml" fx:id="suppliers"/>
+            <fx:include fx:id="products" source="Products.fxml"/>
+            <fx:include fx:id="home" source="Home.fxml"/>
          </children>
       </StackPane>
     </children>

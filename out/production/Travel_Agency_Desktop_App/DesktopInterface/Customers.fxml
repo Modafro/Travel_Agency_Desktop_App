@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="vwCustomers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersGUIController">
+<AnchorPane fx:id="customers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersController">
     <children>
-      <TableView fx:id="tvCustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
+      <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
         <columns>
           <TableColumn fx:id="colCustFirstName" text="First Name" />
           <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />

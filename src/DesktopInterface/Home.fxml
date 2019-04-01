@@ -9,8 +9,8 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:id="vwHome"
-            fx:controller="DesktopInterface.HomeGUIController"
+            fx:id="home"
+            fx:controller="DesktopInterface.HomeController"
             prefHeight="463.0" prefWidth="709.0"
             style="-fx-background-color: #C0C0C0;">
     <children>
