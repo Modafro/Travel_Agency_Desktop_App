@@ -9,14 +9,14 @@ import java.util.ResourceBundle;
 
 import DesktopInterface.TravelExpertClasses.Agents;
 import DesktopInterface.TravelExpertClasses.Customer;
+import DesktopInterface.TravelExpertClasses.CustomerDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 public class CustomersController {
     private Agents loggedAgent;
@@ -66,7 +66,49 @@ public class CustomersController {
     @FXML
     private TextField txtSearch;
 
+    @FXML
+    private Pane crudcustomer;
+
+    @FXML
+    private TextField txtCustFirstName;
+
+    @FXML
+    private TextField txtCustLastName;
+
+    @FXML
+    private TextField txtCustAddress;
+
+    @FXML
+    private TextField txtCustEmail;
+
+    @FXML
+    private TextField txtCustCity;
+
+    @FXML
+    private TextField txtCustPostal;
+
+    @FXML
+    private ComboBox<String> cbProvince;
+
+    @FXML
+    private TextField txtCustHomePhone;
+
+    @FXML
+    private TextField txtCustBusPhone;
+
+    @FXML
+    private Button btnInsert;
+
+    @FXML
+    private Button btnUpdate;
+
+    @FXML
+    private Button btnDelete;
+
     private ObservableList<Customer> custData = FXCollections.observableArrayList();
+
+    private ObservableList<String> provData = FXCollections.observableArrayList("AB",
+            "BC","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT");
 
     @FXML
     void initialize() {
@@ -84,9 +126,7 @@ public class CustomersController {
 //        assert colCustBusPhone != null : "fx:id=\"colCustBusPhone\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert colCustEmail != null : "fx:id=\"colCustEmail\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert txtSearch != null : "fx:id=\"txtSearch\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
-
-//        loggedAgent = agent;
-        //getCustomersByAgtID();
+        cbProvince.setItems(provData);
     }
 
     public void setAgentinCustomersGUI(Agents agent)
@@ -97,62 +137,36 @@ public class CustomersController {
 
     public void getCustomersByAgtID()
     {
-        Connection conn = TravelExpertsDB.getConnection();
+        custData = CustomerDB.getCustomerTableView(loggedAgent, custData);
 
-        String sql = "select CustFirstName, CustLastName, CustAddress, CustCity, " +
-                "CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail from Customers where " +
-                "AgentId=?";
-
-        try
-        {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, loggedAgent.getAgentId());
-            int agtId = loggedAgent.getAgentId();
-            //System.out.println(agtId);
-
-            ResultSet res = stmt.executeQuery();
-
-            while(res.next())
-            {
-                custData.add(new Customer(res.getString(1),
-                        res.getString(2),
-                        res.getString(3),
-                        res.getString(4),
-                        res.getString(5),
-                        res.getString(6),
-                        res.getString(7),
-                        res.getString(8),
-                        res.getString(9),
-                        res.getString(10)
-                ));
-            }
-            //System.out.println(custData);
-            //data = CustomerDB.getCustometTableView(loggedAgent, data);
-            //set column values to the observableList of Customers
-
-            try {
-                colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
-                colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
-                colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
-                colCustCIty.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCity"));
-                colCustProv.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustProv"));
-                colCustPostal.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustPostal"));
-                colCustCountry.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCountry"));
-                colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustHomePhone"));
-                colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustBusPhone"));
-                colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustEmail"));
-                tvcustomers.setItems(custData);
-            }
-            catch (Exception e) {
-                System.out.println(e);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try {
+            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
+            colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
+            colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
+            colCustCIty.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCity"));
+            colCustProv.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustProv"));
+            colCustPostal.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustPostal"));
+            colCustCountry.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCountry"));
+            colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustHomePhone"));
+            colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustBusPhone"));
+            colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustEmail"));
+            tvcustomers.setItems(custData);
         }
-
-
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-
+    //method to verify user's input
+    public void validateInput()
+    {
+        if(Validator.isEmailValid(txtCustEmail) && !Validator.isEmpty(txtCustEmail))
+        {
+            System.out.println("valid");
+        }
+        else
+        {
+            System.out.println("not valid");
+        }
+    }
 }

@@ -103,8 +103,6 @@ public class LoginController {
             AgentController controllerAgtGUI = loader.getController();
             controllerAgtGUI.setAgentinAgentGUI(agt);
 
-            //access methods from CustomersGUIController
-
             //get current stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
