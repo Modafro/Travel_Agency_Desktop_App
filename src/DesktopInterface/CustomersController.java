@@ -31,6 +31,9 @@ public class CustomersController {
     private AnchorPane customers;
 
     @FXML
+    private TitledPane crudCustomers;
+
+    @FXML
     private TableView<Customer> tvcustomers;
 
     @FXML
@@ -65,9 +68,6 @@ public class CustomersController {
 
     @FXML
     private TextField txtSearch;
-
-    @FXML
-    private Pane crudcustomer;
 
     @FXML
     private TextField txtCustFirstName;
@@ -153,6 +153,7 @@ public class CustomersController {
 //        assert colCustBusPhone != null : "fx:id=\"colCustBusPhone\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert colCustEmail != null : "fx:id=\"colCustEmail\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert txtSearch != null : "fx:id=\"txtSearch\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
+        crudCustomers.setExpanded(false);
         cbProvince.setItems(provData);
         lblCustFirstNameError.setVisible(false);
         lblCustLastNameError.setVisible(false);

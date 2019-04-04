@@ -7,13 +7,14 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="customers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersController">
     <children>
-        <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
+        <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="196.0" prefWidth="659.0">
             <columns>
                 <TableColumn fx:id="colCustFirstName" text="First Name" />
                 <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
@@ -28,7 +29,8 @@
             </columns>
         </TableView>
         <TextField fx:id="txtSearch" layoutX="493.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
-        <Pane fx:id="crudcustomer" layoutX="22.0" layoutY="273.0" prefHeight="184.0" prefWidth="659.0" style="-fx-background-color: #D3D3D3;">
+        <TitledPane fx:id="crudCustomers" layoutX="22.0" layoutY="253.0" prefHeight="206.0" prefWidth="659.0" text="Options">
+            <Pane prefHeight="181.0" prefWidth="661.0">
             <children>
                 <TextField fx:id="txtCustFirstName" layoutX="14.0" layoutY="21.0" promptText="First Name" />
                 <TextField fx:id="txtCustLastName" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="149.0" promptText="Last Name" />
@@ -91,6 +93,7 @@
                     </font>
                 </Label>
             </children>
-        </Pane>
+            </Pane>
+        </TitledPane>
     </children>
 </AnchorPane>
