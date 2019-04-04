@@ -31,6 +31,9 @@ public class CustomersController {
     private AnchorPane customers;
 
     @FXML
+    private TitledPane crudCustomers;
+
+    @FXML
     private TableView<Customer> tvcustomers;
 
     @FXML
@@ -65,9 +68,6 @@ public class CustomersController {
 
     @FXML
     private TextField txtSearch;
-
-    @FXML
-    private Pane crudcustomer;
 
     @FXML
     private TextField txtCustFirstName;
@@ -105,6 +105,33 @@ public class CustomersController {
     @FXML
     private Button btnDelete;
 
+    @FXML
+    private Label lblCustFirstNameError;
+
+    @FXML
+    private Label lblCustAddressError;
+
+    @FXML
+    private Label lblCustLastNameError;
+
+    @FXML
+    private Label lblCustCityError;
+
+    @FXML
+    private Label lblCustPostalError;
+
+    @FXML
+    private Label lblCustProvError;
+
+    @FXML
+    private Label lblCustEmailError;
+
+    @FXML
+    private Label lblCustHomePhoneError;
+
+    @FXML
+    private Label lblCustBusPhoneError;
+
     private ObservableList<Customer> custData = FXCollections.observableArrayList();
 
     private ObservableList<String> provData = FXCollections.observableArrayList("AB",
@@ -126,13 +153,23 @@ public class CustomersController {
 //        assert colCustBusPhone != null : "fx:id=\"colCustBusPhone\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert colCustEmail != null : "fx:id=\"colCustEmail\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
 //        assert txtSearch != null : "fx:id=\"txtSearch\" was not injected: check your FXML file 'CustomersGUI.fxml'.";
+        crudCustomers.setExpanded(false);
         cbProvince.setItems(provData);
+        lblCustFirstNameError.setVisible(false);
+        lblCustLastNameError.setVisible(false);
+        lblCustAddressError.setVisible(false);
+        lblCustPostalError.setVisible(false);
+        lblCustCityError.setVisible(false);
+        lblCustProvError.setVisible(false);
+        lblCustEmailError.setVisible(false);
+        lblCustHomePhoneError.setVisible(false);
+        lblCustBusPhoneError.setVisible(false);
     }
 
     public void setAgentinCustomersGUI(Agents agent)
     {
-       loggedAgent = agent;
-       getCustomersByAgtID();
+        loggedAgent = agent;
+        getCustomersByAgtID();
     }
 
     public void getCustomersByAgtID()
@@ -160,7 +197,15 @@ public class CustomersController {
     //method to verify user's input
     public void validateInput()
     {
-        if(Validator.isEmailValid(txtCustEmail) && !Validator.isEmpty(txtCustEmail))
+        if(!Validator.isEmpty(txtCustFirstName, lblCustFirstNameError) && Validator.isNameValid(txtCustFirstName, lblCustFirstNameError) &&
+                !Validator.isEmpty(txtCustLastName, lblCustLastNameError) && Validator.isNameValid(txtCustLastName, lblCustLastNameError) &&
+                !Validator.isEmpty(txtCustEmail, lblCustEmailError) && Validator.isEmailValid(txtCustEmail, lblCustEmailError) &&
+                !Validator.isEmpty(txtCustAddress, lblCustAddressError) &&
+                !Validator.isEmpty(txtCustCity, lblCustCityError) && Validator.isNameValid(txtCustCity, lblCustCityError) &&
+                !Validator.isEmpty(txtCustPostal, lblCustPostalError) && Validator.isPostalValid(txtCustPostal, lblCustPostalError) &&
+                Validator.isProvinceValid(cbProvince,lblCustProvError) &&
+                !Validator.isEmpty(txtCustHomePhone, lblCustHomePhoneError) &&Validator.isPhoneValid(txtCustHomePhone, lblCustHomePhoneError) &&
+                !Validator.isPhoneValid(txtCustBusPhone,lblCustBusPhoneError))
         {
             System.out.println("valid");
         }
