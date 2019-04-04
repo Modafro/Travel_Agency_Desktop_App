@@ -3,47 +3,94 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="customers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersController">
     <children>
-      <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
-        <columns>
-          <TableColumn fx:id="colCustFirstName" text="First Name" />
-          <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
-            <TableColumn fx:id="colCustAddress" prefWidth="157.0" text="Address" />
-            <TableColumn fx:id="colCustCIty" prefWidth="84.0" text="City" />
-            <TableColumn fx:id="colCustProv" prefWidth="56.0" text="Province" />
-            <TableColumn fx:id="colCustPostal" prefWidth="64.0" text="Postal" />
-            <TableColumn fx:id="colCustCountry" prefWidth="64.0" text="Country" />
-            <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
-            <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
-            <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
-        </columns>
-      </TableView>
-      <TextField fx:id="txtSearch" layoutX="493.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
-      <Pane fx:id="crudcustomer" layoutX="22.0" layoutY="273.0" prefHeight="184.0" prefWidth="659.0" style="-fx-background-color: #D3D3D3;">
-         <children>
-            <TextField fx:id="txtCustFirstName" layoutX="14.0" layoutY="21.0" promptText="First Name" />
-            <TextField fx:id="txtCustLastName" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="149.0" promptText="Last Name" />
-            <TextField fx:id="txtCustAddress" layoutX="188.0" layoutY="21.0" prefHeight="25.0" prefWidth="330.0" promptText="Address" />
-            <TextField fx:id="txtCustEmail" layoutX="14.0" layoutY="129.0" promptText="Email" />
-            <TextField fx:id="txtCustCity" layoutX="188.0" layoutY="76.0" prefHeight="25.0" prefWidth="126.0" promptText="City" />
-            <TextField fx:id="txtCustPostal" layoutX="323.0" layoutY="76.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code" />
-            <ComboBox fx:id="cbProvince" layoutX="440.0" layoutY="76.0" prefHeight="25.0" prefWidth="71.0" promptText="Prov" />
-            <TextField fx:id="txtCustHomePhone" layoutX="188.0" layoutY="129.0" promptText="Home Phone" />
-            <TextField fx:id="txtCustBusPhone" layoutX="366.0" layoutY="129.0" promptText="Business Phone" />
-            <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Insert" onAction="#validateInput" />
-            <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" />
-            <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" />
-            <FontAwesomeIcon glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
-            <FontAwesomeIcon glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
-            <FontAwesomeIcon glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
-         </children>
-      </Pane>
+        <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="218.0" prefWidth="659.0">
+            <columns>
+                <TableColumn fx:id="colCustFirstName" text="First Name" />
+                <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
+                <TableColumn fx:id="colCustAddress" prefWidth="157.0" text="Address" />
+                <TableColumn fx:id="colCustCIty" prefWidth="84.0" text="City" />
+                <TableColumn fx:id="colCustProv" prefWidth="56.0" text="Province" />
+                <TableColumn fx:id="colCustPostal" prefWidth="64.0" text="Postal" />
+                <TableColumn fx:id="colCustCountry" prefWidth="64.0" text="Country" />
+                <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
+                <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
+                <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
+            </columns>
+        </TableView>
+        <TextField fx:id="txtSearch" layoutX="493.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
+        <Pane fx:id="crudcustomer" layoutX="22.0" layoutY="273.0" prefHeight="184.0" prefWidth="659.0" style="-fx-background-color: #D3D3D3;">
+            <children>
+                <TextField fx:id="txtCustFirstName" layoutX="14.0" layoutY="21.0" promptText="First Name" />
+                <TextField fx:id="txtCustLastName" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="149.0" promptText="Last Name" />
+                <TextField fx:id="txtCustAddress" layoutX="188.0" layoutY="21.0" prefHeight="25.0" prefWidth="330.0" promptText="Address" />
+                <TextField fx:id="txtCustEmail" layoutX="14.0" layoutY="129.0" promptText="Email" />
+                <TextField fx:id="txtCustCity" layoutX="188.0" layoutY="76.0" prefHeight="25.0" prefWidth="126.0" promptText="City" />
+                <TextField fx:id="txtCustPostal" layoutX="323.0" layoutY="76.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code" />
+                <ComboBox fx:id="cbProvince" layoutX="440.0" layoutY="76.0" prefHeight="25.0" prefWidth="71.0" promptText="Prov" />
+                <TextField fx:id="txtCustHomePhone" layoutX="188.0" layoutY="129.0" promptText="Home Phone" />
+                <TextField fx:id="txtCustBusPhone" layoutX="366.0" layoutY="129.0" promptText="Business Phone" />
+                <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#validateInput" prefHeight="25.0" prefWidth="78.0" text="Insert" />
+                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" />
+                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" />
+                <FontAwesomeIcon glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <Label fx:id="lblCustFirstNameError" layoutX="14.0" layoutY="46.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustAddressError" layoutX="188.0" layoutY="46.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustLastNameError" layoutX="14.0" layoutY="101.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustCityError" layoutX="188.0" layoutY="101.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustPostalError" layoutX="323.0" layoutY="101.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustProvError" layoutX="440.0" layoutY="101.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustEmailError" layoutX="14.0" layoutY="154.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustHomePhoneError" layoutX="188.0" layoutY="154.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCustBusPhoneError" layoutX="366.0" layoutY="154.0" text="Error text" textFill="#f80303">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
     </children>
 </AnchorPane>
