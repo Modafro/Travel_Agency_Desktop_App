@@ -13,6 +13,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -172,7 +174,7 @@ public class CustomersController {
 
     private Alert alert_error = new Alert(Alert.AlertType.ERROR);
 
-    //string used to know which button was clicked : Insert / Update / Delete
+    //string object used to know which button was clicked : Insert / Update / Delete
     private String crudBtnClicked = new String();
 
     @FXML
@@ -200,6 +202,10 @@ public class CustomersController {
 
         //set visibility of buttons
         setVisibilityButtons(true);
+
+        //set textfields values from the selected customer in the table with a mouse click or arrow key released
+        setCustTextfieldsFromTableOnMouseClicked();
+        setCustTextfieldsFromTableOnArrowKeyReleased();
     }
 
     public void setAgentinCustomersGUI(Agents agent)
@@ -237,9 +243,10 @@ public class CustomersController {
         //if insert button was clicked
         if(crudBtnClicked=="insert")
         {
-            //insertCustomer();
-            System.out.println("insert method");
+            insertCustomer();
+            //System.out.println("insert method");
         }
+        //if update button was clicked
         else
         {
             updateCustomer();
@@ -249,8 +256,6 @@ public class CustomersController {
     //method to delete customer
     public void deleteCust()
     {
-        pncustomerfields.setDisable(true);
-        setVisibilityButtons(true);
         System.out.println("delete method");
     }
 
@@ -259,6 +264,11 @@ public class CustomersController {
     {
         pncustomerfields.setDisable(true);
         setVisibilityButtons(true);
+        tvcustomers.setDisable(false);
+        clearTexfieldData();
+    }
+
+    private void clearTexfieldData() {
         txtCustFirstName.setText("");
         txtCustLastName.setText("");
         txtCustAddress.setText("");
@@ -290,9 +300,6 @@ public class CustomersController {
                 !Validator.isEmpty(txtCustHomePhone, lblCustHomePhoneError) && Validator.isPhoneValid(txtCustHomePhone, lblCustHomePhoneError) &&
                 Validator.isPhoneValid(txtCustBusPhone,lblCustBusPhoneError))
         {
-//            String custFirstName, String custLastName, String custAddress, String custCity,
-//                String custProv, String custPostal, String custCountry, String custHomePhone, String custBusPhone,
-//                String custEmail
             Customer newCustomer = new Customer(txtCustFirstName.getText(), txtCustLastName.getText(),txtCustAddress.getText(),
                                     txtCustCity.getText(), cbProvince.getValue(),txtCustPostal.getText(), "Canada",
                                     txtCustHomePhone.getText(),txtCustBusPhone.getText(), txtCustEmail.getText(),loggedAgent.getAgentId());
@@ -312,12 +319,12 @@ public class CustomersController {
                    alert_info.showAndWait();
 
                    //set visibility
-                   pncustomerfields.setDisable(true);
+                   pncustomerfields.setDisable(false);
                    setVisibilityButtons(true);
                    crudCustomers.setExpanded(false);
 
                    //refresh table view
-                   getCustomersByAgtID(loggedAgent, custData);
+                   refreshCustTable();
                }
                else
                {
@@ -341,33 +348,81 @@ public class CustomersController {
         else
         {
             //will show error labels for user to rectify missing or invalid info entered
-            System.out.println("can't get to ");
+            //System.out.println("can't get to invalid inputs");
         }
     }
 
-    public void insertClicked()
+    //method to refresh table view
+    public void refreshCustTable()
+    {
+        custData.clear();
+        getCustomersByAgtID(loggedAgent, custData);
+    }
+
+    public void insertBtnClicked()
     {
         crudBtnClicked = "insert";
         pncustomerfields.setDisable(false);
         setVisibilityButtons(false);
+        tvcustomers.setDisable(true);
+        clearTexfieldData();
     }
 
-    public void updateClicked()
+    public void updateBtnClicked()
     {
-        crudBtnClicked = "update";
-        pncustomerfields.setDisable(false);
-        setVisibilityButtons(false);
+        if(txtCustFirstName.getText().isEmpty() &&
+        txtCustLastName.getText().isEmpty() &&
+        txtCustAddress.getText().isEmpty() &&
+        txtCustCity.getText().isEmpty() &&
+        txtCustPostal.getText().isEmpty() &&
+        cbProvince.getSelectionModel().getSelectedIndex() == -1 &&
+        txtCustEmail.getText().isEmpty() &&
+        txtCustHomePhone.getText().isEmpty() &&
+        txtCustBusPhone.getText().isEmpty())
+        {
+            alert_error.setTitle("Customer Invalid");
+            alert_error.setHeaderText("No customer selected");
+            alert_error.setContentText("Please select a customer from the table to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "update";
+            pncustomerfields.setDisable(false);
+            setVisibilityButtons(false);
+            tvcustomers.setDisable(true);
+        }
     }
 
-    public void deleteClicked()
+    public void deleteBtnClicked()
     {
-        crudBtnClicked = "delete";
-        pncustomerfields.setDisable(false);
-        setVisibilityButtons(false);
-        btnSave.setVisible(false);
-        imgSave.setVisible(false);
-        btnConfirmDelete.setVisible(true);
-        imgConfirmDelete.setVisible(true);
+        if(txtCustFirstName.getText().isEmpty() &&
+                txtCustLastName.getText().isEmpty() &&
+                txtCustAddress.getText().isEmpty() &&
+                txtCustCity.getText().isEmpty() &&
+                txtCustPostal.getText().isEmpty() &&
+                cbProvince.getSelectionModel().getSelectedIndex() == -1 &&
+                txtCustEmail.getText().isEmpty() &&
+                txtCustHomePhone.getText().isEmpty() &&
+                txtCustBusPhone.getText().isEmpty())
+        {
+
+            alert_error.setTitle("Customer Invalid");
+            alert_error.setHeaderText("No customer selected");
+            alert_error.setContentText("Please select a customer from the table to delete.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "delete";
+            pncustomerfields.setDisable(true);
+            setVisibilityButtons(false);
+            btnSave.setVisible(false);
+            imgSave.setVisible(false);
+            btnConfirmDelete.setVisible(true);
+            imgConfirmDelete.setVisible(true);
+            tvcustomers.setDisable(true);
+        }
     }
 
     //set visibility of buttons (and corresponding images)
@@ -401,5 +456,44 @@ public class CustomersController {
             btnCancel.setVisible(true);
             imgCancel.setVisible(true);
         }
+    }
+
+    //set textfields values from the selected customer in the table with a mouse click
+    private void setCustTextfieldsFromTableOnMouseClicked()
+    {
+        tvcustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setCustTextfieldsFromTable();
+            }
+        });
+    }
+
+    //set textfields values from the selected customer in the table with a arrow (up or down) key released
+    private void setCustTextfieldsFromTableOnArrowKeyReleased()
+    {
+        tvcustomers.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN)
+                {
+                    setCustTextfieldsFromTable();
+                }
+            }
+        });
+    }
+
+    private void setCustTextfieldsFromTable()
+    {
+        Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+        txtCustFirstName.setText(cust.getCustFirstName());
+        txtCustLastName.setText(cust.getCustLastName());
+        txtCustAddress.setText(cust.getCustFirstName());
+        txtCustCity.setText(cust.getCustFirstName());
+        txtCustPostal.setText(cust.getCustFirstName());
+        cbProvince.getSelectionModel().select(cust.getCustProv());
+        txtCustEmail.setText(cust.getCustEmail());
+        txtCustHomePhone.setText(cust.getCustHomePhone());
+        txtCustBusPhone.setText(cust.getCustBusPhone());
     }
 }

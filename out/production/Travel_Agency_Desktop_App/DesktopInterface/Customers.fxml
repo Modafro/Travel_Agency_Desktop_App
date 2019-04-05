@@ -90,9 +90,9 @@
                       </Label>
                   </children>
                </Pane>
-                <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
-                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" onAction="#updateClicked" />
-                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" onAction="#deleteClicked"/>
+                <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
+                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" onAction="#updateBtnClicked" />
+                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" onAction="#deleteBtnClicked"/>
                 <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
                 <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
                 <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
