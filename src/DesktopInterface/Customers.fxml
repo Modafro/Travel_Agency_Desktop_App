@@ -32,66 +32,76 @@
         <TitledPane fx:id="crudCustomers" layoutX="22.0" layoutY="253.0" prefHeight="206.0" prefWidth="659.0" text="Options">
             <Pane prefHeight="181.0" prefWidth="661.0">
             <children>
-                <TextField fx:id="txtCustFirstName" layoutX="14.0" layoutY="21.0" promptText="First Name" />
-                <TextField fx:id="txtCustLastName" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="149.0" promptText="Last Name" />
-                <TextField fx:id="txtCustAddress" layoutX="188.0" layoutY="21.0" prefHeight="25.0" prefWidth="330.0" promptText="Address" />
-                <TextField fx:id="txtCustEmail" layoutX="14.0" layoutY="129.0" promptText="Email" />
-                <TextField fx:id="txtCustCity" layoutX="188.0" layoutY="76.0" prefHeight="25.0" prefWidth="126.0" promptText="City" />
-                <TextField fx:id="txtCustPostal" layoutX="323.0" layoutY="76.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code" />
-                <ComboBox fx:id="cbProvince" layoutX="440.0" layoutY="76.0" prefHeight="25.0" prefWidth="71.0" promptText="Prov" />
-                <TextField fx:id="txtCustHomePhone" layoutX="188.0" layoutY="129.0" promptText="Home Phone" />
-                <TextField fx:id="txtCustBusPhone" layoutX="366.0" layoutY="129.0" promptText="Business Phone" />
-                <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#validateInput" prefHeight="25.0" prefWidth="78.0" text="Insert" />
-                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" />
-                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" />
-                <FontAwesomeIcon glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                <FontAwesomeIcon glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                <FontAwesomeIcon glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                <Label fx:id="lblCustFirstNameError" layoutX="14.0" layoutY="46.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustAddressError" layoutX="188.0" layoutY="46.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustLastNameError" layoutX="14.0" layoutY="101.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustCityError" layoutX="188.0" layoutY="101.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustPostalError" layoutX="323.0" layoutY="101.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustProvError" layoutX="440.0" layoutY="101.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustEmailError" layoutX="14.0" layoutY="154.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustHomePhoneError" layoutX="188.0" layoutY="154.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lblCustBusPhoneError" layoutX="366.0" layoutY="154.0" text="Error text" textFill="#f80303">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Label>
+               <Pane fx:id="pncustomerfields" layoutX="14.0" layoutY="21.0">
+                  <children>
+                      <TextField fx:id="txtCustFirstName" promptText="First Name" />
+                      <TextField fx:id="txtCustLastName" layoutY="55.0" prefHeight="25.0" prefWidth="149.0" promptText="Last Name" />
+                      <TextField fx:id="txtCustAddress" layoutX="174.0" prefHeight="25.0" prefWidth="330.0" promptText="Address" />
+                      <TextField fx:id="txtCustEmail" layoutY="108.0" promptText="Email" />
+                      <TextField fx:id="txtCustCity" layoutX="174.0" layoutY="55.0" prefHeight="25.0" prefWidth="126.0" promptText="City" />
+                      <TextField fx:id="txtCustPostal" layoutX="309.0" layoutY="55.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code" />
+                      <ComboBox fx:id="cbProvince" layoutX="426.0" layoutY="55.0" prefHeight="25.0" prefWidth="71.0" promptText="Prov" />
+                      <TextField fx:id="txtCustHomePhone" layoutX="174.0" layoutY="108.0" promptText="Home Phone" />
+                      <TextField fx:id="txtCustBusPhone" layoutX="352.0" layoutY="108.0" promptText="Business Phone" />
+                      <Label fx:id="lblCustFirstNameError" layoutY="25.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustAddressError" layoutX="174.0" layoutY="25.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustLastNameError" layoutY="80.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustCityError" layoutX="174.0" layoutY="80.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustPostalError" layoutX="309.0" layoutY="80.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustProvError" layoutX="426.0" layoutY="80.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustEmailError" layoutY="133.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustHomePhoneError" layoutX="174.0" layoutY="133.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                      <Label fx:id="lblCustBusPhoneError" layoutX="352.0" layoutY="133.0" text="Error text" textFill="#f80303">
+                          <font>
+                              <Font size="10.0" />
+                          </font>
+                      </Label>
+                  </children>
+               </Pane>
+                <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
+                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" onAction="#updateClicked" />
+                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" onAction="#deleteClicked"/>
+                <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Save" onAction="#saveCustChanges" />
+               <FontAwesomeIcon fx:id="imgSave" glyphName="SAVE" layoutX="566.0" layoutY="71.0" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnCancel" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Cancel" onAction="#cancelCustChanges"/>
+               <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnConfirmDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Confirm" onAction="#deleteCust"/>
+               <FontAwesomeIcon fx:id="imgConfirmDelete" glyphName="TRASH" layoutX="566.0" layoutY="71.0" size="1.2em" wrappingWidth="14.857142448425293" />
             </children>
             </Pane>
         </TitledPane>

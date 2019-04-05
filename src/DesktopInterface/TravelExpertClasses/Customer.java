@@ -16,10 +16,10 @@ public class Customer {
     private String CustEmail;
     private int AgentId;
 
-    public Customer(int customerId, String custFirstName, String custLastName, String custAddress,
+    public Customer(String custFirstName, String custLastName, String custAddress,
                     String custCity, String custProv, String custPostal, String custCountry,
                     String custHomePhone,String custBusPhone, String custEmail, int agentId) {
-        CustomerId = customerId;
+        //CustomerId = customerId;
         CustFirstName = custFirstName;
         CustLastName = custLastName;
         CustAddress = custAddress;
