@@ -15,6 +15,9 @@ public class AgentController {
     @FXML
     private CustomersController customersController;
 
+    @FXML
+    private PackagesController packagesController;
+
     private Agents loggedAgent;
 
     @FXML
@@ -107,6 +110,7 @@ public class AgentController {
         else if(event.getSource() == btnPackages)
         {
             lblCurrentDirectory.setText("Packages");
+            packagesController.updateTable();
             packages.toFront();
         }
         else if(event.getSource() == btnSuppliers)
