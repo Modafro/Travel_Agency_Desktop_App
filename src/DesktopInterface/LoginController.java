@@ -52,10 +52,6 @@ public class LoginController {
 
     @FXML
     void initialize() {
-        assert txtUsername != null : "fx:id=\"txtUsername\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert btnLogin != null : "fx:id=\"btnLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert lblErrorLogin != null : "fx:id=\"lblErrorLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
 
         btnLogin.setDisable(true);
         lblErrorLogin.setVisible(false);

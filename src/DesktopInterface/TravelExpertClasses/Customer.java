@@ -33,9 +33,26 @@ public class Customer {
         AgentId = agentId;
     }
 
-    public Customer(String custFirstName, String custLastName, String custAddress, String custCity,
+    public Customer(String custFirstName, String custLastName, String custAddress,
+                    String custCity, String custProv, String custPostal, String custCountry,
+                    String custHomePhone,String custBusPhone, String custEmail, int agentId) {
+        CustFirstName = custFirstName;
+        CustLastName = custLastName;
+        CustAddress = custAddress;
+        CustCity = custCity;
+        CustProv = custProv;
+        CustPostal = custPostal;
+        CustCountry = custCountry;
+        CustHomePhone = custHomePhone;
+        CustBusPhone = custBusPhone;
+        CustEmail = custEmail;
+        AgentId = agentId;
+    }
+
+    public Customer(int customerId, String custFirstName, String custLastName, String custAddress, String custCity,
                     String custProv, String custPostal, String custCountry, String custHomePhone, String custBusPhone,
                     String custEmail) {
+        CustomerId = customerId;
         CustFirstName = custFirstName;
         CustLastName = custLastName;
         CustAddress = custAddress;
