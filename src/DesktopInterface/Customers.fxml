@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -26,9 +27,10 @@
                 <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
                 <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
                 <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
+            <TableColumn fx:id="colCustId" text="Id" visible="false" />
             </columns>
         </TableView>
-        <TextField fx:id="txtSearch" layoutX="493.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
+        <TextField fx:id="txtSearch" layoutX="22.0" layoutY="14.0" onAction="#searchDatabase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
         <TitledPane fx:id="crudCustomers" layoutX="22.0" layoutY="253.0" prefHeight="206.0" prefWidth="659.0" text="Options">
             <Pane prefHeight="181.0" prefWidth="661.0">
             <children>
@@ -39,10 +41,19 @@
                       <TextField fx:id="txtCustAddress" layoutX="174.0" prefHeight="25.0" prefWidth="330.0" promptText="Address" />
                       <TextField fx:id="txtCustEmail" layoutY="108.0" promptText="Email" />
                       <TextField fx:id="txtCustCity" layoutX="174.0" layoutY="55.0" prefHeight="25.0" prefWidth="126.0" promptText="City" />
-                      <TextField fx:id="txtCustPostal" layoutX="309.0" layoutY="55.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code" />
+                      <TextField fx:id="txtCustPostal" layoutX="309.0" layoutY="55.0" prefHeight="25.0" prefWidth="107.0" promptText="Postal Code">
+                        <tooltip>
+                           <Tooltip text="Format: A5A 5A5" />
+                        </tooltip></TextField>
                       <ComboBox fx:id="cbProvince" layoutX="426.0" layoutY="55.0" prefHeight="25.0" prefWidth="71.0" promptText="Prov" />
-                      <TextField fx:id="txtCustHomePhone" layoutX="174.0" layoutY="108.0" promptText="Home Phone" />
-                      <TextField fx:id="txtCustBusPhone" layoutX="352.0" layoutY="108.0" promptText="Business Phone" />
+                      <TextField fx:id="txtCustHomePhone" layoutX="174.0" layoutY="108.0" promptText="Home Phone">
+                        <tooltip>
+                           <Tooltip text="Format: (403) 403-4003" />
+                        </tooltip></TextField>
+                      <TextField fx:id="txtCustBusPhone" layoutX="352.0" layoutY="108.0" promptText="Business Phone">
+                        <tooltip>
+                           <Tooltip text="Format: (403) 403-4003" />
+                        </tooltip></TextField>
                       <Label fx:id="lblCustFirstNameError" layoutY="25.0" text="Error text" textFill="#f80303">
                           <font>
                               <Font size="10.0" />
@@ -91,19 +102,21 @@
                   </children>
                </Pane>
                 <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
-                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" onAction="#updateBtnClicked" />
-                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Delete" onAction="#deleteBtnClicked"/>
-                <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
-               <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Save" onAction="#saveCustChanges" />
-               <FontAwesomeIcon fx:id="imgSave" glyphName="SAVE" layoutX="566.0" layoutY="71.0" size="1.2em" wrappingWidth="14.857142448425293" />
-               <Button fx:id="btnCancel" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Cancel" onAction="#cancelCustChanges"/>
-               <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" size="1.2em" wrappingWidth="14.857142448425293" />
-               <Button fx:id="btnConfirmDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Confirm" onAction="#deleteCust"/>
-               <FontAwesomeIcon fx:id="imgConfirmDelete" glyphName="TRASH" layoutX="566.0" layoutY="71.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" onAction="#updateBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Update" />
+                <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Delete" />
+                <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" onMouseClicked="#insertBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" onMouseClicked="#updateBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+                <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" onMouseClicked="#deleteBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#saveCustChanges" prefHeight="25.0" prefWidth="78.0" text="Save" />
+               <FontAwesomeIcon fx:id="imgSave" glyphName="SAVE" layoutX="566.0" layoutY="71.0" onMouseClicked="#saveCustChanges" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnCancel" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="104.0" mnemonicParsing="false" onAction="#cancelCustChanges" prefHeight="25.0" prefWidth="78.0" text="Cancel" />
+               <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" onMouseClicked="#cancelCustChanges" size="1.2em" wrappingWidth="14.857142448425293" />
+               <Button fx:id="btnConfirmDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#deleteCust" prefHeight="25.0" prefWidth="78.0" text="Confirm" />
+               <FontAwesomeIcon fx:id="imgConfirmDelete" glyphName="TRASH" layoutX="566.0" layoutY="71.0" onMouseClicked="#deleteCust" size="1.2em" wrappingWidth="14.857142448425293" />
             </children>
             </Pane>
         </TitledPane>
+      <TextField fx:id="txtCustomerId" layoutX="221.0" layoutY="14.0" prefHeight="25.0" prefWidth="22.0" visible="false" />
+      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="651.0" layoutY="35.0" onMouseClicked="#refreshCustTable" size="1.8em" wrappingWidth="30.0" />
     </children>
 </AnchorPane>

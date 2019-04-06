@@ -19,6 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
+import javax.tools.Tool;
+
 public class CustomersController {
     private Agents loggedAgent;
 
@@ -39,6 +41,9 @@ public class CustomersController {
 
     @FXML
     private TableView<Customer> tvcustomers;
+
+    @FXML
+    private TableColumn<Customer, Integer> colCustId;
 
     @FXML
     private TableColumn<Customer, String> colCustFirstName;
@@ -101,6 +106,9 @@ public class CustomersController {
     private TextField txtCustBusPhone;
 
     @FXML
+    private TextField txtCustomerId;
+
+    @FXML
     private Button btnInsert;
 
     @FXML
@@ -127,8 +135,6 @@ public class CustomersController {
     @FXML
     private FontAwesomeIcon imgDelete;
 
-
-
     @FXML
     private FontAwesomeIcon imgConfirmDelete;
 
@@ -137,6 +143,9 @@ public class CustomersController {
 
     @FXML
     private FontAwesomeIcon imgCancel;
+
+    @FXML
+    private FontAwesomeIcon imgRefresh;
 
     @FXML
     private Label lblCustFirstNameError;
@@ -206,8 +215,12 @@ public class CustomersController {
         //set textfields values from the selected customer in the table with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
         setCustTextfieldsFromTableOnArrowKeyReleased();
+
+        //tooltips
+        Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
     }
 
+    //method to get the agent object from Agent Controller
     public void setAgentinCustomersGUI(Agents agent)
     {
         loggedAgent = agent;
@@ -220,6 +233,8 @@ public class CustomersController {
         custData = CustomerDB.getCustomerTableViewByAgtId(loggedAgent, custData);
 
         try {
+            colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("CustomerId"));
+            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
             colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
             colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
             colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
@@ -253,10 +268,64 @@ public class CustomersController {
         }
     }
 
+    //method to search the database on key released
+    public void searchDatabase()
+    {
+        custData.clear();
+        custData = CustomerDB.CustomerSearchResult(custData, txtSearch.getText(), loggedAgent);
+
+        try {
+            colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("CustFirstName"));
+            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
+            colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
+            colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
+            colCustCIty.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCity"));
+            colCustProv.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustProv"));
+            colCustPostal.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustPostal"));
+            colCustCountry.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCountry"));
+            colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustHomePhone"));
+            colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustBusPhone"));
+            colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustEmail"));
+            tvcustomers.setItems(custData);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     //method to delete customer
     public void deleteCust()
     {
-        System.out.println("delete method");
+        Customer deleteCustomer = new Customer(Integer.parseInt(txtCustomerId.getText()), txtCustFirstName.getText(), txtCustLastName.getText(),txtCustAddress.getText(),
+            txtCustCity.getText(), cbProvince.getValue(),txtCustPostal.getText(), "Canada",
+            txtCustHomePhone.getText(),txtCustBusPhone.getText(), txtCustEmail.getText(),loggedAgent.getAgentId());
+
+        boolean deleteCustSuccessful = CustomerDB.deleteCustomer(deleteCustomer);
+        if(deleteCustSuccessful)
+        {
+            //show dialog box
+            alert_info.setTitle("Delete Status");
+            alert_info.setHeaderText("Customer deleted successfully.");
+            alert_info.setContentText(deleteCustomer.getCustFirstName() + " "+ deleteCustomer.getCustLastName()+
+                    " has successfully been deleted.");
+            alert_info.showAndWait();
+
+            //set visibility
+            cancelCustChanges();
+
+            //refresh table view
+            refreshCustTable();
+        }
+        else
+        {
+            alert_error.setTitle("Delete Status");
+            alert_error.setHeaderText("Customer was not deleted");
+            alert_error.setContentText("An error occurred while trying to delete customer to database. Please" +
+                    " try again. If issue persists, contact your database administrator.");
+            alert_error.showAndWait();
+        }
+
+        //System.out.println("delete method");
     }
 
     //method to cancel any ongoing changes
@@ -265,25 +334,79 @@ public class CustomersController {
         pncustomerfields.setDisable(true);
         setVisibilityButtons(true);
         tvcustomers.setDisable(false);
-        clearTexfieldData();
+        clearTexfieldDataAndLabels();
+        cbProvince.setPromptText("Prov");
     }
 
-    private void clearTexfieldData() {
+    //method to clear textfields and remove error labels
+    private void clearTexfieldDataAndLabels() {
         txtCustFirstName.setText("");
         txtCustLastName.setText("");
         txtCustAddress.setText("");
         txtCustCity.setText("");
         txtCustPostal.setText("");
         cbProvince.getSelectionModel().clearSelection();
+        cbProvince.setPromptText("Prov");
         txtCustEmail.setText("");
         txtCustHomePhone.setText("");
         txtCustBusPhone.setText("");
+
+        //hide labels
+        lblCustFirstNameError.setVisible(false);
+        lblCustLastNameError.setVisible(false);
+        lblCustAddressError.setVisible(false);
+        lblCustPostalError.setVisible(false);
+        lblCustCityError.setVisible(false);
+        lblCustProvError.setVisible(false);
+        lblCustEmailError.setVisible(false);
+        lblCustHomePhoneError.setVisible(false);
+        lblCustBusPhoneError.setVisible(false);
     }
 
     //method to update customer
     public void updateCustomer()
     {
-        System.out.println("update method");
+        //verify inputs
+        if(!Validator.isEmpty(txtCustFirstName, lblCustFirstNameError) && Validator.isNameValid(txtCustFirstName, lblCustFirstNameError) &&
+                !Validator.isEmpty(txtCustLastName, lblCustLastNameError) && Validator.isNameValid(txtCustLastName, lblCustLastNameError) &&
+                !Validator.isEmpty(txtCustEmail, lblCustEmailError) && Validator.isEmailValid(txtCustEmail, lblCustEmailError) &&
+                !Validator.isEmpty(txtCustAddress, lblCustAddressError) &&
+                !Validator.isEmpty(txtCustCity, lblCustCityError) && Validator.isNameValid(txtCustCity, lblCustCityError) &&
+                !Validator.isEmpty(txtCustPostal, lblCustPostalError) && Validator.isPostalValid(txtCustPostal, lblCustPostalError) &&
+                Validator.isProvinceValid(cbProvince,lblCustProvError) &&
+                !Validator.isEmpty(txtCustHomePhone, lblCustHomePhoneError) && Validator.isPhoneValid(txtCustHomePhone, lblCustHomePhoneError) &&
+                Validator.isPhoneValid(txtCustBusPhone,lblCustBusPhoneError))
+        {
+            Customer updateCustomer = new Customer(Integer.parseInt(txtCustomerId.getText()), txtCustFirstName.getText(), txtCustLastName.getText(),txtCustAddress.getText(),
+                    txtCustCity.getText(), cbProvince.getValue(),txtCustPostal.getText(), "Canada",
+                    txtCustHomePhone.getText(),txtCustBusPhone.getText(), txtCustEmail.getText(),loggedAgent.getAgentId());
+
+            //update customer in DB
+            boolean UpdateCustSuccessful = CustomerDB.updateCustomer(updateCustomer);
+            if(UpdateCustSuccessful)
+            {
+                //show dialog box
+                alert_info.setTitle("Update Status");
+                alert_info.setHeaderText("Customer updated successfully.");
+                alert_info.setContentText(updateCustomer.getCustFirstName() + " "+ updateCustomer.getCustLastName()+
+                        " has successfully been updated.");
+                alert_info.showAndWait();
+
+                //set visibility
+                cancelCustChanges();
+
+                //refresh table view
+                refreshCustTable();
+            }
+            else
+            {
+                alert_error.setTitle("Update Status");
+                alert_error.setHeaderText("Customer was not updated");
+                alert_error.setContentText("An error occurred while trying to update customer to database. Please" +
+                        " try again. If issue persists, contact your database administrator.");
+                alert_error.showAndWait();
+            }
+        }
     }
 
     //method to insert customer
@@ -319,19 +442,18 @@ public class CustomersController {
                    alert_info.showAndWait();
 
                    //set visibility
-                   pncustomerfields.setDisable(false);
-                   setVisibilityButtons(true);
-                   crudCustomers.setExpanded(false);
+                   cancelCustChanges();
 
                    //refresh table view
                    refreshCustTable();
+
                }
                else
                {
                    alert_error.setTitle("Insert Status");
                    alert_error.setHeaderText("Customer was not added");
                    alert_error.setContentText("An error occurred while trying to add customer to database. Please" +
-                           " try again. If issue persists, contact your database administrator");
+                           " try again. If issue persists, contact your database administrator.");
                    alert_error.showAndWait();
                }
             }
@@ -339,8 +461,7 @@ public class CustomersController {
             {
                 alert_error.setTitle("Insert Status");
                 alert_error.setHeaderText("Customer was not added");
-                alert_error.setContentText(newCustomer.getCustFirstName() + " "+ newCustomer.getCustLastName()+
-                        " already exists in the database.");
+                alert_error.setContentText("A customer with that email address already exists in the database.");
                 alert_error.showAndWait();
             }
             System.out.println("valid");
@@ -359,15 +480,18 @@ public class CustomersController {
         getCustomersByAgtID(loggedAgent, custData);
     }
 
+    //change buttons visibility to only show "save" and "cancel" button
     public void insertBtnClicked()
     {
         crudBtnClicked = "insert";
         pncustomerfields.setDisable(false);
         setVisibilityButtons(false);
         tvcustomers.setDisable(true);
-        clearTexfieldData();
+        clearTexfieldDataAndLabels();
+        cbProvince.setPromptText("Prov");
     }
 
+    //change buttons visibility to only show "save" and "cancel" button
     public void updateBtnClicked()
     {
         if(txtCustFirstName.getText().isEmpty() &&
@@ -394,6 +518,7 @@ public class CustomersController {
         }
     }
 
+    //change buttons visibility to only show "confirm" and "cancel" button
     public void deleteBtnClicked()
     {
         if(txtCustFirstName.getText().isEmpty() &&
@@ -483,14 +608,16 @@ public class CustomersController {
         });
     }
 
+    //set values of textfields to corresponding values of selected customer in table
     private void setCustTextfieldsFromTable()
     {
         Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+        txtCustomerId.setText(Integer.toString(cust.getCustomerId()));
         txtCustFirstName.setText(cust.getCustFirstName());
         txtCustLastName.setText(cust.getCustLastName());
-        txtCustAddress.setText(cust.getCustFirstName());
-        txtCustCity.setText(cust.getCustFirstName());
-        txtCustPostal.setText(cust.getCustFirstName());
+        txtCustAddress.setText(cust.getCustAddress());
+        txtCustCity.setText(cust.getCustCity());
+        txtCustPostal.setText(cust.getCustPostal());
         cbProvince.getSelectionModel().select(cust.getCustProv());
         txtCustEmail.setText(cust.getCustEmail());
         txtCustHomePhone.setText(cust.getCustHomePhone());
