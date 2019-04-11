@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class CustomerDB {
 
-    //method to get list of customers for a given agent
+    //method to get list of customers for a given agent targeted for Customer GUI
     public static ObservableList<Customer> getCustomerTableViewByAgtId(Agents agt, ObservableList<Customer> custData)
     {
         Connection conn = TravelExpertsDB.getConnection();
@@ -43,6 +43,38 @@ public class CustomerDB {
                         rs.getString(10),
                         rs.getString(11)
                         ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return custData;
+    }
+
+    //method to get list of customers with specific columns for a given agent targeted for Bookings GUI
+    public static ObservableList<Customer> getSpecificCustomerTableViewByAgtId(Agents agt, ObservableList<Customer> custData)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select CustomerId, CustFirstName, CustLastName, CustHomePhone, CustAddress, CustEmail from Customers where AgentId=?";
+
+        try
+        {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, agt.getAgentId());
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+                custData.add(new Customer(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6)
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,7 +151,7 @@ public class CustomerDB {
         return custExist;
     }
 
-    //method to search values in database
+    //method to search values in database (all columns) targeted for the Customer GUI
     public static ObservableList<Customer> CustomerSearchResult(ObservableList<Customer> custData, String userInput, Agents agt)
     {
         Connection conn = TravelExpertsDB.getConnection();
@@ -158,6 +190,41 @@ public class CustomerDB {
             {
                     e.printStackTrace();
             }
+        return custData;
+    }
+
+    //method to search values in database (specific columns) targeted for the Bookings GUI
+    public static ObservableList<Customer> CustomerSearchResultSpecific(ObservableList<Customer> custData, String userInput, Agents agt)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select CustomerId, CustFirstName, CustLastName, CustHomePhone, CustAddress, CustEmail from Customers where " +
+                    "lower(CONCAT(CustFirstName, CustLastName)) like ? AND AgentId=?";
+
+        try
+        {
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%"+userInput.toLowerCase()+"%");
+            stmt.setInt(2, agt.getAgentId());
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                custData.add(new Customer(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6)
+                ));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
         return custData;
     }
 

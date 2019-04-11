@@ -10,24 +10,29 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="bookings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.BookingsController">
    <children>
-      <TextField fx:id="btnSearchCustomer" layoutX="35.0" layoutY="14.0" prefHeight="25.0" prefWidth="160.0" promptText="Search Customer" />
-      <TextField fx:id="btnSearchPackage" layoutX="312.0" layoutY="14.0" prefHeight="25.0" prefWidth="160.0" promptText="Search Package" />
+      <TextField fx:id="txtSearchCustomer" layoutX="35.0" layoutY="14.0" onKeyReleased="#searchCustomer" prefHeight="25.0" prefWidth="160.0" promptText="Search Customer" />
+      <TextField fx:id="txtSearchPackage" layoutX="312.0" layoutY="14.0" onKeyReleased="#searchPackage" prefHeight="25.0" prefWidth="160.0" promptText="Search Package" />
       <Label layoutX="533.0" layoutY="18.0" text="Enter Number of Travelers" />
-      <TableView fx:id="tvcustomers" layoutX="35.0" layoutY="47.0" prefHeight="126.0" prefWidth="233.0">
+      <TableView fx:id="tvcustomers" layoutX="35.0" layoutY="47.0" prefHeight="126.0" prefWidth="244.0">
         <columns>
           <TableColumn fx:id="colCustFirstName" prefWidth="75.0" text="First Name" />
           <TableColumn fx:id="colCustLastName" prefWidth="75.0" text="Last Name" />
-            <TableColumn fx:id="colCustHomePhone" prefWidth="82.0" text="Home Phone" />
+            <TableColumn fx:id="colCustHomePhone" prefWidth="92.0" text="Home Phone" />
             <TableColumn fx:id="colCustId" prefWidth="75.0" text="Id" visible="false" />
+            <TableColumn fx:id="colCustEmail" prefWidth="75.0" text="Email" visible="false" />
+            <TableColumn fx:id="colCustAddress" prefWidth="75.0" text="Address" visible="false" />
         </columns>
       </TableView>
       <TableView fx:id="tvpackages" layoutX="312.0" layoutY="47.0" prefHeight="126.0" prefWidth="160.0">
         <columns>
           <TableColumn fx:id="colPkgName" prefWidth="160.0" text="Package Name" />
           <TableColumn fx:id="colPkgId" prefWidth="75.0" text="Id" visible="false" />
+            <TableColumn fx:id="colPkgDesc" prefWidth="160.0" text="Package Description" visible="false" />
+            <TableColumn fx:id="colPkgStartDate" prefWidth="160.0" text="Start Date" visible="false" />
+            <TableColumn fx:id="colPkgEndDate" prefWidth="160.0" text="End Date" visible="false" />
+            <TableColumn fx:id="colPkgBasePrice" prefWidth="160.0" text="Base Price" visible="false" />
         </columns>
       </TableView>
       <Line endX="594.0" layoutX="100.0" layoutY="187.0" startX="-86.5" />
@@ -41,7 +46,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btnSummary" layoutX="533.0" layoutY="132.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="View Summary" />
+      <Button fx:id="btnSummary" layoutX="533.0" layoutY="132.0" mnemonicParsing="false" onAction="#showVacationSummary" prefHeight="25.0" prefWidth="139.0" text="View Summary" />
       <Pane fx:id="pnsummary" layoutX="87.0" layoutY="218.0" prefHeight="231.0" prefWidth="539.0" style="-fx-border-color: black;">
          <children>
             <Button fx:id="btnSendInvoice" layoutX="395.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />

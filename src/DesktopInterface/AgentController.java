@@ -18,6 +18,9 @@ public class AgentController {
     @FXML
     private PackagesController packagesController;
 
+    @FXML
+    private BookingsController bookingsController;
+
     private Agents loggedAgent;
 
     @FXML
@@ -98,6 +101,7 @@ public class AgentController {
         loggedAgent = agent;
         lblWelcome.setText("Welcome back " +loggedAgent.getAgtFirstName()+ " " + loggedAgent.getAgtLastName());
         customersController.setAgentinCustomersGUI(loggedAgent);
+        bookingsController.setAgentinBookingsGui(loggedAgent);
     }
 
     @FXML
