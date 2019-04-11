@@ -7,17 +7,27 @@ import DesktopInterface.TravelExpertClasses.Package;
 import DesktopInterface.TravelExpertClasses.PackageDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookingsController {
 
     private Agents loggedAgent;
+
+    private Package pkg;
+
+    private DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 
     @FXML
     private AnchorPane bookings;
@@ -140,6 +150,12 @@ public class BookingsController {
     void initialize() {
         //hide vacation package information
         pnsummary.setVisible(false);
+
+        //set textfields values from the selected customer and package in their tables with a mouse click or arrow key released
+        setCustTextfieldsFromTableOnMouseClicked();
+        setCustTextfieldsFromTableOnArrowKeyReleased();
+        setPkgTextfieldsFromTableOnMouseClicked();
+        setPkgTextfieldsFromTableOnArrowKeyReleased();
     }
 
     //method to get the agent object from Agent Controller
@@ -220,8 +236,89 @@ public class BookingsController {
     //show summary on btnSummary click
     public void showVacationSummary()
     {
+        //total cost
+        double totalPrice;
+        totalPrice = pkg.getPkgBasePrice() * (Double.parseDouble(txtNumTravelers.getText()));
+        lblNumTravelers.setText(txtNumTravelers.getText());
+        lblTotalPrice.setText(Double.toString(totalPrice));
+
         pnsummary.setVisible(true);
     }
 
+    //set textfields values from the selected customer in the table with a mouse click
+    private void setCustTextfieldsFromTableOnMouseClicked()
+    {
+        tvcustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setCustLabelFieldsFromTable();
+            }
+        });
+    }
 
+    //set textfields values from the selected customer in the table with an arrow (up or down) key released
+    private void setCustTextfieldsFromTableOnArrowKeyReleased()
+    {
+        tvcustomers.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN)
+                {
+                    setCustLabelFieldsFromTable();
+                }
+            }
+        });
+    }
+
+    //set textfields values from the selected package in the table with a mouse click
+    private void setPkgTextfieldsFromTableOnMouseClicked()
+    {
+        tvpackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setPkgLabelFieldsFromTable();
+            }
+        });
+    }
+
+    //set textfields values from the selected package in the table with an arrow (up or down) key released
+    private void setPkgTextfieldsFromTableOnArrowKeyReleased()
+    {
+        tvpackages.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN)
+                {
+                    setPkgLabelFieldsFromTable();
+                }
+            }
+        });
+    }
+
+    //set values of labelfields in summary pane (pnsummary) to corresponding values of selected customer and package in respective tables
+    public void setCustLabelFieldsFromTable()
+    {
+        //labels related to customer information
+        Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+        txtCustId.setText(Integer.toString(cust.getCustomerId()));
+        lblCustName.setText(cust.getCustFirstName() + " "+ cust.getCustLastName());
+        lblCustHomePhone.setText(cust.getCustHomePhone());
+        lblCustEmail.setText(cust.getCustEmail());
+        lblCustAddress.setText(cust.getCustAddress());
+    }
+
+    //set values of labelfields in summary pane (pnsummary) to corresponding values of selected package from package table
+    public void setPkgLabelFieldsFromTable() {
+
+        pkg = tvpackages.getItems().get(tvpackages.getSelectionModel().getSelectedIndex());
+        txtPkgId.setText(Integer.toString(pkg.getPackageId()));
+        lblPkgName.setText(pkg.getPkgName());
+        lblPkgDesc.setText(pkg.getPkgDesc());
+        lblPkgStartDate.setText(df.format(pkg.getPkgStartDate()));
+        lblPkgEndDate.setText(df.format(pkg.getPkgEndDate()));
+        lblBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
+
+        //number of travelers
+        lblNumTravelers.setText(txtNumTravelers.getText());
+    }
 }

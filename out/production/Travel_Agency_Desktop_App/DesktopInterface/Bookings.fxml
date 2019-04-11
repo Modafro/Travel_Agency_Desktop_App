@@ -47,9 +47,9 @@
          </font>
       </Label>
       <Button fx:id="btnSummary" layoutX="533.0" layoutY="132.0" mnemonicParsing="false" onAction="#showVacationSummary" prefHeight="25.0" prefWidth="139.0" text="View Summary" />
-      <Pane fx:id="pnsummary" layoutX="87.0" layoutY="218.0" prefHeight="231.0" prefWidth="539.0" style="-fx-border-color: black;">
+      <Pane fx:id="pnsummary" layoutX="37.0" layoutY="218.0" prefHeight="231.0" prefWidth="630.0" style="-fx-border-color: black;">
          <children>
-            <Button fx:id="btnSendInvoice" layoutX="395.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />
+            <Button fx:id="btnSendInvoice" layoutX="476.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />
             <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="98.0" text="Full Name">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -67,7 +67,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lblCustEmail" layoutX="14.0" layoutY="146.0" prefHeight="17.0" prefWidth="133.0" text="Email here" />
+            <Label fx:id="lblCustEmail" layoutX="14.0" layoutY="146.0" prefHeight="17.0" prefWidth="160.0" text="Email here" />
             <Label layoutX="14.0" layoutY="172.0" prefHeight="17.0" prefWidth="98.0" text="Address">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -85,7 +85,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lblPkgDesc" layoutX="185.0" layoutY="93.0" prefHeight="17.0" prefWidth="265.0" text="Package desc here" />
+            <Label fx:id="lblPkgDesc" layoutX="185.0" layoutY="93.0" prefHeight="17.0" prefWidth="277.0" text="Package desc here" />
             <Label layoutX="185.0" layoutY="120.0" prefHeight="17.0" prefWidth="127.0" text="Vacation Start Date">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -98,38 +98,38 @@
                </font>
             </Label>
             <Label fx:id="lblPkgEndDate" layoutX="185.0" layoutY="197.0" prefHeight="17.0" prefWidth="160.0" text="end date here" />
-            <Label fx:id="lblNumTravelers" alignment="CENTER" layoutX="453.0" layoutY="28.0" prefHeight="17.0" prefWidth="25.0" text="0">
+            <Label fx:id="lblNumTravelers" alignment="CENTER" layoutX="526.0" layoutY="29.0" prefHeight="20.0" prefWidth="39.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="412.0" layoutY="56.0" prefHeight="17.0" prefWidth="98.0" text="Base Price">
+            <Label alignment="CENTER" layoutX="493.0" layoutY="57.0" prefHeight="17.0" prefWidth="98.0" text="Base Price">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblBasePrice" alignment="CENTER" layoutX="452.0" layoutY="81.0" prefHeight="17.0" prefWidth="25.0" text="0">
+            <Label fx:id="lblBasePrice" alignment="CENTER" layoutX="505.0" layoutY="82.0" prefHeight="20.0" prefWidth="77.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="412.0" layoutY="110.0" prefHeight="17.0" prefWidth="98.0" text="Total Price">
+            <Label alignment="CENTER" layoutX="493.0" layoutY="111.0" prefHeight="17.0" prefWidth="98.0" text="Total Price">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblTotalPrice" alignment="CENTER" layoutX="453.0" layoutY="136.0" prefHeight="17.0" prefWidth="25.0" text="0">
+            <Label fx:id="lblTotalPrice" alignment="CENTER" layoutX="494.0" layoutY="137.0" prefHeight="20.0" prefWidth="98.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Line endX="22.5" endY="-83.0" layoutX="366.0" layoutY="84.0" startX="22.5" startY="147.0" />
-            <Label alignment="CENTER" layoutX="416.0" layoutY="2.0" prefHeight="17.0" prefWidth="98.0" text="Travelers">
+            <Line endX="22.5" endY="-83.0" layoutX="445.0" layoutY="83.0" startX="22.5" startY="147.0" />
+            <Label alignment="CENTER" layoutX="497.0" layoutY="3.0" prefHeight="17.0" prefWidth="98.0" text="Travelers">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnCancel" layoutX="396.0" layoutY="168.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
+            <Button fx:id="btnCancel" layoutX="477.0" layoutY="169.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
          </children>
       </Pane>
       <TextField fx:id="txtCustId" layoutX="237.0" layoutY="14.0" prefHeight="25.0" prefWidth="25.0" visible="false" />

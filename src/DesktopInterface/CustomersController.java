@@ -561,7 +561,7 @@ public class CustomersController {
         });
     }
 
-    //set textfields values from the selected customer in the table with a arrow (up or down) key released
+    //set textfields values from the selected customer in the table with an arrow (up or down) key released
     private void setCustTextfieldsFromTableOnArrowKeyReleased()
     {
         tvcustomers.setOnKeyReleased(new EventHandler<KeyEvent>() {
