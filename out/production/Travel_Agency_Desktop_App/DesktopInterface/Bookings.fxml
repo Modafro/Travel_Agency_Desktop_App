@@ -49,7 +49,7 @@
       <Button fx:id="btnSummary" layoutX="533.0" layoutY="132.0" mnemonicParsing="false" onAction="#showVacationSummary" prefHeight="25.0" prefWidth="139.0" text="View Summary" />
       <Pane fx:id="pnsummary" layoutX="37.0" layoutY="218.0" prefHeight="231.0" prefWidth="630.0" style="-fx-border-color: black;">
          <children>
-            <Button fx:id="btnSendInvoice" layoutX="476.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />
+            <Button fx:id="btnSendInvoice" layoutX="476.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" onAction="#sendInvoice" />
             <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="98.0" text="Full Name">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -98,27 +98,27 @@
                </font>
             </Label>
             <Label fx:id="lblPkgEndDate" layoutX="185.0" layoutY="197.0" prefHeight="17.0" prefWidth="160.0" text="end date here" />
-            <Label fx:id="lblNumTravelers" alignment="CENTER" layoutX="526.0" layoutY="29.0" prefHeight="20.0" prefWidth="39.0" text="0">
+            <Label fx:id="lblNumTravelers" alignment="CENTER" layoutX="526.0" layoutY="27.0" prefHeight="20.0" prefWidth="39.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="493.0" layoutY="57.0" prefHeight="17.0" prefWidth="98.0" text="Base Price">
+            <Label alignment="CENTER" layoutX="498.0" layoutY="55.0" prefHeight="17.0" prefWidth="98.0" text="Base Price">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblBasePrice" alignment="CENTER" layoutX="505.0" layoutY="82.0" prefHeight="20.0" prefWidth="77.0" text="0">
+            <Label fx:id="lblBasePrice" alignment="CENTER" layoutX="509.0" layoutY="80.0" prefHeight="20.0" prefWidth="77.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="493.0" layoutY="111.0" prefHeight="17.0" prefWidth="98.0" text="Total Price">
+            <Label alignment="CENTER" layoutX="498.0" layoutY="107.0" prefHeight="17.0" prefWidth="98.0" text="Total Price">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblTotalPrice" alignment="CENTER" layoutX="494.0" layoutY="137.0" prefHeight="20.0" prefWidth="98.0" text="0">
+            <Label fx:id="lblTotalPrice" alignment="CENTER" layoutX="499.0" layoutY="133.0" prefHeight="20.0" prefWidth="98.0" text="0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -129,7 +129,7 @@
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnCancel" layoutX="477.0" layoutY="169.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
+            <Button fx:id="btnCancel" layoutX="477.0" layoutY="169.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" text="Cancel" onAction="#cancelBooking" />
          </children>
       </Pane>
       <TextField fx:id="txtCustId" layoutX="237.0" layoutY="14.0" prefHeight="25.0" prefWidth="25.0" visible="false" />

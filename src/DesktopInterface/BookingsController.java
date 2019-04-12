@@ -1,10 +1,7 @@
 package DesktopInterface;
 
-import DesktopInterface.TravelExpertClasses.Agents;
-import DesktopInterface.TravelExpertClasses.Customer;
-import DesktopInterface.TravelExpertClasses.CustomerDB;
+import DesktopInterface.TravelExpertClasses.*;
 import DesktopInterface.TravelExpertClasses.Package;
-import DesktopInterface.TravelExpertClasses.PackageDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -25,9 +22,15 @@ public class BookingsController {
 
     private Agents loggedAgent;
 
+    private Customer cust;
+
     private Package pkg;
 
     private DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+
+    //today's date in sql format
+    private Date today = new Date();
+    private java.sql.Date sqlToday = new java.sql.Date(today.getTime());
 
     @FXML
     private AnchorPane bookings;
@@ -299,7 +302,7 @@ public class BookingsController {
     public void setCustLabelFieldsFromTable()
     {
         //labels related to customer information
-        Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+        cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
         txtCustId.setText(Integer.toString(cust.getCustomerId()));
         lblCustName.setText(cust.getCustFirstName() + " "+ cust.getCustLastName());
         lblCustHomePhone.setText(cust.getCustHomePhone());
@@ -320,5 +323,69 @@ public class BookingsController {
 
         //number of travelers
         lblNumTravelers.setText(txtNumTravelers.getText());
+    }
+
+    //cancel ongoing booking process
+    public void cancelBooking()
+    {
+        //hide summary info
+        pnsummary.setVisible(false);
+
+        //for customer info
+        txtCustId.setText("");
+        lblCustName.setText("");
+        lblCustHomePhone.setText("");
+        lblCustEmail.setText("");
+        lblCustAddress.setText("");
+
+        //for package info
+        txtPkgId.setText("");
+        lblPkgName.setText("");
+        lblPkgDesc.setText("");
+        lblPkgStartDate.setText("");
+        lblPkgEndDate.setText("");
+        lblBasePrice.setText("");
+        lblTotalPrice.setText("");
+
+        //number of travelers
+        txtNumTravelers.setText("");
+        lblNumTravelers.setText("");
+
+        //refresh tables
+        refreshPkgTable();
+        refreshCustTable();
+    }
+
+    //create new booking and send email to customer
+    public void sendInvoice()
+    {
+        //create new booking
+        Bookings newBooking = new Bookings(sqlToday, Float.parseFloat(txtNumTravelers.getText()), cust.getCustomerId(),"L",pkg.getPackageId());
+
+        boolean addBkgSuccessful = BookingsDB.addBookingForCustId(newBooking, cust, pkg);
+        if(addBkgSuccessful)
+        {
+            //show dialog box
+            alert_info.setTitle("Insert Status");
+            alert_info.setHeaderText("Booking added successfully.");
+            alert_info.setContentText(pkg.getPkgName() + " has been successfully booked for "+ cust.getCustFirstName()
+                            +" "+ cust.getCustLastName() +".");
+            alert_info.showAndWait();
+
+            //set visibility
+            //cancelCustChanges();
+
+            //refresh table view
+            refreshCustTable();
+            refreshPkgTable();
+        }
+        else
+        {
+            alert_error.setTitle("Insert Status");
+            alert_error.setHeaderText("Booking was not added");
+            alert_error.setContentText("An error occurred while trying to add a new booking for customer. Please" +
+                    " try again. If issue persists, contact your database administrator.");
+            alert_error.showAndWait();
+        }
     }
 }
