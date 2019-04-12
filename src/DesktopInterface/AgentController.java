@@ -18,6 +18,9 @@ public class AgentController {
     @FXML
     private PackagesController packagesController;
 
+    @FXML
+    private BookingsController bookingsController;
+
     private Agents loggedAgent;
 
     @FXML
@@ -46,6 +49,9 @@ public class AgentController {
     private Button btnProducts;
 
     @FXML
+    private Button btnBookings;
+
+    @FXML
     private Label lblWelcome;
 
     @FXML
@@ -62,6 +68,9 @@ public class AgentController {
 
     @FXML
     private AnchorPane products;
+
+    @FXML
+    private AnchorPane bookings;
 
     @FXML
     private AnchorPane home;
@@ -92,6 +101,7 @@ public class AgentController {
         loggedAgent = agent;
         lblWelcome.setText("Welcome back " +loggedAgent.getAgtFirstName()+ " " + loggedAgent.getAgtLastName());
         customersController.setAgentinCustomersGUI(loggedAgent);
+        bookingsController.setAgentinBookingsGui(loggedAgent);
     }
 
     @FXML
@@ -122,6 +132,11 @@ public class AgentController {
         {
             lblCurrentDirectory.setText("Products");
             products.toFront();
+        }
+        else if(event.getSource() == btnBookings)
+        {
+            lblCurrentDirectory.setText("Bookings");
+            bookings.toFront();
         }
         else if (event.getSource() == btnLogout)
         {

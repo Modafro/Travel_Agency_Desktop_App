@@ -268,29 +268,11 @@ public class CustomersController {
         }
     }
 
-    //method to search the database on key released
+    //method to search the database on enter key pressed
     public void searchDatabase()
     {
         custData.clear();
         custData = CustomerDB.CustomerSearchResult(custData, txtSearch.getText(), loggedAgent);
-
-        try {
-            colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("CustFirstName"));
-            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
-            colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
-            colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
-            colCustCIty.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCity"));
-            colCustProv.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustProv"));
-            colCustPostal.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustPostal"));
-            colCustCountry.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCountry"));
-            colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustHomePhone"));
-            colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustBusPhone"));
-            colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustEmail"));
-            tvcustomers.setItems(custData);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
     //method to delete customer
@@ -350,6 +332,7 @@ public class CustomersController {
         txtCustEmail.setText("");
         txtCustHomePhone.setText("");
         txtCustBusPhone.setText("");
+        txtCustomerId.setText("");
 
         //hide labels
         lblCustFirstNameError.setVisible(false);
@@ -494,15 +477,7 @@ public class CustomersController {
     //change buttons visibility to only show "save" and "cancel" button
     public void updateBtnClicked()
     {
-        if(txtCustFirstName.getText().isEmpty() &&
-        txtCustLastName.getText().isEmpty() &&
-        txtCustAddress.getText().isEmpty() &&
-        txtCustCity.getText().isEmpty() &&
-        txtCustPostal.getText().isEmpty() &&
-        cbProvince.getSelectionModel().getSelectedIndex() == -1 &&
-        txtCustEmail.getText().isEmpty() &&
-        txtCustHomePhone.getText().isEmpty() &&
-        txtCustBusPhone.getText().isEmpty())
+        if(txtCustFirstName.getText().isEmpty())
         {
             alert_error.setTitle("Customer Invalid");
             alert_error.setHeaderText("No customer selected");
@@ -521,15 +496,7 @@ public class CustomersController {
     //change buttons visibility to only show "confirm" and "cancel" button
     public void deleteBtnClicked()
     {
-        if(txtCustFirstName.getText().isEmpty() &&
-                txtCustLastName.getText().isEmpty() &&
-                txtCustAddress.getText().isEmpty() &&
-                txtCustCity.getText().isEmpty() &&
-                txtCustPostal.getText().isEmpty() &&
-                cbProvince.getSelectionModel().getSelectedIndex() == -1 &&
-                txtCustEmail.getText().isEmpty() &&
-                txtCustHomePhone.getText().isEmpty() &&
-                txtCustBusPhone.getText().isEmpty())
+        if(txtCustFirstName.getText().isEmpty())
         {
 
             alert_error.setTitle("Customer Invalid");
@@ -594,7 +561,7 @@ public class CustomersController {
         });
     }
 
-    //set textfields values from the selected customer in the table with a arrow (up or down) key released
+    //set textfields values from the selected customer in the table with an arrow (up or down) key released
     private void setCustTextfieldsFromTableOnArrowKeyReleased()
     {
         tvcustomers.setOnKeyReleased(new EventHandler<KeyEvent>() {

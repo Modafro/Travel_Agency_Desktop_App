@@ -25,7 +25,8 @@
                 <Button fx:id="btnCustomers" onAction="#handleClicks" layoutX="10.0" layoutY="270.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Customers" />
                 <Button fx:id="btnPackages" onAction="#handleClicks" layoutX="10.0" layoutY="320.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Packages" />
                 <Button fx:id="btnSuppliers" onAction="#handleClicks" layoutX="10.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Suppliers" />
-                <Button fx:id="btnProducts" onAction="#handleClicks" layoutX="10.0" layoutY="419.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Products" />
+                <Button fx:id="btnProducts" onAction="#handleClicks" layoutX="10.0" layoutY="420.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Products" />
+                <Button fx:id="btnBookings" onAction="#handleClicks" layoutX="10.0" layoutY="470.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="269.0" text="Bookings" />
                 <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="151.0" prefHeight="30.0" prefWidth="176.0" text="Welcome back Judy Lisle" textFill="#f5f4f4">
                     <font>
                         <Font size="14.0" />
@@ -63,6 +64,7 @@
             <fx:include fx:id="packages" source="Packages.fxml"/>
             <fx:include source="Suppliers.fxml" fx:id="suppliers"/>
             <fx:include fx:id="products" source="Products.fxml"/>
+            <fx:include fx:id="bookings" source="Bookings.fxml"/>
             <fx:include fx:id="home" source="Home.fxml"/>
          </children>
       </StackPane>

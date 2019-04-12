@@ -65,6 +65,15 @@ public class Customer {
         CustEmail = custEmail;
     }
 
+    public Customer(int customerId, String custFirstName,String custLastName,String custHomePhone, String custAddress, String custEmail){
+        CustomerId = customerId;
+        CustFirstName = custFirstName;
+        CustLastName = custLastName;
+        CustHomePhone = custHomePhone;
+        CustAddress = custAddress;
+        CustEmail = custEmail;
+    }
+
     public String getCustBusPhone() {
         return CustBusPhone;
     }
