@@ -2,6 +2,10 @@ package DesktopInterface;
 
 import DesktopInterface.TravelExpertClasses.*;
 import DesktopInterface.TravelExpertClasses.Package;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -14,9 +18,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 public class BookingsController {
 
@@ -387,5 +400,94 @@ public class BookingsController {
                     " try again. If issue persists, contact your database administrator.");
             alert_error.showAndWait();
         }
+
+        Document document = new Document();
+        PdfWriter writer = null;
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream("customerInvoice.pdf"));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        document.open();
+        try {
+            document.add(new Paragraph("This is your receipt" + cust.getCustFirstName() + " " + cust.getCustLastName()));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        document.close();
+        writer.close();
+
+        //send email
+        //get or set respective email addresses
+        String emailTo = cust.getCustEmail();
+        String emailFrom = "travelExpertsTeam7@gmail.com";
+        String password = "Travel123";
+
+        //set SMTP server properties
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.smtp.host","smtp.gmail.com");
+        properties.put("mail.smtp.port",587);
+       // properties.put("mail.user", from);
+        //properties.put("mail.password", password);
+
+
+        //create a new session with an authenticator
+        Authenticator auth = new Authenticator(){
+            public PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(emailFrom, password);
+            }
+         };
+        Session session = Session.getDefaultInstance(properties, auth);
+
+
+//                new Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(emailFrom, password);
+//            }
+//        });
+
+        try {
+            //create new email message
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(emailFrom));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+            msg.setSubject("Vacation Package Invoice");
+            //msg.setSentDate(new Date());
+
+            // creates message part
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent("Hi this is a test for your vacation invoice. See attachements", "text/html");
+
+            // creates multi-part
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+
+            // adds attachments
+            MimeBodyPart attachPart = new MimeBodyPart();
+
+            try {
+                attachPart.attachFile("customerInvoice.pdf");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            multipart.addBodyPart(attachPart);
+
+
+
+            // sets the multi-part as e-mail's content
+            msg.setContent(multipart);
+
+            // sends the e-mail
+            Transport.send(msg);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
     }
 }
