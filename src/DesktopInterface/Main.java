@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         window = primaryStage;
         // AgentGUI = FXMLLoader.load(getClass().getResource("AgentGUI.fxml"));
-        LoginGUI = FXMLLoader.load(getClass().getResource("LoginGUI.fxml"));
+        LoginGUI = FXMLLoader.load(getClass().getResource("Login.fxml"));
         LoginScene = new Scene(LoginGUI);
         window.setScene(LoginScene);
         window.show();

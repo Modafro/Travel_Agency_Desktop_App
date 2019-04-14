@@ -9,8 +9,8 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="DesktopInterface.SuppliersGUIController"
-            fx:id="vwSuppliers"
+            fx:controller="DesktopInterface.SuppliersController"
+            fx:id="suppliers"
             prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
     <children>
         <Label prefHeight="17.0" prefWidth="375.0" text="Suppliers Page">

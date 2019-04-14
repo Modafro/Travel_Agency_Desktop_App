@@ -1,9 +1,7 @@
 package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
-
+import javafx.collections.ObservableList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,5 +84,71 @@ public class PackageDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ObservableList<Package> getPackageNameTableView(ObservableList<Package> pkgData)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select PackageId, PkgName, PkgStartDate, PkgEndDate, PkgDesc, PkgBasePrice from Packages where PkgStartDate >= GetDate()";
+
+        try
+        {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+                pkgData.add(new Package(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDate(3),
+                        rs.getDate(4),
+                        rs.getString(5),
+                        rs.getDouble(6)
+                ));
+            }
+        }
+        catch (SQLException e) {
+        e.printStackTrace();
+        }
+
+        return pkgData;
+    }
+
+    //method to search values in database (package name only) targeted for the Bookings GUI
+    public static ObservableList<Package> PackageNameSearchResult(ObservableList<Package> pkgData, String userInput)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select PackageId, PkgName, PkgStartDate, PkgEndDate, PkgDesc, PkgBasePrice from Packages where lower(PkgName) like ? AND PkgStartDate >= GetDate()";
+
+        try
+        {
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%"+userInput.toLowerCase()+"%");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+              pkgData.add(new Package(
+                      rs.getInt(1),
+                      rs.getString(2),
+                      rs.getDate(3),
+                      rs.getDate(4),
+                      rs.getString(5),
+                      rs.getDouble(6)
+              ));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return pkgData;
     }
 }

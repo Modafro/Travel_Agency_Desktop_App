@@ -8,7 +8,7 @@
 
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:id="vwProducts" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
+            xmlns:fx="http://javafx.com/fxml" fx:id="products" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
     <children>
         <Label prefHeight="17.0" prefWidth="375.0" text="Products Page">
             <font>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="packages" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.PackagesController">
+   <children>
+      <TableView fx:id="tblPackages" editable="true" layoutX="14.0" layoutY="14.0" prefHeight="435.0" prefWidth="680.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <columns>
+          <TableColumn fx:id="pkgName" prefWidth="75.0" text="Package Name" />
+          <TableColumn fx:id="pkgStartDate" prefWidth="75.0" text="Start Date" />
+            <TableColumn fx:id="pkgEndDate" prefWidth="75.0" text="End Date" />
+            <TableColumn fx:id="pkgDescription" prefWidth="75.0" text="Package Description" />
+            <TableColumn fx:id="pkgBasePrice" prefWidth="75.0" text="Base Price" />
+            <TableColumn fx:id="pkgCommission" prefWidth="75.0" text="Commission" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnDelete" layoutX="10.0" layoutY="423.0" mnemonicParsing="false" text="Delete Row" AnchorPane.bottomAnchor="10.0" />
+   </children>
+</AnchorPane>

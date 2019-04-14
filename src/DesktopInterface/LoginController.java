@@ -29,16 +29,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-public class LoginGUIController {
+public class LoginController {
+    private Agents loggedAgent;
 
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
-
-    @FXML
-    private CustomersGUIController customersGUIController;
 
     @FXML
     private TextField txtUsername;
@@ -54,10 +52,6 @@ public class LoginGUIController {
 
     @FXML
     void initialize() {
-        assert txtUsername != null : "fx:id=\"txtUsername\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert btnLogin != null : "fx:id=\"btnLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
-        assert lblErrorLogin != null : "fx:id=\"lblErrorLogin\" was not injected: check your FXML file 'LoginGUI.fxml'.";
 
         btnLogin.setDisable(true);
         lblErrorLogin.setVisible(false);
@@ -91,7 +85,7 @@ public class LoginGUIController {
 
             //create FXMLLoader object
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("AgentGUI.fxml"));
+            loader.setLocation(getClass().getResource("Agent.fxml"));
             Parent AgentGUI = null;
             try {
                 AgentGUI = loader.load();
@@ -102,11 +96,8 @@ public class LoginGUIController {
             Scene AgentScene = new Scene(AgentGUI);
 
             //access methods from AgentGUIController
-            AgentGUIController controllerAgtGUI = loader.getController();
+            AgentController controllerAgtGUI = loader.getController();
             controllerAgtGUI.setAgentinAgentGUI(agt);
-
-            //access methods from CustomersGUIController
-            //customersGUIController.setAgentinCustomersGUI();
 
             //get current stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
