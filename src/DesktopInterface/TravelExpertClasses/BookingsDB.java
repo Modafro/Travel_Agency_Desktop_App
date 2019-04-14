@@ -2,10 +2,9 @@ package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class BookingsDB {
 
@@ -39,5 +38,27 @@ public class BookingsDB {
         }
 
         return isBkgAdded;
+    }
+
+    public static ArrayList<Bookings> getBookings ()
+    {
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+        Connection conn = TravelExpertsDB.getConnection();
+        String sql = "Select from BookingDate, TravelerCount, CustomerId, TripTypeId, PackageId Bookings";
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next())
+            {
+                Bookings booking = new Bookings(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getFloat(4), rs.getInt(5), rs.getString(6), rs.getInt(7));
+                bookingList.add(booking);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookingList;
     }
 }
