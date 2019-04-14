@@ -17,6 +17,9 @@
 !mssql-jdbc-7.0.0.jre10.jar
 !mssql-jdbc-7.0.0.jre8.jar
 !fontawesomefx-8.1.1.jar
+!activation-1.1.jar
+!itextpdf-5.4.1.jar
+!javax.mail-1.6.2.jar
 *.war
 *.nar
 *.ear
