@@ -3,9 +3,6 @@ package DesktopInterface;
 import DesktopInterface.TravelExpertClasses.Package;
 import DesktopInterface.TravelExpertClasses.PackageDB;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -19,10 +16,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.util.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -138,7 +133,6 @@ public class PackagesController {
 
         updateTable();
 
-
         TableColumn dateColumn = new TableColumn("Date");
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<Package, Date>("pkgEndDate"));
@@ -169,7 +163,6 @@ public class PackagesController {
         private ObservableList<Package> packageData;
 
         public DatePickerCell(ObservableList<Package> packageData, String cellType) {
-
             super();
 
             this.packageData = packageData;
@@ -238,7 +231,6 @@ public class PackagesController {
             this.datePicker = new DatePicker();
             datePicker.setPromptText("jj/mm/aaaa");
             datePicker.setEditable(true);
-
             datePicker.setOnAction(new EventHandler() {
                 public void handle(Event t) {
                     LocalDate date = datePicker.getValue();
@@ -252,6 +244,7 @@ public class PackagesController {
                     setText(smp.format(cal.getTime()));
                     commitEdit(cal.getTime());
 
+                    ObservableList<Package> observableList = getBirthdayData();
                     if (null != getBirthdayData() && cellType.equals("endDate")) {
                         getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
                     }
