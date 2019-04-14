@@ -3,16 +3,17 @@ package DesktopInterface.TravelExpertClasses;
 public class Main {
 
     public static void main(String[] args){
-//        for(Package p : PackageDB.GetPackages()){
-//            System.out.println(p + "/n");
-//        }
+        for(PackageProductSupplier ps : PackageProductSupplierDB.GetProSupp(2))
+        {
+            System.out.println(ps + "/n");
+        }
 //
-        Product test = new Product();
+//        Product test = new Product();
 //        long millis=System.currentTimeMillis();
 //        java.sql.Date date=new java.sql.Date(millis);
 
-        test.setProdName("hello");
-        ProductDB.AddProduct(test);
+//        test.setProdName("hello");
+//        ProductDB.AddProduct(test);
 //
 //        Package newPackage = new Package();
 //        newPackage.setPkgName("update");
@@ -31,9 +32,9 @@ public class Main {
 //        for(Package p : PackageDB.GetPackages()){
 //            System.out.println(p + "/n");
 
-        for(Product p : ProductDB.GetProducts()){
-            System.out.println(p + "\n");
-        }
+//        for(Product p : ProductDB.GetProducts()){
+//            System.out.println(p + "\n");
+//        }
 
     }
 }

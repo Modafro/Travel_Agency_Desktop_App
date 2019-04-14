@@ -3,7 +3,7 @@ package DesktopInterface.TravelExpertClasses;
 public class PackageProductSupplier {
 
     private int packageId;
-    private String productSupplierId;
+    private int productSupplierId;
 
     public int getPackageId() {
         return packageId;
@@ -13,17 +13,15 @@ public class PackageProductSupplier {
         this.packageId = packageId;
     }
 
-    public String getProductSupplierId() {
+    public int getProductSupplierId() {
         return productSupplierId;
     }
 
-    public void setProductSupplierId(String productSupplierId) {
+    public void setProductSupplierId(int productSupplierId) {
         this.productSupplierId = productSupplierId;
     }
 
-    public PackageProductSupplier(int packageId, String productSupplierId) {
-        this.packageId = packageId;
-        this.productSupplierId = productSupplierId;
+    public PackageProductSupplier() {
     }
 
     @Override
