@@ -2,8 +2,8 @@ package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class PackageDB {

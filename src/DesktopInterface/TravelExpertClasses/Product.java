@@ -2,8 +2,8 @@ package DesktopInterface.TravelExpertClasses;
 
 public class Product {
 
-    public int productId;
-    public String prodName;
+    private int productId;
+    private String prodName;
 
     public int getProductId() {
         return productId;

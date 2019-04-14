@@ -1,6 +1,11 @@
 package DesktopInterface.TravelExpertClasses;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Package {
 
