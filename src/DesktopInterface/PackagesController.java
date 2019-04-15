@@ -14,9 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.text.ParseException;
+import java.time.ZoneId;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,7 +28,7 @@ import java.util.Calendar;
 
 public class PackagesController {
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     @FXML
     private AnchorPane packages;
@@ -65,24 +68,33 @@ public class PackagesController {
         pkgBasePrice.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgBasePrice"));
         pkgCommission.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgAgencyCommission"));
 
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Callback<TableColumn<Package, Date>, TableCell<Package, Date>> dateCellFactory = column -> {
-            TableCell<Package, Date> cell = new TableCell<Package, Date>() {
-                @Override
-                protected void updateItem(Date item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setText(null);
-                    } else {
-                        setText(format.format(item));
-                    }
-                }
-            };
-            return cell;
-        };
         pkgName.setCellFactory(TextFieldTableCell.forTableColumn());
-        pkgStartDate.setCellFactory(dateCellFactory);
-        pkgEndDate.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
+
+        StringConverter<Date> dateStringConverter = new StringConverter<Date>() {
+            @Override
+            public String toString(Date object) {
+                return formatter.format(object);
+            }
+
+            @Override
+            public Date fromString(String string) {
+                try {
+                    Date d = formatter.parse(string);
+                    return d;
+                } catch (ParseException e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Date Format Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("The date has been formatted incorrectly, please format the date in the form:\nYYYY-MM-DD (eg. 2019-1-31)");
+                    alert.showAndWait();
+                    //e.printStackTrace();
+                }
+                return null;
+            }
+        };
+
+        pkgStartDate.setCellFactory(TextFieldTableCell.forTableColumn(dateStringConverter));
+        pkgEndDate.setCellFactory(TextFieldTableCell.forTableColumn(dateStringConverter));
         pkgDescription.setCellFactory(TextFieldTableCell.forTableColumn());
         pkgBasePrice.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         pkgCommission.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -95,6 +107,7 @@ public class PackagesController {
                 p.setPkgName(event.getNewValue());
             }
         });
+
         pkgStartDate.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, Date>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Package, Date> event) {
@@ -128,12 +141,13 @@ public class PackagesController {
             public void handle(TableColumn.CellEditEvent<Package, Double> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
                 p.setPkgAgencyCommission(event.getNewValue());
+
             }
         });
-
+        tblPackages.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         updateTable();
 
-        TableColumn dateColumn = new TableColumn("Date");
+/*        TableColumn dateColumn = new TableColumn("Date");
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<Package, Date>("pkgEndDate"));
         dateColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
@@ -143,10 +157,11 @@ public class PackagesController {
                 return datePick;
             }
         });
-        tblPackages.getColumns().add(dateColumn);
+        tblPackages.getColumns().add(dateColumn);*/
     }
 
     public void updateTable() {
+
         ArrayList<Package> p = PackageDB.GetPackages();
         ObservableList<Package> packages = FXCollections.observableArrayList(p);
         tblPackages.setItems(packages);
@@ -199,7 +214,6 @@ public class PackagesController {
 
                 if (isEditing()) {
                     setContentDisplay(ContentDisplay.TEXT_ONLY);
-
                 } else {
                     setDatePickerDate(smp.format(item));
                     setText(smp.format(item));
@@ -245,12 +259,15 @@ public class PackagesController {
                     commitEdit(cal.getTime());
 
                     ObservableList<Package> observableList = getBirthdayData();
-                    if (null != getBirthdayData() && cellType.equals("endDate")) {
-                        getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
+
+                    if (getTableRow() != null && null != getBirthdayData() && cellType.equals("endDate")) {
+                        getTableRow().getItem().setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
+                        //getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
                     }
                     else if(null != getBirthdayData() && cellType.equals("startDate")) {
                         getBirthdayData().get(index).setPkgStartDate(new java.sql.Date(cal.getTime().getTime()));
                     }
+
                 }
             });
 
