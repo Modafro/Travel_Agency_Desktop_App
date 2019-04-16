@@ -137,4 +137,34 @@ public class Validator {
             return false;
         }
     }
+
+    //method to validate if input is a positive integer
+    public static boolean isPositiveInteger(TextField txtName)
+    {
+
+        if(!isEmpty(txtName))
+        {
+            try {
+               int isNumber = Integer.parseInt(txtName.getText());
+
+               if (isNumber>0)
+               {
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+
+            } catch (NumberFormatException e) {
+                return false; //if an exception is caught, parseInt is false
+            }
+            //return false;
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
 }

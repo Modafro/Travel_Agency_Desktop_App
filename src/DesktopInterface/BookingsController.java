@@ -11,6 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +26,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class BookingsController {
+public class BookingsController extends JPanel {
 
     private Agents loggedAgent;
 
@@ -45,8 +51,13 @@ public class BookingsController {
     private Date today = new Date();
     private java.sql.Date sqlToday = new java.sql.Date(today.getTime());
 
+    private File pdfFile;
+
     @FXML
     private AnchorPane bookings;
+
+    @FXML
+    private Pane pnSelectCustPkgNumTravelers;
 
     @FXML
     private TextField txtSearchCustomer;
@@ -142,6 +153,9 @@ public class BookingsController {
     private Label lblBasePrice;
 
     @FXML
+    private Label lblErrorMessage;
+
+    @FXML
     private Label lblTotalPrice;
 
     @FXML
@@ -167,11 +181,16 @@ public class BookingsController {
         //hide vacation package information
         pnsummary.setVisible(false);
 
+        //hide error labels
+        lblErrorMessage.setVisible(false);
+
         //set textfields values from the selected customer and package in their tables with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
         setCustTextfieldsFromTableOnArrowKeyReleased();
         setPkgTextfieldsFromTableOnMouseClicked();
         setPkgTextfieldsFromTableOnArrowKeyReleased();
+
+
     }
 
     //method to get the agent object from Agent Controller
@@ -252,13 +271,34 @@ public class BookingsController {
     //show summary on btnSummary click
     public void showVacationSummary()
     {
-        //total cost
-        double totalPrice;
-        totalPrice = pkg.getPkgBasePrice() * (Double.parseDouble(txtNumTravelers.getText()));
-        lblNumTravelers.setText(txtNumTravelers.getText());
-        lblTotalPrice.setText(Double.toString(totalPrice));
 
-        pnsummary.setVisible(true);
+        if (Validator.isEmpty(txtCustId))
+        {
+            lblErrorMessage.setVisible(true);
+            lblErrorMessage.setText("Choose a customer");
+        }
+        else if (Validator.isEmpty(txtPkgId))
+        {
+            lblErrorMessage.setVisible(true);
+            lblErrorMessage.setText("Choose a package");
+        }
+        else if(Validator.isEmpty(txtNumTravelers) || !Validator.isPositiveInteger(txtNumTravelers))
+        {
+            lblErrorMessage.setVisible(true);
+            lblErrorMessage.setText("Enter valid number of travelers");
+        }
+        //total cost
+        else{
+            lblErrorMessage.setVisible(false);
+            double totalPrice;
+            totalPrice = pkg.getPkgBasePrice() * (Double.parseDouble(txtNumTravelers.getText()));
+            lblNumTravelers.setText(txtNumTravelers.getText());
+            lblTotalPrice.setText(Double.toString(totalPrice));
+
+            pnsummary.setVisible(true);
+            pnSelectCustPkgNumTravelers.setDisable(true);
+        }
+
     }
 
     //set textfields values from the selected customer in the table with a mouse click
@@ -319,7 +359,7 @@ public class BookingsController {
         txtCustId.setText(Integer.toString(cust.getCustomerId()));
         lblCustName.setText(cust.getCustFirstName() + " "+ cust.getCustLastName());
         lblCustHomePhone.setText(cust.getCustHomePhone());
-        lblCustEmail.setText(cust.getCustEmail());
+        lblCustEmail.setText(cust.getCustEmail().trim());
         lblCustAddress.setText(cust.getCustAddress());
     }
 
@@ -339,7 +379,7 @@ public class BookingsController {
     }
 
     //cancel ongoing booking process
-    public void cancelBooking()
+    public void resetAll()
     {
         //hide summary info
         pnsummary.setVisible(false);
@@ -367,6 +407,19 @@ public class BookingsController {
         //refresh tables
         refreshPkgTable();
         refreshCustTable();
+
+        //enable pain containing search functions / tables / number of customers
+        pnSelectCustPkgNumTravelers.setDisable(false);
+
+        //delete pdf file if it exists
+        try {
+            if(pdfFile.exists())
+            {
+                pdfFile.delete();
+            }
+        } catch (Exception e) {
+            //do nothing
+        }
     }
 
     //create new booking and send email to customer
@@ -378,48 +431,48 @@ public class BookingsController {
         boolean addBkgSuccessful = BookingsDB.addBookingForCustId(newBooking, cust, pkg);
         if(addBkgSuccessful)
         {
+            createInvoicePdf();
+
+            sendEmailInvoice();
+
             //show dialog box
             alert_info.setTitle("Insert Status");
             alert_info.setHeaderText("Booking added successfully.");
             alert_info.setContentText(pkg.getPkgName() + " has been successfully booked for "+ cust.getCustFirstName()
-                            +" "+ cust.getCustLastName() +".");
+                            +" "+ cust.getCustLastName() +". Invoice has been sent to customer.");
             alert_info.showAndWait();
 
             //set visibility
-            //cancelCustChanges();
-
-            //refresh table view
-            refreshCustTable();
-            refreshPkgTable();
+            resetAll();
         }
-        else
-        {
+        else {
             alert_error.setTitle("Insert Status");
             alert_error.setHeaderText("Booking was not added");
             alert_error.setContentText("An error occurred while trying to add a new booking for customer. Please" +
                     " try again. If issue persists, contact your database administrator.");
             alert_error.showAndWait();
         }
+    }
 
-        Document document = new Document();
-        PdfWriter writer = null;
-        try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream("customerInvoice.pdf"));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        document.open();
-        try {
-            document.add(new Paragraph("This is your receipt" + cust.getCustFirstName() + " " + cust.getCustLastName()));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-        document.close();
-        writer.close();
+    //show pdf
+    public void showInvoiceInPdf() {
 
-        //send email
+        pdfFile = new File("Invoices/customerInvoice.pdf");
+        if (pdfFile.exists())
+        {
+            openPdf(pdfFile);
+        }
+        else
+        {
+            createInvoicePdf();
+            openPdf(pdfFile);
+        }
+
+        System.out.println("Done");
+    }
+
+    //send email
+    public void sendEmailInvoice(){
         //get or set respective email addresses
         String emailTo = cust.getCustEmail();
         String emailFrom = "travelExpertsTeam7@gmail.com";
@@ -431,25 +484,14 @@ public class BookingsController {
         properties.put("mail.smtp.starttls.enable","true");
         properties.put("mail.smtp.host","smtp.gmail.com");
         properties.put("mail.smtp.port",587);
-       // properties.put("mail.user", from);
-        //properties.put("mail.password", password);
-
 
         //create a new session with an authenticator
         Authenticator auth = new Authenticator(){
             public PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(emailFrom, password);
             }
-         };
+        };
         Session session = Session.getDefaultInstance(properties, auth);
-
-
-//                new Authenticator() {
-//            @Override
-//            protected PasswordAuthentication getPasswordAuthentication() {
-//                return new PasswordAuthentication(emailFrom, password);
-//            }
-//        });
 
         try {
             //create new email message
@@ -471,14 +513,12 @@ public class BookingsController {
             MimeBodyPart attachPart = new MimeBodyPart();
 
             try {
-                attachPart.attachFile("customerInvoice.pdf");
+                attachPart.attachFile("Invoices/customerInvoice.pdf");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
             multipart.addBodyPart(attachPart);
-
-
 
             // sets the multi-part as e-mail's content
             msg.setContent(multipart);
@@ -489,5 +529,48 @@ public class BookingsController {
             e.printStackTrace();
         }
 
+        //delete pdf file if it exists
+        try {
+            if(pdfFile.exists())
+            {
+                pdfFile.delete();
+            }
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    //create pdf
+    public void createInvoicePdf(){
+        Document document = new Document();
+        PdfWriter writer = null;
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream("Invoices/customerInvoice.pdf"));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        document.open();
+        try {
+            document.add(new Paragraph("This is your receipt " + cust.getCustFirstName() + " " + cust.getCustLastName()));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        document.close();
+        writer.close();
+    }
+
+    //open pdf
+    public void openPdf(File pdfFile){
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().open(pdfFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Awt Desktop is not supported!");
+        }
     }
 }
