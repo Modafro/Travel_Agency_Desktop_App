@@ -25,6 +25,9 @@ public class CustomersController {
     private Agents loggedAgent;
 
     @FXML
+    private BookingsController bookingsController;
+
+    @FXML
     private ResourceBundle resources;
 
     @FXML
@@ -297,7 +300,10 @@ public class CustomersController {
 
             //refresh table view
             refreshCustTable();
-        }
+
+            //refresh table in BookingsController GUI
+            bookingsController.refreshCustTable();
+            }
         else
         {
             alert_error.setTitle("Delete Status");
