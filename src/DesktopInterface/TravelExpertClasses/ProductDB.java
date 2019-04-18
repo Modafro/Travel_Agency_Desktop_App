@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ProductDB {
 
-    public static ArrayList<Product> productList = new ArrayList<>();
+    private static ArrayList<Product> productList = new ArrayList<>();
 
     public static ArrayList<Product> GetProducts(){
         Connection dbConnect = TravelExpertsDB.getConnection();
@@ -28,6 +28,29 @@ public class ProductDB {
             e.printStackTrace();
         }
         return productList;
+    }
+
+    private static ArrayList<Product> productSpecList = new ArrayList<>();
+    public static ArrayList<Product> GetSpecProducts(Integer id){
+        Connection dbConnect = TravelExpertsDB.getConnection();
+        PreparedStatement ps;
+        try {
+
+            ps = dbConnect.prepareStatement("SELECT ProductId, ProdName FROM Products WHERE ProductId != ? ORDER BY ProductId");
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                Product product = new Product(rs.getInt(1), rs.getString(2));
+                productSpecList.add(product);
+            }
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productSpecList;
     }
 
     public static void AddProduct(Product p){

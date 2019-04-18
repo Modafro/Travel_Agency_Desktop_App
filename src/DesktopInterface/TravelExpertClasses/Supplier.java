@@ -28,9 +28,6 @@ public class Supplier {
 
     @Override
     public String toString() {
-        return "DesktopInterface.TravelExpertClasses.Supplier{" +
-                "supplierId=" + supplierId +
-                ", supName='" + supName + '\'' +
-                '}';
+        return supName;
     }
 }

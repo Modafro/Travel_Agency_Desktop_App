@@ -52,8 +52,8 @@ public class ProductSupplier {
     public ProductSupplier() {
     }
 
-    public ProductSupplier(int productSupplierId, int productId, String productName, String supplierName, int supplierId) {
-        this.productSupplierId = productSupplierId;
+    public ProductSupplier(int productId, String productName, String supplierName, int supplierId) {
+        //this.productSupplierId = productSupplierId;
         this.productId = productId;
         this.productName = productName;
         this.supplierName = supplierName;
@@ -62,12 +62,6 @@ public class ProductSupplier {
 
     @Override
     public String toString() {
-        return "ProductSupplier{" +
-                "productSupplierId=" + productSupplierId +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", supplierId=" + supplierId +
-                ", supplierName='" + supplierName + '\'' +
-                '}';
+        return productName;
     }
 }

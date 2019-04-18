@@ -30,10 +30,14 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Product)
+            return this.productId == ((Product) obj).productId;
+        return false;
+    }
+
+    @Override
     public String toString() {
-        return "DesktopInterface.TravelExpertClasses.Product{" +
-                "productId=" + productId +
-                ", prodName='" + prodName + '\'' +
-                '}';
+        return prodName;
     }
 }

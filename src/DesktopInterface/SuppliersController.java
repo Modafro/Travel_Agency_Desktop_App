@@ -1,4 +1,171 @@
 package DesktopInterface;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import DesktopInterface.TravelExpertClasses.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.AnchorPane;
+
 public class SuppliersController {
+
+    @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private AnchorPane suppliers;
+
+    @FXML
+    private Button btnAddProductToSupplier;
+
+    @FXML
+    private Button btnRemoveProductToSupplier;
+
+    @FXML
+    private ComboBox<Supplier> cmbSupplier;
+
+    @FXML
+    private ListView<ProductSupplier> lstProductBySupplier;
+
+    @FXML
+    private ListView<ProductSupplier> lstProductToAdd;
+
+    @FXML
+    private TitledPane crudSuppliers;
+
+    @FXML
+    private Button btnRemoveSupplier;
+
+    @FXML
+    private Button btnEditSupplier;
+
+    @FXML
+    private TextField txtSupplier;
+
+    @FXML
+    private Button btnAddSupplier;
+
+    @FXML
+    private Label lblError;
+
+
+    @FXML
+    void addProdToSupp(ActionEvent event) {
+
+    }
+
+    @FXML
+    void addSupplier(ActionEvent event) {
+
+    }
+
+    @FXML
+    void editSupplier(ActionEvent event) {
+
+    }
+
+    @FXML
+    void removeProdFromSupp(ActionEvent event) {
+
+    }
+
+    @FXML
+    void removeSupplier(ActionEvent event) {
+
+    }
+
+    @FXML
+    void selectSupplier(ActionEvent event) {
+        selectedSupp = cmbSupplier.getValue().supplierId;
+        lstProductBySupplier.setItems(getSuppsProds(selectedSupp, "sup"));
+        lstProductToAdd.setItems(addSuppsProds(selectedSupp));
+
+
+
+
+    }
+
+    @FXML
+    void initialize() {
+        assert suppliers != null : "fx:id=\"suppliers\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert btnAddProductToSupplier != null : "fx:id=\"btnAddProductToSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert btnRemoveProductToSupplier != null : "fx:id=\"btnRemoveProductToSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert cmbSupplier != null : "fx:id=\"cmbSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert lstProductBySupplier != null : "fx:id=\"lstProductBySupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert lstProductToAdd != null : "fx:id=\"lstProductToAdd\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert crudSuppliers != null : "fx:id=\"crudSuppliers\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert btnRemoveSupplier != null : "fx:id=\"btnRemoveSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert btnEditSupplier != null : "fx:id=\"btnEditSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert txtSupplier != null : "fx:id=\"txtSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert btnAddSupplier != null : "fx:id=\"btnAddSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
+        assert lblError != null : "fx:id=\"lblError\" was not injected: check your FXML file 'Suppliers.fxml'.";
+
+        productsToRemove = new ArrayList<Product>();
+        crudSuppliers.setExpanded(false);
+        supplierList = SupplierDB.GetSuppliers();
+        cmbSupplier.setItems(getSuppNames());
+        productList = ProductDB.GetProducts();
+
+    }
+
+    // instantiate object lists and vars
+    private ArrayList<Supplier> supplierList;
+    private ArrayList<Product> productList;
+    private ArrayList<ProductSupplier> productSuppliersList = ProductSupplierDB.GetProductSuppliers();
+    private ArrayList<ProductSupplier> specProdSuppList;
+    private ArrayList<Product> productsToRemove;
+    private ArrayList<Product> specProducts;
+    private int selectedSupp;
+
+
+    private ObservableList getSuppNames() {
+        ArrayList<Supplier> suppNames = new ArrayList<>();
+        for (Supplier s: supplierList){
+            suppNames.add(s);
+        }
+        ObservableList<Supplier> options = FXCollections.observableArrayList(suppNames);
+        return options;
+    }
+
+
+    //Method to get all products from a specific supplier and return a list to populate a combobox
+    private ObservableList getSuppsProds(int id, String s)
+    {
+        specProdSuppList = ProductSupplierDB.GetProSupList(id, s);
+        for (ProductSupplier ps: specProdSuppList){
+            productsToRemove.add(new Product(ps.getProductId(), ps.getProductName()));
+        }
+        ObservableList<ProductSupplier> options = FXCollections.observableArrayList(specProdSuppList);
+        return options;
+    }
+
+
+    private ObservableList addSuppsProds(int id)
+    {
+        ArrayList<String> prodName = new ArrayList<>();
+
+        specProducts = new ArrayList<Product>(productList);
+        specProducts.removeAll(productsToRemove);
+
+
+        for (Product p: specProducts){
+            prodName.add(p.getProdName());
+        }
+        ObservableList<Product> o = FXCollections.observableArrayList(specProducts);
+
+        return o;
+    }
 }
