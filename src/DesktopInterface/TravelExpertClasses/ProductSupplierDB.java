@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class ProductSupplierDB {
 
-    public static ArrayList<ProductSupplier> proSuppList = new ArrayList<>();
+    private static ArrayList<ProductSupplier> proSuppList = new ArrayList<>();
 
     public static ArrayList<ProductSupplier> GetProductSuppliers()
     {
         Connection dbConnect = TravelExpertsDB.getConnection();
 
-        String sql = "Select SP.ProductSupplierId, SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId";
+        String sql = "Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId";
 
         try {
             Statement stmt = dbConnect.createStatement();
@@ -21,7 +21,7 @@ public class ProductSupplierDB {
 
             while (rs.next())
             {
-                ProductSupplier ps = new ProductSupplier(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+                ProductSupplier ps = new ProductSupplier(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
                 proSuppList.add(ps);
             }
             dbConnect.close();
@@ -61,22 +61,22 @@ public class ProductSupplierDB {
 
         try {
             if (type == "Product") {
-                ps = dbConnect.prepareStatement("Select SP.ProductSupplierId, SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId where SP.ProductId = ?");
+                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId where SP.ProductId = ?");
                 ps.setInt(1, ID);
             }
             else
             {
-                ps = dbConnect.prepareStatement("Select SP.ProductSupplierId, SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Suppliers S Join Products_Suppliers SP on S.SupplierId = SP.SupplierId Join Products P on SP.ProductId = P.ProductId where SP.SupplierId = ?");
+                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Suppliers S Join Products_Suppliers SP on S.SupplierId = SP.SupplierId Join Products P on SP.ProductId = P.ProductId where SP.SupplierId = ?");
                 ps.setInt(1, ID);
             }
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
                 ProSupp = new ProductSupplier();
-                ProSupp.setProductName(rs.getString(3));
-                ProSupp.setSupplierName(rs.getString(4));
-                ProSupp.setProductId(rs.getInt(2));
-                ProSupp.setSupplierId(rs.getInt(5));
+                ProSupp.setProductName(rs.getString(2));
+                ProSupp.setSupplierName(rs.getString(3));
+                ProSupp.setProductId(rs.getInt(1));
+                ProSupp.setSupplierId(rs.getInt(4));
                 proSuppList.add(ProSupp);
             }
 
