@@ -41,7 +41,7 @@ public class SuppliersController {
     private ListView<ProductSupplier> lstProductBySupplier;
 
     @FXML
-    private ListView<ProductSupplier> lstProductToAdd;
+    private ListView<Product> lstProductToAdd;
 
     @FXML
     private TitledPane crudSuppliers;
@@ -64,6 +64,11 @@ public class SuppliersController {
 
     @FXML
     void addProdToSupp(ActionEvent event) {
+
+        int selectedProd = (lstProductToAdd.getSelectionModel().getSelectedItem().getProductId());
+        addProductsToDB(selectedProd);
+        lstProductBySupplier.setItems(getSuppsProds(selectedSupp, "sup"));
+        lstProductToAdd.setItems(addSuppsProds());
 
     }
 
@@ -91,11 +96,7 @@ public class SuppliersController {
     void selectSupplier(ActionEvent event) {
         selectedSupp = cmbSupplier.getValue().supplierId;
         lstProductBySupplier.setItems(getSuppsProds(selectedSupp, "sup"));
-        lstProductToAdd.setItems(addSuppsProds(selectedSupp));
-
-
-
-
+        lstProductToAdd.setItems(addSuppsProds());
     }
 
     @FXML
@@ -124,14 +125,13 @@ public class SuppliersController {
     // instantiate object lists and vars
     private ArrayList<Supplier> supplierList;
     private ArrayList<Product> productList;
-    private ArrayList<ProductSupplier> productSuppliersList = ProductSupplierDB.GetProductSuppliers();
     private ArrayList<ProductSupplier> specProdSuppList;
     private ArrayList<Product> productsToRemove;
     private ArrayList<Product> specProducts;
     private int selectedSupp;
 
-
-    private ObservableList getSuppNames() {
+    //gets suppliers list and returns names to populate the combobox
+    private ObservableList<Supplier> getSuppNames() {
         ArrayList<Supplier> suppNames = new ArrayList<>();
         for (Supplier s: supplierList){
             suppNames.add(s);
@@ -140,32 +140,37 @@ public class SuppliersController {
         return options;
     }
 
-
     //Method to get all products from a specific supplier and return a list to populate a combobox
-    private ObservableList getSuppsProds(int id, String s)
+    private ObservableList<ProductSupplier> getSuppsProds(int id, String s)
     {
         specProdSuppList = ProductSupplierDB.GetProSupList(id, s);
+        productsToRemove.clear();
         for (ProductSupplier ps: specProdSuppList){
             productsToRemove.add(new Product(ps.getProductId(), ps.getProductName()));
         }
         ObservableList<ProductSupplier> options = FXCollections.observableArrayList(specProdSuppList);
         return options;
     }
-
-
-    private ObservableList addSuppsProds(int id)
+    
+    private ObservableList<Product> addSuppsProds()
     {
-        ArrayList<String> prodName = new ArrayList<>();
-
-        specProducts = new ArrayList<Product>(productList);
+        lstProductToAdd.getItems().clear();
+        specProducts = new ArrayList<>(productList);
         specProducts.removeAll(productsToRemove);
 
+        ObservableList<Product> options = FXCollections.observableArrayList(specProducts);
+        return options;
+    }
 
-        for (Product p: specProducts){
-            prodName.add(p.getProdName());
+    private String addProductsToDB(int prodID){
+        String dbSuccess = "";
+        try
+        {
+            ProductSupplierDB.LinkProductSuppliers(selectedSupp, prodID);
+            dbSuccess = "Link Successful";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ObservableList<Product> o = FXCollections.observableArrayList(specProducts);
-
-        return o;
+        return dbSuccess;
     }
 }
