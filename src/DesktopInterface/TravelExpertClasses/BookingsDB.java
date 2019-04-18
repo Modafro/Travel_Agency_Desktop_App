@@ -2,6 +2,7 @@ package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
 
+import java.awt.print.Book;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +31,31 @@ public class BookingsDB {
             if(rowsAffected > 0 )
             {
                 isBkgAdded = true;
+
+                //set the booking Id
+                String sqlforId = "Select BookingId from Bookings where BookingDate=? AND TravelerCount=? AND CustomerId = ? AND" +
+                        " TripTypeId = ? AND PackageId =?";
+
+                try
+                {
+                    PreparedStatement stmtforId = conn.prepareStatement(sqlforId);
+                    stmtforId.setDate(1, bkg.getBookingDate());
+                    stmtforId.setFloat(2, bkg.getTravelerCount());
+                    stmtforId.setInt(3, c.getCustomerId());
+                    stmtforId.setString(4,bkg.getTripTypeId());
+                    stmtforId.setInt(5,pkg.getPackageId());
+
+                    ResultSet rs = stmtforId.executeQuery();
+
+                    while(rs.next())
+                    {
+                        bkg.setBookingId(rs.getInt(1));
+                    }
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         catch (SQLException e)
@@ -60,5 +86,32 @@ public class BookingsDB {
             e.printStackTrace();
         }
         return bookingList;
+    }
+
+    //method to delete existing booking
+    public static boolean deleteBooking(Bookings bkg)
+    {
+        boolean isBkgDeleted=false;
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql="Delete from Bookings where BookingId=?";
+
+        try
+        {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, bkg.getBookingId());
+
+            int rowsAffected = stmt.executeUpdate();
+            if(rowsAffected > 0 )
+            {
+                isBkgDeleted = true;
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return isBkgDeleted;
     }
 }

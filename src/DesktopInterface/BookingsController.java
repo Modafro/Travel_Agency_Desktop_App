@@ -2,10 +2,21 @@ package DesktopInterface;
 
 import DesktopInterface.TravelExpertClasses.*;
 import DesktopInterface.TravelExpertClasses.Package;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
+
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.html.WebColors;
+import com.itextpdf.text.pdf.FontSelector;
+import com.itextpdf.text.pdf.PdfPCell;
+
+import com.itextpdf.text.pdf.PdfPTable;
+
 import com.itextpdf.text.pdf.PdfWriter;
+
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -33,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -41,15 +53,21 @@ public class BookingsController extends JPanel {
 
     private Agents loggedAgent;
 
+    private Bookings newBooking;
+
     private Customer cust;
 
     private Package pkg;
 
     private DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+    private DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
     //today's date in sql format
     private Date today = new Date();
     private java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+
+    //currency format
+    private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
     private File pdfFile;
 
@@ -290,15 +308,30 @@ public class BookingsController extends JPanel {
         //total cost
         else{
             lblErrorMessage.setVisible(false);
-            double totalPrice;
-            totalPrice = pkg.getPkgBasePrice() * (Double.parseDouble(txtNumTravelers.getText()));
-            lblNumTravelers.setText(txtNumTravelers.getText());
-            lblTotalPrice.setText(Double.toString(totalPrice));
+            //create new booking
+            newBooking = new Bookings(sqlToday, Float.parseFloat(txtNumTravelers.getText()), cust.getCustomerId(),"L",pkg.getPackageId());
 
-            pnsummary.setVisible(true);
-            pnSelectCustPkgNumTravelers.setDisable(true);
+            boolean addBkgSuccessful = BookingsDB.addBookingForCustId(newBooking, cust, pkg);
+
+            if(addBkgSuccessful)
+            {
+                double totalPrice;
+                totalPrice = pkg.getPkgBasePrice() * (Double.parseDouble(txtNumTravelers.getText()));
+                lblNumTravelers.setText(txtNumTravelers.getText());
+                lblTotalPrice.setText(currencyFormat.format(totalPrice));
+
+                pnsummary.setVisible(true);
+                pnSelectCustPkgNumTravelers.setDisable(true);
+            }
+            else
+            {
+                alert_error.setTitle("Summary Status");
+                alert_error.setHeaderText("Unable to load summary");
+                alert_error.setContentText("An error occurred while trying to view summary for customer. Please" +
+                        " try again. If issue persists, contact your database administrator.");
+                alert_error.showAndWait();
+            }
         }
-
     }
 
     //set textfields values from the selected customer in the table with a mouse click
@@ -372,13 +405,13 @@ public class BookingsController extends JPanel {
         lblPkgDesc.setText(pkg.getPkgDesc());
         lblPkgStartDate.setText(df.format(pkg.getPkgStartDate()));
         lblPkgEndDate.setText(df.format(pkg.getPkgEndDate()));
-        lblBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
+        lblBasePrice.setText(currencyFormat.format(pkg.getPkgBasePrice()));
 
         //number of travelers
         lblNumTravelers.setText(txtNumTravelers.getText());
     }
 
-    //cancel ongoing booking process
+    //reset all fields to original format
     public void resetAll()
     {
         //hide summary info
@@ -422,42 +455,36 @@ public class BookingsController extends JPanel {
         }
     }
 
-    //create new booking and send email to customer
-    public void sendInvoice()
+    //cancel ongoing booking
+    public void cancelBooking()
     {
-        //create new booking
-        Bookings newBooking = new Bookings(sqlToday, Float.parseFloat(txtNumTravelers.getText()), cust.getCustomerId(),"L",pkg.getPackageId());
+        resetAll();
+        BookingsDB.deleteBooking(newBooking);
+    }
 
-        boolean addBkgSuccessful = BookingsDB.addBookingForCustId(newBooking, cust, pkg);
-        if(addBkgSuccessful)
-        {
-            createInvoicePdf();
+    //create new booking and send email to customer
+    public void sendInvoice() throws IOException
+    {
+        createInvoicePdf();
 
-            sendEmailInvoice();
+        sendEmailInvoice();
 
-            //show dialog box
-            alert_info.setTitle("Insert Status");
-            alert_info.setHeaderText("Booking added successfully.");
-            alert_info.setContentText(pkg.getPkgName() + " has been successfully booked for "+ cust.getCustFirstName()
-                            +" "+ cust.getCustLastName() +". Invoice has been sent to customer.");
-            alert_info.showAndWait();
+        //show dialog box
+        alert_info.setTitle("Insert Status");
+        alert_info.setHeaderText("Booking added successfully.");
+        alert_info.setContentText(pkg.getPkgName() + " has been successfully booked for "+ cust.getCustFirstName()
+                        +" "+ cust.getCustLastName() +". Invoice has been sent to customer.");
+        alert_info.showAndWait();
 
-            //set visibility
-            resetAll();
-        }
-        else {
-            alert_error.setTitle("Insert Status");
-            alert_error.setHeaderText("Booking was not added");
-            alert_error.setContentText("An error occurred while trying to add a new booking for customer. Please" +
-                    " try again. If issue persists, contact your database administrator.");
-            alert_error.showAndWait();
-        }
+        //set visibility
+        resetAll();
+
     }
 
     //show pdf
-    public void showInvoiceInPdf() {
+    public void showInvoiceInPdf() throws IOException {
 
-        pdfFile = new File("Invoices/customerInvoice.pdf");
+        pdfFile = new File("Invoices/"+cust.getCustLastName()+"Invoice_Booking" + newBooking.getBookingId()+".pdf");
         if (pdfFile.exists())
         {
             openPdf(pdfFile);
@@ -498,12 +525,14 @@ public class BookingsController extends JPanel {
             MimeMessage msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(emailFrom));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
-            msg.setSubject("Vacation Package Invoice");
+            msg.setSubject("Vacation Package Invoice, Booking No. "+ newBooking.getBookingId());
             //msg.setSentDate(new Date());
 
             // creates message part
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent("Hi this is a test for your vacation invoice. See attachements", "text/html");
+            messageBodyPart.setContent("Congratulations"+cust.getCustFirstName()+"!\n\n\n. " +
+                    "You have successfully booked your vacation. All the details pertaining to your booking are in the attachment\n\n" +
+                    "Enjoy your vacation and thank you for choosing Travel Experts", "text/html");
 
             // creates multi-part
             Multipart multipart = new MimeMultipart();
@@ -513,7 +542,7 @@ public class BookingsController extends JPanel {
             MimeBodyPart attachPart = new MimeBodyPart();
 
             try {
-                attachPart.attachFile("Invoices/customerInvoice.pdf");
+                attachPart.attachFile("Invoices/"+cust.getCustLastName()+"Invoice_Booking" + newBooking.getBookingId()+".pdf");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -541,11 +570,11 @@ public class BookingsController extends JPanel {
     }
 
     //create pdf
-    public void createInvoicePdf(){
+    public void createInvoicePdf()throws IOException{
         Document document = new Document();
         PdfWriter writer = null;
         try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream("Invoices/customerInvoice.pdf"));
+            writer = PdfWriter.getInstance(document, new FileOutputStream("Invoices/"+cust.getCustLastName()+"Invoice_Booking" + newBooking.getBookingId()+".pdf"));
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -553,12 +582,231 @@ public class BookingsController extends JPanel {
         }
         document.open();
         try {
-            document.add(new Paragraph("This is your receipt " + cust.getCustFirstName() + " " + cust.getCustLastName()));
+            File pdffile = new File("Invoices/"+cust.getCustLastName()+"Invoice_Booking" + newBooking.getBookingId()+".pdf");
+            try {
+                if(pdffile.exists())
+                {
+                    pdffile.delete();
+                }
+            } catch (Exception e) {
+                //do nothing
+            }
+
+            BaseColor color1 = WebColors.getRGBColor("#3390FF");
+            BaseColor color2 = WebColors.getRGBColor("#BDECF7");
+
+            FontSelector heading1 = new FontSelector();
+            Font font1 = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE, 25);
+            font1.setColor(color1);
+            heading1.addFont(font1);
+
+            FontSelector heading2 = new FontSelector();
+            Font font2 = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
+            font2.setColor(color1);
+            heading2.addFont(font2);
+
+            FontSelector heading3 = new FontSelector();
+            Font font3 = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE, 15);
+            font3.setColor(BaseColor.GRAY);
+            heading3.addFont(font3);
+
+            FontSelector heading4 = new FontSelector();
+            Font font4 = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+            font4.setColor(color1);
+            heading4.addFont(font4);
+
+            FontSelector normal = new FontSelector();
+            Font fontNormal = FontFactory.getFont(FontFactory.TIMES, 12);
+            fontNormal.setColor(BaseColor.BLACK);
+            normal.addFont(fontNormal);
+
+            FontSelector normalBold = new FontSelector();
+            Font fontNormalBold = FontFactory.getFont(FontFactory.TIMES_BOLD,12);
+            fontNormalBold.setColor(BaseColor.BLACK);
+            normalBold.addFont(fontNormalBold);
+
+            PdfPTable headerTable = new PdfPTable(2);
+            headerTable.setWidthPercentage(100);
+            headerTable.setSpacingAfter(10f);
+
+            PdfPCell cell;
+
+            String TravelExperts = "Travel Experts\n";
+            Phrase headerTitle = heading1.process(TravelExperts);
+
+            cell = new PdfPCell(headerTitle);
+            cell.setBorder(Rectangle.NO_BORDER);
+            //cell.setColspan(1);
+
+            headerTable.addCell(cell);
+
+            String address = "1155 8th Ave SW\nCalgary, AB, T2P 1N3\nphone: 4032719873\nfax: 4032719872";
+            Phrase addressPhrase =  new Phrase(address);
+
+            // now we add a cell with rowspan 2
+
+            Image img = Image.getInstance("src/company_logo.png");
+            img.scaleAbsolute(85f,75f);
+            cell = new PdfPCell(img);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setBorder(Rectangle.NO_BORDER);
+            cell.setRowspan(2);
+            headerTable.addCell(cell);
+
+            cell = new PdfPCell(addressPhrase);
+            cell.setBorder(Rectangle.NO_BORDER);
+            headerTable.addCell(cell);
+
+            document.add(headerTable);
+
+            Chunk line = new Chunk(new LineSeparator(2,100,BaseColor.GRAY,1,0));
+            document.add(line);
+
+            Paragraph paragraph1 = new Paragraph("");
+            paragraph1.setSpacingAfter(20f);
+            document.add(paragraph1);
+
+            String invoice = "INVOICE";
+            Phrase invoicePhrase = heading2.process(invoice);
+            Paragraph invoicePara = new Paragraph(invoicePhrase);
+            invoicePara.setSpacingAfter(20f);
+            document.add(invoicePara);
+
+            setParagraphText("Agent", heading3,0,document);
+
+            setParagraphText(loggedAgent.getAgtFirstName()+" " + loggedAgent.getAgtLastName() +"\n"+ loggedAgent.getAgtBusPhone()+"\n"+loggedAgent.getAgtEmail(), normal,10f,document);
+
+            PdfPTable customerInfoTable = new PdfPTable(2);
+            customerInfoTable.setWidthPercentage(100);
+            customerInfoTable.setSpacingAfter(10f);
+
+            setCellText("Invoice To", heading3, customerInfoTable,"left");
+            setCellText("Booking #: " + newBooking.getBookingId(), heading3, customerInfoTable,"right");
+            setCellText(cust.getCustFirstName()+" "+cust.getCustLastName()+"\n"+cust.getCustAddress()+"\n"+cust.getCustHomePhone()+"\n"+cust.getCustEmail(), normal, customerInfoTable, "left");
+            setCellText("Date: "+df.format(sqlToday), normal, customerInfoTable,"right");
+            customerInfoTable.completeRow();
+            document.add(customerInfoTable);
+
+            Chunk line2 = new Chunk(new LineSeparator(1,100,color1,1,0));
+            document.add(line2);
+
+            Paragraph paragraph2 = new Paragraph("");
+            paragraph2.setSpacingAfter(5f);
+            document.add(paragraph2);
+
+            setParagraphText("DETAILS",heading4,10f,document);
+
+            PdfPTable detailsTable = new PdfPTable(6);
+            detailsTable.setSpacingAfter(0f);
+            detailsTable.setWidthPercentage(100);
+            detailsTable.setWidths(new int[]{3,1,1,1,1,1});
+
+            setCellText("Description",normal,detailsTable,"left",color2);
+            setCellText("Start Date",normal,detailsTable,"center",color2);
+            setCellText("End Date",normal,detailsTable,"center",color2);
+            setCellText("Qty",normal,detailsTable,"center",color2);
+            setCellText("Rate",normal,detailsTable,"center",color2);
+            setCellText("Amount",normal,detailsTable,"center",color2);
+
+            setCellText(pkg.getPkgName(), normalBold, detailsTable, "left");
+            setCellText(df2.format(pkg.getPkgStartDate()), normal, detailsTable,"center");
+            setCellText(df2.format(pkg.getPkgEndDate()), normal, detailsTable,"center");
+            setCellText(lblNumTravelers.getText(), normal, detailsTable,"center");
+            setCellText(lblBasePrice.getText(), normal, detailsTable,"center");
+            setCellText(lblTotalPrice.getText(), normal, detailsTable,"center");
+
+            setCellText(pkg.getPkgDesc(), normal,detailsTable,"left");
+            setCellText("", normal,detailsTable,"left");
+            setCellText("", normal,detailsTable,"left");
+            setCellText("", normal,detailsTable,"left");
+            setCellText("", normal,detailsTable,"left");
+            setCellText("", normal,detailsTable,"left");
+
+            document.add(detailsTable);
+
+            Chunk line3 = new Chunk(new DottedLineSeparator());
+            document.add(line3);
+
+            Paragraph paragraph3 = new Paragraph("");
+            paragraph3.setSpacingAfter(5f);
+            document.add(paragraph3);
+
+            PdfPTable priceDetails = new PdfPTable(2);
+            priceDetails.setWidthPercentage(45);
+            priceDetails.setWidths(new int[]{2,1});
+            priceDetails.setHorizontalAlignment(2);
+
+            setCellText("Total:",normalBold,priceDetails,"right");
+            setCellText(lblTotalPrice.getText(),normalBold,priceDetails,"center");
+            setCellText("Amount Received:",normalBold,priceDetails,"right");
+            setCellText("$0",normalBold,priceDetails,"center");
+            setCellText("Balance Due:",normalBold,priceDetails,"right");
+            setCellText(lblTotalPrice.getText(),normalBold,priceDetails,"center");
+
+            document.add(priceDetails);
+
+            Paragraph paragraph4 = new Paragraph("");
+            paragraph4.setSpacingAfter(130f);
+            document.add(paragraph4);
+
+            setParagraphText("Thank you for trusting Travel Experts.", normal,0f,document,1);
+            setParagraphText("We hope you enjoy your next vacation. Let us know if you appreciated our business.", normal,0f,document,1);
+
         } catch (DocumentException e) {
             e.printStackTrace();
         }
         document.close();
         writer.close();
+    }
+
+    private void setParagraphText(String text, FontSelector fselector, float spacing, Document doc) throws DocumentException
+    {
+        Phrase phrase= fselector.process(text);
+        Paragraph para = new Paragraph(phrase);
+        para.setSpacingAfter(spacing);
+        doc.add(para);
+    }
+
+    private void setParagraphText(String text, FontSelector fselector, float spacing, Document doc, int alignement) throws DocumentException
+    {
+        Phrase phrase= fselector.process(text);
+        Paragraph para = new Paragraph(phrase);
+        para.setSpacingAfter(spacing);
+        para.setAlignment(alignement);
+        doc.add(para);
+    }
+
+    private void setCellText(String text, FontSelector fSelector, PdfPTable table, String alignement)
+    {
+        Phrase phrase= fSelector.process(text);
+        PdfPCell cell = new PdfPCell(phrase);
+        if (alignement=="center")
+        {
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        }
+        else if(alignement=="right")
+        {
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        }
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+    }
+
+    private void setCellText(String text, FontSelector fSelector, PdfPTable table, String alignement, BaseColor backgroundColor)
+    {
+        Phrase phrase= fSelector.process(text);
+        PdfPCell cell = new PdfPCell(phrase);
+        if (alignement=="center")
+        {
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        }
+        else if(alignement=="right")
+        {
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        }
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setBackgroundColor(backgroundColor);
+        table.addCell(cell);
     }
 
     //open pdf
