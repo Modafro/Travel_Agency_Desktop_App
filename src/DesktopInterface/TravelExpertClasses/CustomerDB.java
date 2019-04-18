@@ -265,7 +265,7 @@ public class CustomerDB {
         return isCustUpdated;
     }
 
-    //method to update existing information of customer
+    //method to delete existing customer
     public static boolean deleteCustomer(Customer cust)
     {
         boolean isCustDeleted=false;

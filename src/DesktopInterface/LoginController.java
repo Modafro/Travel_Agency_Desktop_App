@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import DesktopInterface.TravelExpertClasses.AgentsDB;
 import DesktopInterface.TravelExpertClasses.Agents;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -27,10 +28,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LoginController {
     private Agents loggedAgent;
+
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     @FXML
     private ResourceBundle resources;
@@ -46,6 +51,9 @@ public class LoginController {
 
     @FXML
     private Button btnLogin;
+
+    @FXML
+    private FontAwesomeIcon btnClose;
 
     @FXML
     private Label lblErrorLogin;
@@ -102,6 +110,22 @@ public class LoginController {
             //get current stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
+            //make window movable and draggable
+            AgentGUI.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            AgentGUI.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    window.setX(event.getScreenX() - xOffset);
+                    window.setY(event.getScreenY() - yOffset);
+                }
+            });
+
             //switch scenes
             window.setScene(AgentScene);
             window.show();
@@ -137,6 +161,13 @@ public class LoginController {
                 }
             }
         });
+    }
+
+    //close login window
+    @FXML
+    private void exitApplication()
+    {
+            System.exit(0);
     }
 }
 

@@ -135,7 +135,7 @@
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnCancel" layoutX="476.0" layoutY="134.0" mnemonicParsing="false" onAction="#resetAll" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
+            <Button fx:id="btnCancel" layoutX="476.0" layoutY="134.0" mnemonicParsing="false" onAction="#cancelBooking" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
             <Button fx:id="btnPdfViewer" layoutX="476.0" layoutY="168.0" mnemonicParsing="false" onAction="#showInvoiceInPdf" prefHeight="25.0" prefWidth="139.0" text="View Invoice" />
          </children>
       </Pane>
