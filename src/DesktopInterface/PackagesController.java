@@ -160,7 +160,11 @@ public class PackagesController {
 
     private ObservableList<Package> pkgData;
 
+    private Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
+    private Alert alert_error = new Alert(Alert.AlertType.ERROR);
 
+    //string object used to know which button was clicked : Insert / Update / Delete
+    private String crudBtnClicked = new String();
 
     @FXML
     void initialize() {
@@ -309,6 +313,7 @@ public class PackagesController {
         });
     }
 
+    //set values of textfields to corresponding values of selected package in table
     private void setPkgTextfieldsFromTable()
     {
         Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
@@ -328,6 +333,7 @@ public class PackagesController {
         txtPkgCommission.setText(Double.toString(pkg.getPkgAgencyCommission()));
     }
 
+    //set visibility of buttons (and corresponding images)
     private void setVisibilityButtons(boolean showCrud)
     {
         if(showCrud == true)
@@ -375,6 +381,81 @@ public class PackagesController {
         pkgData.clear();
         pkgData = FXCollections.observableArrayList(pResult);
         tblPackages.setItems(pkgData);
+    }
+
+    //method to delete package
+    public void deletePkg()
+    {
+        Package deletePackage = new Package(Integer.parseInt(txtPackageId.getText()), txtPkgName.getText(),
+                java.sql.Date.valueOf(dpPkgStartDate.getValue()),java.sql.Date.valueOf(dpPkgEndDate.getValue()),
+                txtPkgDescription.getText(),Double.parseDouble(txtPkgBasePrice.getText()),Double.parseDouble(txtPkgCommission.getText()));
+
+        boolean deletePkgSuccessful = PackageDB.DeletePackage(deletePackage);
+        if(deletePkgSuccessful)
+        {
+            //show dialog box
+            alert_info.setTitle("Delete Status");
+            alert_info.setHeaderText("Customer deleted successfully.");
+            alert_info.setContentText(deletePackage.getPkgName()+ " has successfully been deleted.");
+            alert_info.showAndWait();
+
+            //set visibility to default settings and clear textfields
+            cancelPkgChanges();
+
+            //refresh table view
+            updateTable();
+        }
+    }
+
+    //change buttons visibility to only show "confirm" and "cancel" button
+    public void deleteBtnClicked()
+    {
+        if(txtPkgName.getText().isEmpty())
+        {
+            alert_error.setTitle("Package Invalid");
+            alert_error.setHeaderText("No package selected");
+            alert_error.setContentText("Please select a package from the table to delete.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "delete";
+            pnpackagesfields.setDisable(true);
+            setVisibilityButtons(false);
+            btnSave.setVisible(false);
+            imgSave.setVisible(false);
+            btnConfirmDelete.setVisible(true);
+            imgConfirmDelete.setVisible(true);
+            tblPackages.setDisable(true);
+        }
+    }
+
+    //method to cancel any ongoing changes
+    public void cancelPkgChanges()
+    {
+        pnpackagesfields.setDisable(true);
+        setVisibilityButtons(true);
+        tblPackages.setDisable(false);
+        clearTextfieldDataAndLabels();
+    }
+
+    //method to clear textfields and remove error labels
+    private void clearTextfieldDataAndLabels()
+    {
+        txtPackageId.setText("");
+        txtPkgName.setText("");
+        txtPkgDescription.setText("");
+        dpPkgStartDate.setValue(null);
+        dpPkgEndDate.setValue(null);
+        txtPkgBasePrice.setText("");
+        txtPkgCommission.setText("");
+
+        lblPkgNameError.setVisible(false);
+        lblPkgDescError.setVisible(false);
+        lblPkgStartDateError.setVisible(false);
+        lblPkgEndDateError.setVisible(false);
+        lblPkgBasePriceError.setVisible(false);
+        lblPkgCommissionError.setVisible(false);
     }
 
     /**

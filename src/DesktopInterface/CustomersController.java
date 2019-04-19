@@ -295,14 +295,14 @@ public class CustomersController {
                     " has successfully been deleted.");
             alert_info.showAndWait();
 
-            //set visibility
+            //set visibility to default settings and clear textfields
             cancelCustChanges();
 
             //refresh table view
             refreshCustTable();
 
             //refresh table in BookingsController GUI
-            bookingsController.refreshCustTable();
+            //bookingsController.refreshCustTable();
             }
         else
         {

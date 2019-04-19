@@ -72,18 +72,31 @@ public class PackageDB {
         }
     }
 
-    public static void DeletePackage (int tp){
+    public static boolean DeletePackage (Package pkg){
+
+        boolean isPkgDeleted = false;
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         try {
-            PreparedStatement ps = dbConnect.prepareStatement("DELETE FROM [Packages] WHERE PackageId = ? ");
-            ps.setInt(1, tp);
+            //first delete package referenced in packages_prodcuts_suppliers if any
+            PreparedStatement stmt = dbConnect.prepareStatement("DELETE Packages_Products_Suppliers WHERE PackageId = ? ");
+            stmt.setInt(1, pkg.getPackageId());
+            stmt.executeUpdate();
 
-            ps.execute();
+            PreparedStatement ps = dbConnect.prepareStatement("DELETE [Packages] WHERE PackageId = ? ");
+            ps.setInt(1, pkg.getPackageId());
+
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected > 0)
+            {
+                isPkgDeleted = true;
+            }
             dbConnect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return isPkgDeleted;
     }
 
     public static ObservableList<Package> getPackageNameTableView(ObservableList<Package> pkgData)
