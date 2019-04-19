@@ -13,6 +13,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
@@ -20,7 +22,10 @@ import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -31,12 +36,16 @@ import java.util.Calendar;
 public class PackagesController {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    //private DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
     @FXML
     private AnchorPane packages;
 
     @FXML
     private TableView<Package> tblPackages;
+
+    @FXML
+    private TableColumn<Package, Integer> pkgId;
 
     @FXML
     private TableColumn<Package, String> pkgName;
@@ -76,6 +85,9 @@ public class PackagesController {
 
     @FXML
     private TextField txtPkgCommission;
+
+    @FXML
+    private TextField txtPackageId;
 
     @FXML
     private Label lblPkgNameError;
@@ -169,7 +181,12 @@ public class PackagesController {
         //set visibility of buttons
         setVisibilityButtons(true);
 
+        //set textfields values from the selected package in the table with a mouse click or arrow key released
+        setPkgTextfieldsFromTableOnMouseClicked();
+        setPkgTextfieldsFromTableOnArrowKeyReleased();
+
         //set cell values
+        pkgId.setCellValueFactory(new PropertyValueFactory<Package, Integer>("PackageId"));
         pkgName.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgName"));
         pkgStartDate.setCellValueFactory(new PropertyValueFactory<Package, Date>("pkgStartDate"));
         pkgEndDate.setCellValueFactory(new PropertyValueFactory<Package, Date>("pkgEndDate"));
@@ -268,6 +285,47 @@ public class PackagesController {
             }
         });
         tblPackages.getColumns().add(dateColumn);*/
+    }
+
+    //set textfields values from the selected package in the table with a mouse click
+    private void setPkgTextfieldsFromTableOnMouseClicked()
+    {
+        tblPackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setPkgTextfieldsFromTable();
+            }
+        });
+    }
+
+    //set textfields values from the selected package in the table with an arrow (up or down) key released
+    private void setPkgTextfieldsFromTableOnArrowKeyReleased()
+    {
+        tblPackages.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                setPkgTextfieldsFromTable();
+            }
+        });
+    }
+
+    private void setPkgTextfieldsFromTable()
+    {
+        Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
+        txtPackageId.setText(Integer.toString(pkg.getPackageId()));
+        txtPkgName.setText(pkg.getPkgName());
+        txtPkgDescription.setText(pkg.getPkgDesc());
+
+        Date pkgStartDate = (pkg.getPkgStartDate());
+        Instant instantPkgStartDate = Instant.ofEpochMilli(pkgStartDate.getTime());
+        dpPkgStartDate.setValue(LocalDateTime.ofInstant(instantPkgStartDate,ZoneId.systemDefault()).toLocalDate());
+
+        Date pkgEndDate = (pkg.getPkgEndDate());
+        Instant instantPkgEndDate = Instant.ofEpochMilli(pkgEndDate.getTime());
+        dpPkgEndDate.setValue(LocalDateTime.ofInstant(instantPkgEndDate,ZoneId.systemDefault()).toLocalDate());
+
+        txtPkgBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
+        txtPkgCommission.setText(Double.toString(pkg.getPkgAgencyCommission()));
     }
 
     private void setVisibilityButtons(boolean showCrud)

@@ -23,6 +23,7 @@
             <TableColumn fx:id="pkgDescription" prefWidth="239.0" text="Package Description" />
             <TableColumn fx:id="pkgBasePrice" prefWidth="76.0" text="Base Price" />
             <TableColumn fx:id="pkgCommission" prefWidth="73.0" text="Commission" />
+            <TableColumn fx:id="pkgId" prefWidth="142.0" text="Package Id" visible="false" />
         </columns>
       </TableView>
       <Button fx:id="btnDelete" layoutX="316.0" layoutY="6.0" mnemonicParsing="false" text="Delete Row" AnchorPane.bottomAnchor="432.0" />
@@ -72,6 +73,7 @@
                         </Label>
                         <DatePicker fx:id="dpPkgStartDate" layoutX="2.0" layoutY="55.0" prefHeight="25.0" prefWidth="176.0" promptText="Start Date" />
                         <DatePicker fx:id="dpPkgEndDate" layoutX="2.0" layoutY="108.0" prefHeight="25.0" prefWidth="176.0" promptText="End Date" />
+                        <TextField fx:id="txtPackageId" layoutX="488.0" layoutY="75.0" prefHeight="25.0" prefWidth="33.0" visible="false" />
                      </children>
                   </Pane>
                   <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Insert" />
@@ -90,8 +92,8 @@
             </Pane>
          </content>
       </TitledPane>
-      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Refresh" onAction="#updateTable"/>
-      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="23.0" size="1.2em" wrappingWidth="12.999994784593582" onMouseClicked="#updateTable"/>
-      <TextField fx:id="txtSearch" layoutX="22.0" layoutY="5.0" prefHeight="25.0" prefWidth="188.0" promptText="Search" onAction="#searchDataBase" />
+      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="6.0" mnemonicParsing="false" onAction="#updateTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
+      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="23.0" onMouseClicked="#updateTable" size="1.2em" wrappingWidth="12.999994784593582" />
+      <TextField fx:id="txtSearch" layoutX="22.0" layoutY="5.0" onAction="#searchDataBase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
    </children>
 </AnchorPane>
