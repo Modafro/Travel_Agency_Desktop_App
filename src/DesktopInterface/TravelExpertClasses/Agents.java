@@ -1,4 +1,5 @@
 //Objective: Create an agent class
+
 package DesktopInterface.TravelExpertClasses;
 
 public class Agents {

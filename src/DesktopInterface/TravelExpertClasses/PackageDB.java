@@ -117,6 +117,42 @@ public class PackageDB {
         return pkgData;
     }
 
+    //method to search values in database targeted for Packages GUI
+    public static ArrayList<Package> PackageSearchResult(ArrayList<Package> pkgData, String userInput)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select * from Packages where lower(CONCAT(PkgName,PkgDesc, PkgBasePrice, PkgAgencyCommission)) like ?";
+
+        try
+        {
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1,"%"+userInput.toLowerCase()+"%");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                pkgData.add(new Package(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDate(3),
+                        rs.getDate(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7)
+                ));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return pkgData;
+    }
+
     //method to search values in database (package name only) targeted for the Bookings GUI
     public static ObservableList<Package> PackageNameSearchResult(ObservableList<Package> pkgData, String userInput)
     {

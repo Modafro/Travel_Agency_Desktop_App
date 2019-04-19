@@ -2,6 +2,7 @@ package DesktopInterface;
 
 import DesktopInterface.TravelExpertClasses.Package;
 import DesktopInterface.TravelExpertClasses.PackageDB;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
@@ -58,7 +60,115 @@ public class PackagesController {
     private Button btnDelete;
 
     @FXML
+    private TitledPane crudPackages;
+
+    @FXML
+    private Pane pnpackagesfields;
+
+    @FXML
+    private TextField txtPkgName;
+
+    @FXML
+    private TextField txtPkgDescription;
+
+    @FXML
+    private TextField txtPkgBasePrice;
+
+    @FXML
+    private TextField txtPkgCommission;
+
+    @FXML
+    private Label lblPkgNameError;
+
+    @FXML
+    private Label lblPkgDescError;
+
+    @FXML
+    private Label lblPkgStartDateError;
+
+    @FXML
+    private Label lblPkgEndDateError;
+
+    @FXML
+    private Label lblPkgBasePriceError;
+
+    @FXML
+    private Label lblPkgCommissionError;
+
+    @FXML
+    private DatePicker dpPkgStartDate;
+
+    @FXML
+    private DatePicker dpPkgEndDate;
+
+    @FXML
+    private Button btnInsert;
+
+    @FXML
+    private Button btnUpdate;
+
+    @FXML
+    private Button btnDelete1;
+
+    @FXML
+    private FontAwesomeIcon imgInsert;
+
+    @FXML
+    private FontAwesomeIcon imgUpdate;
+
+    @FXML
+    private FontAwesomeIcon imgDelete;
+
+    @FXML
+    private Button btnSave;
+
+    @FXML
+    private FontAwesomeIcon imgSave;
+
+    @FXML
+    private Button btnCancel;
+
+    @FXML
+    private FontAwesomeIcon imgCancel;
+
+    @FXML
+    private Button btnConfirmDelete;
+
+    @FXML
+    private FontAwesomeIcon imgConfirmDelete;
+
+    @FXML
+    private Button btnRefresh;
+
+    @FXML
+    private FontAwesomeIcon imgRefresh;
+
+    @FXML
+    private TextField txtSearch;
+
+    private ObservableList<Package> pkgData;
+
+
+
+    @FXML
     void initialize() {
+        //hide CRUD operations (texfields)
+        crudPackages.setExpanded(false);
+
+        //set visibility of error labels
+        lblPkgNameError.setVisible(false);
+        lblPkgDescError.setVisible(false);
+        lblPkgStartDateError.setVisible(false);
+        lblPkgEndDateError.setVisible(false);
+        lblPkgBasePriceError.setVisible(false);
+        lblPkgCommissionError.setVisible(false);
+
+        //disable packages text fields (CRUD pane) on load
+        pnpackagesfields.setDisable(true);
+
+        //set visibility of buttons
+        setVisibilityButtons(true);
+
         //set cell values
         pkgName.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgName"));
         pkgStartDate.setCellValueFactory(new PropertyValueFactory<Package, Date>("pkgStartDate"));
@@ -160,11 +270,53 @@ public class PackagesController {
         tblPackages.getColumns().add(dateColumn);*/
     }
 
+    private void setVisibilityButtons(boolean showCrud)
+    {
+        if(showCrud == true)
+        {
+            btnInsert.setVisible(true);
+            imgInsert.setVisible(true);
+            btnUpdate.setVisible(true);
+            imgUpdate.setVisible(true);
+            btnDelete.setVisible(true);
+            imgDelete.setVisible(true);
+            btnSave.setVisible(false);
+            imgSave.setVisible(false);
+            btnCancel.setVisible(false);
+            imgCancel.setVisible(false);
+            btnConfirmDelete.setVisible(false);
+            imgConfirmDelete.setVisible(false);
+        }
+        else if (showCrud == false)
+        {
+            btnInsert.setVisible(false);
+            imgInsert.setVisible(false);
+            btnUpdate.setVisible(false);
+            imgUpdate.setVisible(false);
+            btnDelete.setVisible(false);
+            imgDelete.setVisible(false);
+            btnSave.setVisible(true);
+            imgSave.setVisible(true);
+            btnCancel.setVisible(true);
+            imgCancel.setVisible(true);
+        }
+    }
+
     public void updateTable() {
 
         ArrayList<Package> p = PackageDB.GetPackages();
-        ObservableList<Package> packages = FXCollections.observableArrayList(p);
-        tblPackages.setItems(packages);
+        pkgData = FXCollections.observableArrayList(p);
+        tblPackages.setItems(pkgData);
+    }
+
+    //method to search the database on enter key pressed
+    public void searchDataBase()
+    {
+        ArrayList<Package> pResult = new ArrayList<>();
+        pResult = PackageDB.PackageSearchResult(pResult,txtSearch.getText());
+        pkgData.clear();
+        pkgData = FXCollections.observableArrayList(pResult);
+        tblPackages.setItems(pkgData);
     }
 
     /**

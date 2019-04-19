@@ -209,7 +209,7 @@ public class CustomersController {
         lblCustHomePhoneError.setVisible(false);
         lblCustBusPhoneError.setVisible(false);
 
-        //disable customer fields on load
+        //disable customer text fields (CRUD pane) on load
         pncustomerfields.setDisable(true);
 
         //set visibility of buttons
@@ -220,7 +220,7 @@ public class CustomersController {
         setCustTextfieldsFromTableOnArrowKeyReleased();
 
         //tooltips
-        Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
+        //Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
     }
 
     //method to get the agent object from Agent Controller
