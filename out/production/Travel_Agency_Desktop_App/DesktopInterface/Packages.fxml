@@ -35,7 +35,7 @@
                         <TextField fx:id="txtPkgName" promptText="Package Name" />
                         <TextField fx:id="txtPkgDescription" layoutX="174.0" prefHeight="25.0" prefWidth="330.0" promptText="Package Description" />
                         <TextField fx:id="txtPkgBasePrice" layoutX="223.0" layoutY="55.0" promptText="Base Price" />
-                        <TextField fx:id="txtPkgCommission" layoutX="223.0" layoutY="108.0" promptText="Home Phone">
+                        <TextField fx:id="txtPkgCommission" layoutX="223.0" layoutY="108.0" promptText="Agency Commission">
                            <tooltip>
                               <Tooltip text="Format: (403) 403-4003" />
                            </tooltip>
@@ -75,16 +75,16 @@
                         <TextField fx:id="txtPackageId" layoutX="488.0" layoutY="75.0" prefHeight="25.0" prefWidth="33.0" visible="false" />
                      </children>
                   </Pane>
-                  <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Insert" />
-                  <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Update" />
+                  <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
+                  <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" onAction="#updateBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Update" />
                   <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Delete" />
-                  <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                  <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                  <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                  <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Save" />
-                  <FontAwesomeIcon fx:id="imgSave" glyphName="SAVE" layoutX="566.0" layoutY="71.0" size="1.2em" wrappingWidth="14.857142448425293" />
-                  <Button fx:id="btnCancel" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Cancel" />
-                  <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" onMouseClicked="#insertBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" onMouseClicked="#updateBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" onMouseClicked="#deleteBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#savePkgChanges" prefHeight="25.0" prefWidth="78.0" text="Save" />
+                  <FontAwesomeIcon fx:id="imgSave" glyphName="SAVE" layoutX="566.0" layoutY="71.0" onMouseClicked="#savePkgChanges" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <Button fx:id="btnCancel" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="104.0" mnemonicParsing="false" onAction="#cancelPkgChanges" prefHeight="25.0" prefWidth="78.0" text="Cancel" />
+                  <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" onMouseClicked="#cancelPkgChanges" size="1.2em" wrappingWidth="14.857142448425293" />
                   <Button fx:id="btnConfirmDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#deletePkg" prefHeight="25.0" prefWidth="78.0" text="Confirm" />
                   <FontAwesomeIcon fx:id="imgConfirmDelete" glyphName="TRASH" layoutX="566.0" layoutY="71.0" onMouseClicked="#deletePkg" size="1.2em" wrappingWidth="14.857142448425293" />
                </children>

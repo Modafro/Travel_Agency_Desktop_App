@@ -2,6 +2,8 @@ package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class PackageDB {
     }
 
     public static void AddPackage(Package p){
+
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         try {
@@ -48,6 +51,12 @@ public class PackageDB {
             dbConnect.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            Alert alert_error = new Alert(Alert.AlertType.ERROR);
+            alert_error.setTitle("Insert Status");
+            alert_error.setHeaderText("Package was not added");
+            alert_error.setContentText("An error occurred while trying to add customer to database. Please" +
+                    " try again. If issue persists, contact your database administrator.");
+            alert_error.showAndWait();
         }
     }
 

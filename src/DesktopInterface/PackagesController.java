@@ -22,6 +22,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.time.Instant;
@@ -321,6 +322,7 @@ public class PackagesController {
         txtPkgName.setText(pkg.getPkgName());
         txtPkgDescription.setText(pkg.getPkgDesc());
 
+        //convert sql date to localdate type
         Date pkgStartDate = (pkg.getPkgStartDate());
         Instant instantPkgStartDate = Instant.ofEpochMilli(pkgStartDate.getTime());
         dpPkgStartDate.setValue(LocalDateTime.ofInstant(instantPkgStartDate,ZoneId.systemDefault()).toLocalDate());
@@ -383,6 +385,74 @@ public class PackagesController {
         tblPackages.setItems(pkgData);
     }
 
+    //method to insert or delete package
+    public void savePkgChanges()
+    {
+        //if insert button was clicked
+        if(crudBtnClicked =="insert")
+        {
+            insertPackage();
+        }
+        //if update button was clicked
+        else
+        {
+            updatePackage();
+        }
+    }
+
+    //change buttons visibility to only show "save" and "cancel" button
+    public void insertBtnClicked()
+    {
+        crudBtnClicked = "insert";
+        pnpackagesfields.setDisable(false);
+        setVisibilityButtons(false);
+        tblPackages.setDisable(true);
+        clearTextfieldDataAndLabels();
+    }
+
+    private void insertPackage()
+    {
+        Package newPackage = new Package(txtPkgName.getText(), java.sql.Date.valueOf(dpPkgStartDate.getValue()),
+                java.sql.Date.valueOf(dpPkgEndDate.getValue()),txtPkgDescription.getText(),Double.parseDouble(txtPkgBasePrice.getText()),
+                Double.parseDouble(txtPkgCommission.getText()));
+
+
+        PackageDB.AddPackage(newPackage);
+
+        alert_info.setTitle("Insert Status");
+        alert_info.setHeaderText("Package added successfully.");
+        alert_info.setContentText(newPackage.getPkgName() + " has successfully been added to the database.");
+        alert_info.showAndWait();
+
+        //set visibility to default settings and clear labels
+        cancelPkgChanges();
+
+        //refresh table view
+        updateTable();
+    }
+
+    //change buttons visibility to only show "save" and "cancel" button
+    public void updateBtnClicked()
+    {
+        if(txtPkgName.getText().isEmpty())
+        {
+            alert_error.setTitle("Package Invalid");
+            alert_error.setHeaderText("No package selected");
+            alert_error.setContentText("Please select a package from the table to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "update";
+            pnpackagesfields.setDisable(false);
+            setVisibilityButtons(false);
+            tblPackages.setDisable(true);
+        }
+    }
+
+    private void updatePackage() {
+    }
+
     //method to delete package
     public void deletePkg()
     {
@@ -395,7 +465,7 @@ public class PackagesController {
         {
             //show dialog box
             alert_info.setTitle("Delete Status");
-            alert_info.setHeaderText("Customer deleted successfully.");
+            alert_info.setHeaderText("Package deleted successfully.");
             alert_info.setContentText(deletePackage.getPkgName()+ " has successfully been deleted.");
             alert_info.showAndWait();
 

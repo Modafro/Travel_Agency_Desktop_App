@@ -83,6 +83,15 @@ public class Package {
         this.pkgAgencyCommission = pkgAgencyCommission;
     }
 
+    public Package(String pkgName, Date pkgStartDate, Date pkgEndDate, String pkgDesc, double pkgBasePrice, double pkgAgencyCommission) {
+        this.pkgName = pkgName;
+        this.pkgStartDate = pkgStartDate;
+        this.pkgEndDate = pkgEndDate;
+        this.pkgDesc = pkgDesc;
+        this.pkgBasePrice = pkgBasePrice;
+        this.pkgAgencyCommission = pkgAgencyCommission;
+    }
+
     public Package(int packageId, String pkgName, Date pkgStartDate, Date pkgEndDate, String pkgDesc, Double pkgBasePrice){
         this.packageId = packageId;
         this.pkgName = pkgName;
