@@ -60,19 +60,20 @@ public class PackageDB {
         }
     }
 
-    public static void UpdatePackage (Package oldPackage, Package newPackage){
+    public static void UpdatePackage(Package pkg)
+    {
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         PreparedStatement ps = null;
         try {
             ps = dbConnect.prepareStatement("UPDATE PACKAGES SET PkgName = ?, PkgDesc = ?, PkgStartDate = ?, PkgEndDate = ?, PkgBasePrice = ?, PkgAgencyCommission = ? WHERE PackageId = ?");
-            ps.setString(1,newPackage.getPkgName());
-            ps.setString(2,newPackage.getPkgDesc());
-            ps.setDate(3,newPackage.getPkgStartDate());
-            ps.setDate(4,newPackage.getPkgEndDate());
-            ps.setDouble(5,newPackage.getPkgBasePrice());
-            ps.setDouble(6,newPackage.getPkgAgencyCommission());
-            ps.setInt(7,oldPackage.getPackageId());
+            ps.setString(1,pkg.getPkgName());
+            ps.setString(2,pkg.getPkgDesc());
+            ps.setDate(3,pkg.getPkgStartDate());
+            ps.setDate(4,pkg.getPkgEndDate());
+            ps.setDouble(5,pkg.getPkgBasePrice());
+            ps.setDouble(6,pkg.getPkgAgencyCommission());
+            ps.setInt(7,pkg.getPackageId());
 
             ps.executeUpdate();
             dbConnect.close();

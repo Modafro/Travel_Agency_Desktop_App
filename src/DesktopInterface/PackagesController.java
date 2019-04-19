@@ -237,6 +237,7 @@ public class PackagesController {
             public void handle(TableColumn.CellEditEvent<Package, String> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
                 p.setPkgName(event.getNewValue());
+                txtPkgName.setText(p.getPkgName());
             }
         });
 
@@ -370,6 +371,19 @@ public class PackagesController {
 
     public void updateTable() {
 
+        if (pkgData !=null)
+        {
+            pkgData.clear();
+        }
+        ArrayList<Package> p = PackageDB.GetPackages();
+        pkgData = FXCollections.observableArrayList(p);
+        tblPackages.setItems(pkgData);
+    }
+
+    public void refreshTable()
+    {
+        txtSearch.setText("");
+        pkgData.clear();
         ArrayList<Package> p = PackageDB.GetPackages();
         pkgData = FXCollections.observableArrayList(p);
         tblPackages.setItems(pkgData);
@@ -410,6 +424,7 @@ public class PackagesController {
         clearTextfieldDataAndLabels();
     }
 
+    //insert new package
     private void insertPackage()
     {
         Package newPackage = new Package(txtPkgName.getText(), java.sql.Date.valueOf(dpPkgStartDate.getValue()),
@@ -450,7 +465,36 @@ public class PackagesController {
         }
     }
 
-    private void updatePackage() {
+    //update existing information of package
+    private void updatePackage()
+    {
+        if(txtPkgName.getText().isEmpty())
+        {
+            alert_error.setTitle("Package Invalid");
+            alert_error.setHeaderText("No package selected");
+            alert_error.setContentText("Please select a package from the table to delete.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            Package updatePackage = new Package(Integer.parseInt(txtPackageId.getText()), txtPkgName.getText(),
+                    java.sql.Date.valueOf(dpPkgStartDate.getValue()), java.sql.Date.valueOf(dpPkgEndDate.getValue()),
+                    txtPkgDescription.getText(), Double.parseDouble(txtPkgBasePrice.getText()), Double.parseDouble(txtPkgCommission.getText()));
+
+            PackageDB.UpdatePackage(updatePackage);
+            //show dialog box
+            alert_info.setTitle("Update Status");
+            alert_info.setHeaderText("Package updated successfully.");
+            alert_info.setContentText(updatePackage.getPkgName()+ " has successfully been deleted.");
+            alert_info.showAndWait();
+
+            //set visibility to default settings and clear textfields
+            cancelPkgChanges();
+
+            //refresh table view
+            updateTable();
+        }
+
     }
 
     //method to delete package

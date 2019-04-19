@@ -466,6 +466,7 @@ public class CustomersController {
     public void refreshCustTable()
     {
         custData.clear();
+        txtSearch.setText("");
         getCustomersByAgtID(loggedAgent, custData);
     }
 
