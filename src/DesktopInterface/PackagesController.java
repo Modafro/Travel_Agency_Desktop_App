@@ -3,13 +3,12 @@ package DesktopInterface;
 import DesktopInterface.TravelExpertClasses.Package;
 import DesktopInterface.TravelExpertClasses.PackageDB;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -17,27 +16,24 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class PackagesController {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    //private DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
     @FXML
     private AnchorPane packages;
@@ -167,24 +163,26 @@ public class PackagesController {
     //string object used to know which button was clicked : Insert / Update / Delete
     private String crudBtnClicked = new String();
 
+    //field for focus listener returning true or false
+    private boolean booleanForFocusExitListeners;
+
     @FXML
     void initialize() {
+        //validation on focus exit
+        isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError);
+        isEndDateValidOnFocusExit(dpPkgStartDate,dpPkgEndDate,lblPkgEndDateError);
+        isTextfieldNotEmptyOnFoucsExit(txtPkgName, lblPkgNameError);
+        isTextfieldNotEmptyOnFoucsExit(txtPkgDescription, lblPkgDescError);
+        isTextfieldNotEmptyOnFoucsExit(txtPkgBasePrice, lblPkgBasePriceError);
+        isTextfieldNotEmptyOnFoucsExit(txtPkgCommission, lblPkgCommissionError);
+        isTextfieldDoubleOnFoucsExit(txtPkgBasePrice,lblPkgBasePriceError);
+        isTextfieldDoubleOnFoucsExit(txtPkgCommission, lblPkgCommissionError);
+
         //hide CRUD operations (texfields)
         crudPackages.setExpanded(false);
 
-        //set visibility of error labels
-        lblPkgNameError.setVisible(false);
-        lblPkgDescError.setVisible(false);
-        lblPkgStartDateError.setVisible(false);
-        lblPkgEndDateError.setVisible(false);
-        lblPkgBasePriceError.setVisible(false);
-        lblPkgCommissionError.setVisible(false);
-
-        //disable packages text fields (CRUD pane) on load
-        pnpackagesfields.setDisable(true);
-
-        //set visibility of buttons
-        setVisibilityButtons(true);
+        //set default visibility and edit settings
+        cancelPkgChanges();
 
         //set textfields values from the selected package in the table with a mouse click or arrow key released
         setPkgTextfieldsFromTableOnMouseClicked();
@@ -412,28 +410,40 @@ public class PackagesController {
         setVisibilityButtons(false);
         tblPackages.setDisable(true);
         clearTextfieldDataAndLabels();
+
+        setDateChoiceTodayAndOnwards(dpPkgStartDate);
+        setDateChoiceBasedOnOtherDatePicked(dpPkgStartDate,dpPkgEndDate,1);
     }
 
     //insert new package
     private void insertPackage()
     {
-        Package newPackage = new Package(txtPkgName.getText(), java.sql.Date.valueOf(dpPkgStartDate.getValue()),
-                java.sql.Date.valueOf(dpPkgEndDate.getValue()),txtPkgDescription.getText(),Double.parseDouble(txtPkgBasePrice.getText()),
-                Double.parseDouble(txtPkgCommission.getText()));
+        if(!Validator.isEmpty(txtPkgName, lblPkgNameError)&& !Validator.isEmpty(txtPkgDescription, lblPkgDescError) &&
+                Validator.isDateValid(dpPkgStartDate, lblPkgStartDateError) && Validator.isDateAfterToday(dpPkgStartDate, lblPkgStartDateError) &&
+                Validator.isDateValid(dpPkgEndDate, lblPkgEndDateError) && Validator.isDateAfterSpecificDate(dpPkgStartDate,dpPkgEndDate, lblPkgEndDateError) &&
+                isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError) && isEndDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgEndDateError) &&
+                !Validator.isEmpty(txtPkgBasePrice, lblPkgBasePriceError) && Validator.isPositiveDouble(txtPkgBasePrice, lblPkgBasePriceError) &&
+                !Validator.isEmpty(txtPkgCommission, lblPkgCommissionError) && Validator.isPositiveDouble(txtPkgCommission, lblPkgCommissionError)
+                ) {
+
+            Package newPackage = new Package(txtPkgName.getText(), java.sql.Date.valueOf(dpPkgStartDate.getValue()),
+                    java.sql.Date.valueOf(dpPkgEndDate.getValue()), txtPkgDescription.getText(), Double.parseDouble(txtPkgBasePrice.getText()),
+                    Double.parseDouble(txtPkgCommission.getText()));
 
 
-        PackageDB.AddPackage(newPackage);
+            PackageDB.AddPackage(newPackage);
 
-        alert_info.setTitle("Insert Status");
-        alert_info.setHeaderText("Package added successfully.");
-        alert_info.setContentText(newPackage.getPkgName() + " has successfully been added to the database.");
-        alert_info.showAndWait();
+            alert_info.setTitle("Insert Status");
+            alert_info.setHeaderText("Package added successfully.");
+            alert_info.setContentText(newPackage.getPkgName() + " has successfully been added to the database.");
+            alert_info.showAndWait();
 
-        //set visibility to default settings and clear labels
-        cancelPkgChanges();
+            //set visibility to default settings and clear labels
+            cancelPkgChanges();
 
-        //refresh table view
-        updateTable();
+            //refresh table view
+            updateTable();
+        }
     }
 
     //change buttons visibility to only show "save" and "cancel" button
@@ -452,20 +462,21 @@ public class PackagesController {
             pnpackagesfields.setDisable(false);
             setVisibilityButtons(false);
             tblPackages.setDisable(true);
+
+            setDateChoiceTodayAndOnwards(dpPkgStartDate);
+            //setDateChoiceBasedOnOtherDatePicked();
         }
     }
 
     //update existing information of package
     private void updatePackage()
     {
-        if(txtPkgName.getText().isEmpty())
-        {
-            alert_error.setTitle("Package Invalid");
-            alert_error.setHeaderText("No package selected");
-            alert_error.setContentText("Please select a package from the table to delete.");
-            alert_error.showAndWait();
-        }
-        else
+        if(!Validator.isEmpty(txtPkgName, lblPkgNameError)&& !Validator.isEmpty(txtPkgDescription, lblPkgDescError)&&
+            Validator.isDateValid(dpPkgStartDate, lblPkgStartDateError) && Validator.isDateAfterToday(dpPkgStartDate, lblPkgStartDateError) &&
+            Validator.isDateValid(dpPkgEndDate, lblPkgEndDateError) && Validator.isDateAfterSpecificDate(dpPkgStartDate,dpPkgEndDate, lblPkgEndDateError) &&
+            isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError) && isEndDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgEndDateError) &&
+            !Validator.isEmpty(txtPkgBasePrice, lblPkgBasePriceError) && Validator.isPositiveDouble(txtPkgBasePrice, lblPkgBasePriceError) &&
+            !Validator.isEmpty(txtPkgCommission, lblPkgCommissionError) && Validator.isPositiveDouble(txtPkgCommission, lblPkgCommissionError))
         {
             Package updatePackage = new Package(Integer.parseInt(txtPackageId.getText()), txtPkgName.getText(),
                     java.sql.Date.valueOf(dpPkgStartDate.getValue()), java.sql.Date.valueOf(dpPkgEndDate.getValue()),
@@ -538,19 +549,25 @@ public class PackagesController {
     public void cancelPkgChanges()
     {
         pnpackagesfields.setDisable(true);
+        dpPkgEndDate.setDisable(true);
         setVisibilityButtons(true);
         tblPackages.setDisable(false);
         clearTextfieldDataAndLabels();
     }
 
     //method to clear textfields and remove error labels
-    private void clearTextfieldDataAndLabels()
-    {
+    private void clearTextfieldDataAndLabels() {
         txtPackageId.setText("");
         txtPkgName.setText("");
         txtPkgDescription.setText("");
-        dpPkgStartDate.setValue(null);
-        dpPkgEndDate.setValue(null);
+        if (dpPkgStartDate.getValue() !=null)
+        {
+            dpPkgStartDate.setValue(null);
+        }
+        if(dpPkgEndDate.getValue() !=null)
+        {
+            dpPkgEndDate.setValue(null);
+        }
         txtPkgBasePrice.setText("");
         txtPkgCommission.setText("");
 
@@ -562,138 +579,316 @@ public class PackagesController {
         lblPkgCommissionError.setVisible(false);
     }
 
-    /**
-     * Internal class for date cells
-     * @param <S>
-     * @param <T>
-     */
-    public class DatePickerCell<S, T> extends TableCell<Package, Date> {
+    //method to set datetime picker cell choices to not include dates before today
+    public void setDateChoiceTodayAndOnwards(DatePicker datePicker)
+    {
+        Callback<DatePicker, DateCell> startDateCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell(){
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty){
+                        super.updateItem(item,empty);
 
-        private DatePicker datePicker;
-        private ObservableList<Package> packageData;
-
-        public DatePickerCell(ObservableList<Package> packageData, String cellType) {
-            super();
-
-            this.packageData = packageData;
-
-            if (datePicker == null) {
-                createDatePicker(cellType);
+                        if (item.isBefore( LocalDate.now()))
+                        {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffc0cb;");
+                        }
+                    }
+                };
             }
-            setGraphic(datePicker);
-            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        };
+        datePicker.setDayCellFactory(startDateCellFactory);
+    }
 
-            Platform.runLater(new Runnable() {
+    //method to set datetime picker cell choices to be after the date specified in a different datetime picker
+    public void setDateChoiceBasedOnOtherDatePicked(DatePicker firstDatePicker, DatePicker secondDatePicker, int setMinDaysDifferential)
+    {
+        Callback<DatePicker, DateCell> endDateCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell(){
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty){
+                        super.updateItem(item,empty);
+                        if(firstDatePicker.getValue() != null)
+                        {
+                            if (item.isBefore( firstDatePicker.getValue().plusDays(setMinDaysDifferential)))
+                            {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
+                            }
+                            else
+                            {
+                                this.setTextFill(Color.BLACK);
+                            }
+
+                            //show a tool tip for number of days between the two dates
+                            long p = ChronoUnit.DAYS.between(firstDatePicker.getValue(), item);
+                            setTooltip(new Tooltip("Vacation package duration: "+ p + " days"));
+                        }
+                    }
+                };
+            }
+        };
+        secondDatePicker.setDayCellFactory(endDateCellFactory);
+    }
+
+    //method to validate start date on exit of datepicker field and prevent end date to be editable until start date is valid
+    public boolean isStartDateValidOnFocusExit(DatePicker startDate, DatePicker endDate,Label lblNameError)
+    {
+        startDate.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    //DatePicker dpPkgStartDateDecoy = new DatePicker();
+                    try
+                    {
+                        //datepicker only sets value if key.ENTER is pressed, if not pressed, we have to"forcefully"
+                        // set the value
+                        startDate.setValue(startDate.getConverter().fromString(startDate.getEditor().getText()));
+                        if(Validator.isDateValid(startDate, lblNameError) && Validator.isDateAfterToday(startDate, lblNameError))
+                        {
+                            endDate.setDisable(false);
+                            booleanForFocusExitListeners=true;
+                        }
+                        else
+                        {
+                            endDate.setDisable(true);
+                            booleanForFocusExitListeners = false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        endDate.setDisable(true);
+                        lblNameError.setVisible(true);
+                        lblNameError.setText("Please enter a valid format: 01/31/2000");
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if textfields are empty on focus exit
+    public boolean isTextfieldNotEmptyOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(!Validator.isEmpty(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if textfield is a double on focus exit
+    public boolean isTextfieldDoubleOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(!Validator.isPositiveDouble(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate end date on exit of datepicker field
+    public boolean isEndDateValidOnFocusExit(DatePicker specificDate, DatePicker dpName, Label lblNameError)
+    {
+            dpName.focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
-                public void run() {
-                    datePicker.requestFocus();
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(!newValue)
+                    {
+                        try
+                        {
+                            //datepicker only sets value if key.ENTER is pressed, if not pressed, we have to"forcefully"
+                            // set the value
+                            dpName.setValue(dpName.getConverter().fromString(dpName.getEditor().getText()));
+                            if(Validator.isDateValid(dpName, lblNameError) && Validator.isDateAfterSpecificDate(specificDate, dpName, lblNameError))
+                            {
+                                //dpName.setValue(dpName.getConverter().fromString(dpName.getEditor().getText()));
+                                booleanForFocusExitListeners =  true;
+                            }
+                            else
+                            {
+                                booleanForFocusExitListeners = false;
+                            }
+                        }
+                        catch(Exception e)
+                        {
+                            lblNameError.setVisible(true);
+                            lblNameError.setText("Please enter a valid format: 01/31/2000");
+                            booleanForFocusExitListeners = false;
+                        }
+                    }
                 }
             });
-        }
-
-        @Override
-        public void updateItem(Date item, boolean empty) {
-
-            super.updateItem(item, empty);
-
-            SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-
-            if (null == this.datePicker) {
-                System.out.println("datePicker is NULL");
-            }
-
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-
-                if (isEditing()) {
-                    setContentDisplay(ContentDisplay.TEXT_ONLY);
-                } else {
-                    setDatePickerDate(smp.format(item));
-                    setText(smp.format(item));
-                    setGraphic(this.datePicker);
-                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                }
-            }
-        }
-
-        private void setDatePickerDate(String dateAsStr) {
-
-            LocalDate ld = null;
-            int jour, mois, annee;
-
-            jour = mois = annee = 0;
-            try {
-                jour = Integer.parseInt(dateAsStr.substring(0, 2));
-                mois = Integer.parseInt(dateAsStr.substring(3, 5));
-                annee = Integer.parseInt(dateAsStr.substring(6, dateAsStr.length()));
-            } catch (NumberFormatException e) {
-                System.out.println("setDatepikerDate / unexpected error " + e);
-            }
-
-            ld = LocalDate.of(annee, mois, jour);
-            datePicker.setValue(ld);
-        }
-
-        private void createDatePicker(String cellType) {
-            this.datePicker = new DatePicker();
-            datePicker.setPromptText("jj/mm/aaaa");
-            datePicker.setEditable(true);
-            datePicker.setOnAction(new EventHandler() {
-                public void handle(Event t) {
-                    LocalDate date = datePicker.getValue();
-                    int index = getIndex();
-                    SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
-                    cal.set(Calendar.MONTH, date.getMonthValue() - 1);
-                    cal.set(Calendar.YEAR, date.getYear());
-
-                    setText(smp.format(cal.getTime()));
-                    commitEdit(cal.getTime());
-
-                    ObservableList<Package> observableList = getBirthdayData();
-
-                    if (getTableRow() != null && null != getBirthdayData() && cellType.equals("endDate")) {
-                        getTableRow().getItem().setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
-                        //getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
-                    }
-                    else if(null != getBirthdayData() && cellType.equals("startDate")) {
-                        getBirthdayData().get(index).setPkgStartDate(new java.sql.Date(cal.getTime().getTime()));
-                    }
-
-                }
-            });
-
-            setAlignment(Pos.CENTER);
-        }
-
-        @Override
-        public void startEdit() {
-            super.startEdit();
-        }
-
-        @Override
-        public void cancelEdit() {
-            super.cancelEdit();
-            setContentDisplay(ContentDisplay.TEXT_ONLY);
-        }
-
-        public ObservableList<Package> getBirthdayData() {
-            return packageData;
-        }
-
-        public void setBirthdayData(ObservableList<Package> birthdayData) {
-            this.packageData = birthdayData;
-        }
-
-        public DatePicker getDatePicker() {
-            return datePicker;
-        }
-
-        public void setDatePicker(DatePicker datePicker) {
-            this.datePicker = datePicker;
+            return booleanForFocusExitListeners;
         }
     }
-}
+
+//    /**
+//     * Internal class for date cells
+//     * @param <S>
+//     * @param <T>
+//     */
+//
+//
+//    public class DatePickerCell<S, T> extends TableCell<Package, Date> {
+//
+//        private DatePicker datePicker;
+//        private ObservableList<Package> packageData;
+//
+//        public DatePickerCell(ObservableList<Package> packageData, String cellType) {
+//            super();
+//
+//            this.packageData = packageData;
+//
+//            if (datePicker == null) {
+//                createDatePicker(cellType);
+//            }
+//            setGraphic(datePicker);
+//            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+//
+//            Platform.runLater(new Runnable() {
+//                @Override
+//                public void run() {
+//                    datePicker.requestFocus();
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public void updateItem(Date item, boolean empty) {
+//
+//            super.updateItem(item, empty);
+//
+//            SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
+//
+//            if (null == this.datePicker) {
+//                System.out.println("datePicker is NULL");
+//            }
+//
+//            if (empty) {
+//                setText(null);
+//                setGraphic(null);
+//            } else {
+//
+//                if (isEditing()) {
+//                    setContentDisplay(ContentDisplay.TEXT_ONLY);
+//                } else {
+//                    setDatePickerDate(smp.format(item));
+//                    setText(smp.format(item));
+//                    setGraphic(this.datePicker);
+//                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+//                }
+//            }
+//        }
+//
+//        private void setDatePickerDate(String dateAsStr) {
+//
+//            LocalDate ld = null;
+//            int jour, mois, annee;
+//
+//            jour = mois = annee = 0;
+//            try {
+//                jour = Integer.parseInt(dateAsStr.substring(0, 2));
+//                mois = Integer.parseInt(dateAsStr.substring(3, 5));
+//                annee = Integer.parseInt(dateAsStr.substring(6, dateAsStr.length()));
+//            } catch (NumberFormatException e) {
+//                System.out.println("setDatepikerDate / unexpected error " + e);
+//            }
+//
+//            ld = LocalDate.of(annee, mois, jour);
+//            datePicker.setValue(ld);
+//        }
+//
+//        private void createDatePicker(String cellType) {
+//            this.datePicker = new DatePicker();
+//            datePicker.setPromptText("jj/mm/aaaa");
+//            datePicker.setEditable(true);
+//            datePicker.setOnAction(new EventHandler() {
+//                public void handle(Event t) {
+//                    LocalDate date = datePicker.getValue();
+//                    int index = getIndex();
+//                    SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
+//                    cal.set(Calendar.MONTH, date.getMonthValue() - 1);
+//                    cal.set(Calendar.YEAR, date.getYear());
+//
+//                    setText(smp.format(cal.getTime()));
+//                    commitEdit(cal.getTime());
+//
+//                    ObservableList<Package> observableList = getBirthdayData();
+//
+//                    if (getTableRow() != null && null != getBirthdayData() && cellType.equals("endDate")) {
+//                        getTableRow().getItem().setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
+//                        //getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
+//                    }
+//                    else if(null != getBirthdayData() && cellType.equals("startDate")) {
+//                        getBirthdayData().get(index).setPkgStartDate(new java.sql.Date(cal.getTime().getTime()));
+//                    }
+//
+//                }
+//            });
+//
+//            setAlignment(Pos.CENTER);
+//        }
+//
+//        @Override
+//        public void startEdit() {
+//            super.startEdit();
+//        }
+//
+//        @Override
+//        public void cancelEdit() {
+//            super.cancelEdit();
+//            setContentDisplay(ContentDisplay.TEXT_ONLY);
+//        }
+//
+//        public ObservableList<Package> getBirthdayData() {
+//            return packageData;
+//        }
+//
+//        public void setBirthdayData(ObservableList<Package> birthdayData) {
+//            this.packageData = birthdayData;
+//        }
+//
+//        public DatePicker getDatePicker() {
+//            return datePicker;
+//        }
+//
+//        public void setDatePicker(DatePicker datePicker) {
+//            this.datePicker = datePicker;
+//        }
+//    }
+//}

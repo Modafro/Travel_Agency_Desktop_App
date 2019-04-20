@@ -2,10 +2,16 @@
 package DesktopInterface;
 
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.awt.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +60,60 @@ public class Validator {
             lblNameError.setText("Field required");
             return true;
         }
+    }
 
+    //method to validate date format
+    public static boolean isDateValid(DatePicker dpName, Label lblNameError)
+    {
+        if(dpName.getValue() != null)
+        {
+            lblNameError.setVisible(false);
+            return true;
+        }
+        else
+        {
+            lblNameError.setVisible(true);
+            lblNameError.setText("Please enter a valid format: 01/31/2000");
+            return false;
+        }
+    }
+
+    //method to validate if date is before today's date
+    public static boolean isDateAfterToday(DatePicker dpName, Label lblNameError)
+    {
+        Date dateToValidate = DateConverter.FromDatePickerToUtilDate(dpName);
+        Date todayDate = DateConverter.FromLocalDateToUtilDate(LocalDate.now());
+
+        if(dateToValidate.compareTo(todayDate) >= 0)
+        {
+            lblNameError.setVisible(false);
+            return true;
+        }
+        else
+        {
+            lblNameError.setVisible(true);
+            lblNameError.setText("Date must be today or after today's date");
+            return false;
+        }
+    }
+
+    //method to validate if a date is after a specific date (in the context of this project, after the start date of package)
+    public static boolean isDateAfterSpecificDate (DatePicker dpSpecificDate, DatePicker dpName, Label lblNameError)
+    {
+        Date dateSpecific = DateConverter.FromDatePickerToUtilDate(dpSpecificDate);
+        Date dateToValidate= DateConverter.FromDatePickerToUtilDate(dpName);
+
+        if(dateToValidate.compareTo(dateSpecific) > 0)
+        {
+           lblNameError.setVisible(false);
+           return true;
+        }
+        else
+        {
+            lblNameError.setVisible(true);
+            lblNameError.setText("Date must be after start date");
+            return false;
+        }
     }
 
     //method to verify if email format is valid and set relevant error label visible true/false
@@ -157,6 +216,38 @@ public class Validator {
                }
 
             } catch (NumberFormatException e) {
+                return false; //if an exception is caught, parseInt is false
+            }
+            //return false;
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
+
+    //method to validate if input is a positive decimal
+    public static boolean isPositiveDouble(TextField txtName, Label lblNameError)
+    {
+
+        if(!isEmpty(txtName))
+        {
+            try {
+                double isNumber = Double.parseDouble(txtName.getText());
+
+                if (isNumber>=0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            } catch (NumberFormatException e) {
+                lblNameError.setVisible(true);
+                lblNameError.setText("Format Invalid");
                 return false; //if an exception is caught, parseInt is false
             }
             //return false;

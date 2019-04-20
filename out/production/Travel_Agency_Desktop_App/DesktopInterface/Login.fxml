@@ -33,7 +33,7 @@
             </children>
         </Pane>
         <FontAwesomeIcon glyphName="LOCK" layoutX="439.0" layoutY="110.0" size="60" />
-        <TextField fx:id="txtUsername" layoutX="360.0" layoutY="163.0" onKeyReleased="#verifyEmpty" prefHeight="37.0" prefWidth="198.0" promptText="Username">
+        <TextField fx:id="txtUsername" layoutX="360.0" layoutY="163.0" onKeyReleased="#verifyEmpty" prefHeight="37.0" prefWidth="198.0" promptText="Username" >
             <font>
                 <Font size="16.0" />
             </font>

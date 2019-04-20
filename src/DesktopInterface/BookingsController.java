@@ -207,8 +207,6 @@ public class BookingsController extends JPanel {
         setCustTextfieldsFromTableOnArrowKeyReleased();
         setPkgTextfieldsFromTableOnMouseClicked();
         setPkgTextfieldsFromTableOnArrowKeyReleased();
-
-
     }
 
     //method to get the agent object from Agent Controller

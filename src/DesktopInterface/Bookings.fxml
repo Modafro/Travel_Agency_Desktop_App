@@ -14,8 +14,8 @@
    <children>
       <Pane fx:id="pnSelectCustPkgNumTravelers" layoutX="35.0" layoutY="14.0">
          <children>
-            <TextField fx:id="txtSearchCustomer" onKeyReleased="#searchCustomer" prefHeight="25.0" prefWidth="160.0" promptText="Search Customer" />
-            <TextField fx:id="txtSearchPackage" layoutX="277.0" onKeyReleased="#searchPackage" prefHeight="25.0" prefWidth="160.0" promptText="Search Package" />
+            <TextField fx:id="txtSearchCustomer" onAction="#searchCustomer" prefHeight="25.0" prefWidth="160.0" promptText="Search Customer" />
+            <TextField fx:id="txtSearchPackage" layoutX="277.0" onAction="#searchPackage" prefHeight="25.0" prefWidth="160.0" promptText="Search Package" />
             <Label layoutX="498.0" layoutY="4.0" text="Enter Number of Travelers" />
             <TableView fx:id="tvcustomers" layoutY="33.0" prefHeight="126.0" prefWidth="244.0">
               <columns>
