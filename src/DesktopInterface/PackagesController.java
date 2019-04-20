@@ -278,7 +278,7 @@ public class PackagesController {
             }
         });
         tblPackages.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        updateTable();
+        //updateTable();
 
 /*        TableColumn dateColumn = new TableColumn("Date");
 
@@ -370,21 +370,11 @@ public class PackagesController {
     }
 
     public void updateTable() {
-
+        ArrayList<Package> p = PackageDB.GetPackages();
         if (pkgData !=null)
         {
             pkgData.clear();
         }
-        ArrayList<Package> p = PackageDB.GetPackages();
-        pkgData = FXCollections.observableArrayList(p);
-        tblPackages.setItems(pkgData);
-    }
-
-    public void refreshTable()
-    {
-        txtSearch.setText("");
-        pkgData.clear();
-        ArrayList<Package> p = PackageDB.GetPackages();
         pkgData = FXCollections.observableArrayList(p);
         tblPackages.setItems(pkgData);
     }

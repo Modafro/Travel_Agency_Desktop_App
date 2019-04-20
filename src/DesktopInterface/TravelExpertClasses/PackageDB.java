@@ -13,6 +13,8 @@ public class PackageDB {
     public static ArrayList<Package> packageList = new ArrayList<>();
 
     public static ArrayList<Package> GetPackages(){
+        //clear the array list if packageList object is not null
+        packageList.clear();
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         String sql = "SELECT PackageId, PkgName, PkgStartDate, PkgEndDate, PkgDesc, PkgBasePrice, PkgAgencyCommission FROM Packages ORDER BY PackageId";

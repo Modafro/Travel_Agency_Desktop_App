@@ -91,8 +91,8 @@
             </Pane>
          </content>
       </TitledPane>
-      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="6.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
-      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="23.0" onMouseClicked="#refreshTable" size="1.2em" wrappingWidth="12.999994784593582" />
+      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="6.0" mnemonicParsing="false" onAction="#updateTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
+      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="23.0" onMouseClicked="#updateTable" size="1.2em" wrappingWidth="12.999994784593582" />
       <TextField fx:id="txtSearch" layoutX="22.0" layoutY="5.0" onAction="#searchDataBase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
    </children>
 </AnchorPane>
