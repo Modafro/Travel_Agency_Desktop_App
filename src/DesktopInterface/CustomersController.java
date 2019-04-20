@@ -7,6 +7,8 @@ import DesktopInterface.TravelExpertClasses.Agents;
 import DesktopInterface.TravelExpertClasses.Customer;
 import DesktopInterface.TravelExpertClasses.CustomerDB;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -179,7 +181,7 @@ public class CustomersController {
 
     private ObservableList<Customer> custData = FXCollections.observableArrayList();
 
-    private ObservableList<String> provData = FXCollections.observableArrayList("AB",
+    private ObservableList<String> provData = FXCollections.observableArrayList("Prov","AB",
             "BC","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT");
 
     private Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
@@ -189,8 +191,26 @@ public class CustomersController {
     //string object used to know which button was clicked : Insert / Update / Delete
     private String crudBtnClicked = new String();
 
+    //field for focus listener returning true or false
+    private boolean booleanForFocusExitListeners;
+
     @FXML
     void initialize() {
+        //validation on focus exit
+        isTextfieldNotEmptyOnFoucsExit(txtCustFirstName, lblCustFirstNameError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustLastName, lblCustLastNameError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustAddress, lblCustAddressError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustCity, lblCustCityError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustPostal, lblCustPostalError);
+        isProvinceValidOnFoucsExit(cbProvince, lblCustProvError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustEmail,lblCustEmailError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustHomePhone,lblCustHomePhoneError);
+        isNameValidOnFoucsExit(txtCustFirstName, lblCustFirstNameError);
+        isNameValidOnFoucsExit(txtCustLastName, lblCustLastNameError);
+        isEmailValidOnFoucsExit(txtCustEmail,lblCustEmailError);
+        isPostalValidOnFoucsExit(txtCustPostal, lblCustPostalError);
+        isPhoneValidOnFoucsExit(txtCustHomePhone, lblCustHomePhoneError);
+        isPhoneValidOnFoucsExit(txtCustBusPhone, lblCustBusPhoneError);
 
         //hide CRUD operations (texfields)
         crudCustomers.setExpanded(false);
@@ -198,22 +218,8 @@ public class CustomersController {
         //load combo box for province
         cbProvince.setItems(provData);
 
-        //set visibility of error labels
-        lblCustFirstNameError.setVisible(false);
-        lblCustLastNameError.setVisible(false);
-        lblCustAddressError.setVisible(false);
-        lblCustPostalError.setVisible(false);
-        lblCustCityError.setVisible(false);
-        lblCustProvError.setVisible(false);
-        lblCustEmailError.setVisible(false);
-        lblCustHomePhoneError.setVisible(false);
-        lblCustBusPhoneError.setVisible(false);
-
-        //disable customer text fields (CRUD pane) on load
-        pncustomerfields.setDisable(true);
-
-        //set visibility of buttons
-        setVisibilityButtons(true);
+        //set default visibility and edit settings
+        cancelCustChanges();
 
         //set textfields values from the selected customer in the table with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
@@ -323,7 +329,7 @@ public class CustomersController {
         setVisibilityButtons(true);
         tvcustomers.setDisable(false);
         clearTexfieldDataAndLabels();
-        cbProvince.setPromptText("Prov");
+        cbProvince.getSelectionModel().select(0);
     }
 
     //method to clear textfields and remove error labels
@@ -478,7 +484,7 @@ public class CustomersController {
         setVisibilityButtons(false);
         tvcustomers.setDisable(true);
         clearTexfieldDataAndLabels();
-        cbProvince.setPromptText("Prov");
+        cbProvince.getSelectionModel().select(0);
     }
 
     //change buttons visibility to only show "save" and "cancel" button
@@ -522,6 +528,144 @@ public class CustomersController {
             imgConfirmDelete.setVisible(true);
             tvcustomers.setDisable(true);
         }
+    }
+
+    //method to validate if textfields are empty on focus exit
+    public boolean isTextfieldNotEmptyOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(!Validator.isEmpty(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if province is valid
+    public boolean isProvinceValidOnFoucsExit(ComboBox<String> cbName, Label lblName)
+    {
+        cbName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isProvinceValid(cbName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if first name or last name is valid
+    public boolean isNameValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isNameValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if email is valid
+    public boolean isEmailValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isEmailValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if postal code is valid
+    public boolean isPostalValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isPostalValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if phone is valid
+    public boolean isPhoneValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isPhoneValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
     }
 
     //set visibility of buttons (and corresponding images)

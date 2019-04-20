@@ -138,7 +138,7 @@ public class Validator {
         //validate pattern only if textfield not empty
         if(!isEmpty(txtName))
         {
-            String Pattern = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
+            String Pattern = "^([A-Za-z]\\d[A-Za-z][- ]?\\d[A-Za-z]\\d)+$";
             return regexResult(Pattern, txtName, lblName);
         }
         //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
@@ -181,10 +181,10 @@ public class Validator {
         }
     }
 
-    //method to validate if not value for a given comboxbox was not selected
+    //method to validate if value for a given comboxbox was selected
     public static boolean isProvinceValid(ComboBox<String> cbName, Label lblName)
     {
-        if (cbName.getSelectionModel().getSelectedIndex() != -1)
+        if (cbName.getSelectionModel().getSelectedItem() != "Prov")
         {
             lblName.setVisible(false);
             return true;
@@ -192,7 +192,7 @@ public class Validator {
         else
         {
             lblName.setVisible(true);
-            lblName.setText("Select a value");
+            lblName.setText("Select a province");
             return false;
         }
     }
