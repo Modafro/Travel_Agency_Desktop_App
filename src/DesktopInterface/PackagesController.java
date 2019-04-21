@@ -411,6 +411,11 @@ public class PackagesController {
         tblPackages.setDisable(true);
         clearTextfieldDataAndLabels();
 
+        dpPkgStartDate.setStyle("-fx-opacity: 1");
+        dpPkgStartDate.getEditor().setStyle("-fx-opacity: 1");
+        dpPkgEndDate.setStyle("-fx-opacity: 1");
+        dpPkgEndDate.getEditor().setStyle("-fx-opacity: 1");
+
         setDateChoiceTodayAndOnwards(dpPkgStartDate);
         setDateChoiceBasedOnOtherDatePicked(dpPkgStartDate,dpPkgEndDate,1);
     }
@@ -463,8 +468,13 @@ public class PackagesController {
             setVisibilityButtons(false);
             tblPackages.setDisable(true);
 
+            dpPkgStartDate.setStyle("-fx-opacity: 1");
+            dpPkgStartDate.getEditor().setStyle("-fx-opacity: 1");
+            dpPkgEndDate.setStyle("-fx-opacity: 1");
+            dpPkgEndDate.getEditor().setStyle("-fx-opacity: 1");
+
             setDateChoiceTodayAndOnwards(dpPkgStartDate);
-            //setDateChoiceBasedOnOtherDatePicked();
+            setDateChoiceBasedOnOtherDatePicked(dpPkgStartDate,dpPkgEndDate,1);
         }
     }
 
@@ -535,7 +545,17 @@ public class PackagesController {
         else
         {
             crudBtnClicked = "delete";
-            pnpackagesfields.setDisable(true);
+            pnpackagesfields.setDisable(false);
+            txtPkgName.setEditable(false);
+            txtPkgDescription.setEditable(false);
+            txtPkgCommission.setEditable(false);
+            txtPkgBasePrice.setEditable(false);
+            dpPkgStartDate.setDisable(true);
+            dpPkgStartDate.setStyle("-fx-opacity: 1");
+            dpPkgStartDate.getEditor().setStyle("-fx-opacity: 1");
+            dpPkgEndDate.setDisable(true);
+            dpPkgEndDate.setStyle("-fx-opacity: 1");
+            dpPkgEndDate.getEditor().setStyle("-fx-opacity: 1");
             setVisibilityButtons(false);
             btnSave.setVisible(false);
             imgSave.setVisible(false);
@@ -553,6 +573,16 @@ public class PackagesController {
         setVisibilityButtons(true);
         tblPackages.setDisable(false);
         clearTextfieldDataAndLabels();
+        txtPkgName.setEditable(true);
+        txtPkgDescription.setEditable(true);
+        txtPkgCommission.setEditable(true);
+        txtPkgBasePrice.setEditable(true);
+        dpPkgStartDate.setDisable(false);
+        dpPkgStartDate.setStyle("-fx-opacity: 0.5");
+        dpPkgStartDate.getEditor().setStyle("-fx-opacity: 0.5");
+        dpPkgEndDate.setDisable(false);
+        dpPkgEndDate.setStyle("-fx-opacity: 0.5");
+        dpPkgEndDate.getEditor().setStyle("-fx-opacity: 0.5");
     }
 
     //method to clear textfields and remove error labels
@@ -594,12 +624,19 @@ public class PackagesController {
                         {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
+                            //setStyle("-fx-opacity: 0.5");
+                            //getEditor().setStyle("-fx-opacity: 1");
+                        }
+                        else
+                        {
+                            setStyle("-fx-background-color: #D5F9D6;");
                         }
                     }
                 };
             }
         };
         datePicker.setDayCellFactory(startDateCellFactory);
+        //datePicker.getEditor().setStyle("-fx-opacity: 1");
     }
 
     //method to set datetime picker cell choices to be after the date specified in a different datetime picker
@@ -621,7 +658,7 @@ public class PackagesController {
                             }
                             else
                             {
-                                this.setTextFill(Color.BLACK);
+                                setStyle("-fx-background-color: #D5F9D6;");
                             }
 
                             //show a tool tip for number of days between the two dates

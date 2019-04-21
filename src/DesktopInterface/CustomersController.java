@@ -483,6 +483,7 @@ public class CustomersController {
         pncustomerfields.setDisable(false);
         setVisibilityButtons(false);
         tvcustomers.setDisable(true);
+        setEditFields(true);
         clearTexfieldDataAndLabels();
         cbProvince.getSelectionModel().select(0);
     }
@@ -502,6 +503,7 @@ public class CustomersController {
             crudBtnClicked = "update";
             pncustomerfields.setDisable(false);
             setVisibilityButtons(false);
+            setEditFields(true);
             tvcustomers.setDisable(true);
         }
     }
@@ -520,7 +522,8 @@ public class CustomersController {
         else
         {
             crudBtnClicked = "delete";
-            pncustomerfields.setDisable(true);
+            pncustomerfields.setDisable(false);
+            setEditFields(false);
             setVisibilityButtons(false);
             btnSave.setVisible(false);
             imgSave.setVisible(false);
@@ -528,6 +531,36 @@ public class CustomersController {
             imgConfirmDelete.setVisible(true);
             tvcustomers.setDisable(true);
         }
+    }
+
+    //method to set edit fields
+    public void setEditFields(boolean boolValue)
+    {
+        if(!boolValue)
+        {
+            txtCustFirstName.setEditable(false);
+            txtCustLastName.setEditable(false);
+            txtCustAddress.setEditable(false);
+            txtCustCity.setEditable(false);
+            txtCustPostal.setEditable(false);
+            cbProvince.setDisable(true);
+            txtCustEmail.setEditable(false);
+            txtCustHomePhone.setEditable(false);
+            txtCustBusPhone.setEditable(false);
+        }
+        else
+        {
+            txtCustFirstName.setEditable(true);
+            txtCustLastName.setEditable(true);
+            txtCustAddress.setEditable(true);
+            txtCustCity.setEditable(true);
+            txtCustPostal.setEditable(true);
+            cbProvince.setDisable(false);
+            txtCustEmail.setEditable(true);
+            txtCustHomePhone.setEditable(true);
+            txtCustBusPhone.setEditable(true);
+        }
+
     }
 
     //method to validate if textfields are empty on focus exit

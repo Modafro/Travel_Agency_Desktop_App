@@ -136,6 +136,7 @@ public class AgentController {
         else if(event.getSource() == btnBookings)
         {
             lblCurrentDirectory.setText("Bookings");
+            bookingsController.refreshPkgTable();
             bookings.toFront();
         }
         else if (event.getSource() == btnLogout)
