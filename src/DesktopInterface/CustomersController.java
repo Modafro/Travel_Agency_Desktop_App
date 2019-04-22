@@ -244,7 +244,6 @@ public class CustomersController {
         try {
             colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("CustomerId"));
             colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
-            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
             colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
             colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
             colCustCIty.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustCity"));
@@ -768,8 +767,8 @@ public class CustomersController {
         txtCustLastName.setText(cust.getCustLastName());
         txtCustAddress.setText(cust.getCustAddress());
         txtCustCity.setText(cust.getCustCity());
-        txtCustPostal.setText(cust.getCustPostal());
         cbProvince.getSelectionModel().select(cust.getCustProv());
+        txtCustPostal.setText(cust.getCustPostal());
         txtCustEmail.setText(cust.getCustEmail());
         txtCustHomePhone.setText(cust.getCustHomePhone());
         txtCustBusPhone.setText(cust.getCustBusPhone());

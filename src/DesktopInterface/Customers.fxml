@@ -18,6 +18,7 @@
       <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="603.0" layoutY="15.0" mnemonicParsing="false" onAction="#refreshCustTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
         <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="196.0" prefWidth="659.0">
             <columns>
+            <TableColumn fx:id="colCustId" text="Id" visible="false" />
                 <TableColumn fx:id="colCustFirstName" text="First Name" />
                 <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
                 <TableColumn fx:id="colCustAddress" prefWidth="157.0" text="Address" />
@@ -28,7 +29,6 @@
                 <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
                 <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
                 <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
-            <TableColumn fx:id="colCustId" text="Id" visible="false" />
             </columns>
         </TableView>
         <TextField fx:id="txtSearch" layoutX="22.0" layoutY="14.0" onAction="#searchDatabase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />

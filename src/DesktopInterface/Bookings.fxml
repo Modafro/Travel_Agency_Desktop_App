@@ -19,18 +19,18 @@
             <Label layoutX="498.0" layoutY="4.0" text="Enter Number of Travelers" />
             <TableView fx:id="tvcustomers" layoutY="33.0" prefHeight="126.0" prefWidth="244.0">
               <columns>
+                  <TableColumn fx:id="colCustId" prefWidth="75.0" text="Id" visible="false" />
                 <TableColumn fx:id="colCustFirstName" prefWidth="67.0" text="First Name" />
                 <TableColumn fx:id="colCustLastName" prefWidth="68.0" text="Last Name" />
                   <TableColumn fx:id="colCustHomePhone" prefWidth="90.0" text="Home Phone" />
-                  <TableColumn fx:id="colCustId" prefWidth="75.0" text="Id" visible="false" />
-                  <TableColumn fx:id="colCustEmail" prefWidth="75.0" text="Email" visible="false" />
                   <TableColumn fx:id="colCustAddress" prefWidth="75.0" text="Address" visible="false" />
+                  <TableColumn fx:id="colCustEmail" prefWidth="75.0" text="Email" visible="false" />
               </columns>
             </TableView>
             <TableView fx:id="tvpackages" layoutX="277.0" layoutY="33.0" prefHeight="126.0" prefWidth="160.0">
               <columns>
-                <TableColumn fx:id="colPkgName" prefWidth="140.0" text="Package Name" />
                 <TableColumn fx:id="colPkgId" prefWidth="75.0" text="Id" visible="false" />
+                <TableColumn fx:id="colPkgName" prefWidth="140.0" text="Package Name" />
                   <TableColumn fx:id="colPkgDesc" prefWidth="160.0" text="Package Description" visible="false" />
                   <TableColumn fx:id="colPkgStartDate" prefWidth="160.0" text="Start Date" visible="false" />
                   <TableColumn fx:id="colPkgEndDate" prefWidth="160.0" text="End Date" visible="false" />
