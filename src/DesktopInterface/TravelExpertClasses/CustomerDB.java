@@ -1,4 +1,5 @@
 //Objective: class to create methods that fetch various queries in travelexperts database
+
 package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;

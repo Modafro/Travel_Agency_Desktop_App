@@ -2,6 +2,8 @@ package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ public class PackageDB {
     public static ArrayList<Package> packageList = new ArrayList<>();
 
     public static ArrayList<Package> GetPackages(){
+        //clear the array list if packageList object is not null
+        packageList.clear();
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         String sql = "SELECT PackageId, PkgName, PkgStartDate, PkgEndDate, PkgDesc, PkgBasePrice, PkgAgencyCommission FROM Packages ORDER BY PackageId";
@@ -32,6 +36,7 @@ public class PackageDB {
     }
 
     public static void AddPackage(Package p){
+
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         try {
@@ -48,22 +53,29 @@ public class PackageDB {
             dbConnect.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            Alert alert_error = new Alert(Alert.AlertType.ERROR);
+            alert_error.setTitle("Insert Status");
+            alert_error.setHeaderText("Package was not added");
+            alert_error.setContentText("An error occurred while trying to add customer to database. Please" +
+                    " try again. If issue persists, contact your database administrator.");
+            alert_error.showAndWait();
         }
     }
 
-    public static void UpdatePackage (Package oldPackage, Package newPackage){
+    public static void UpdatePackage(Package pkg)
+    {
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         PreparedStatement ps = null;
         try {
             ps = dbConnect.prepareStatement("UPDATE PACKAGES SET PkgName = ?, PkgDesc = ?, PkgStartDate = ?, PkgEndDate = ?, PkgBasePrice = ?, PkgAgencyCommission = ? WHERE PackageId = ?");
-            ps.setString(1,newPackage.getPkgName());
-            ps.setString(2,newPackage.getPkgDesc());
-            ps.setDate(3,newPackage.getPkgStartDate());
-            ps.setDate(4,newPackage.getPkgEndDate());
-            ps.setDouble(5,newPackage.getPkgBasePrice());
-            ps.setDouble(6,newPackage.getPkgAgencyCommission());
-            ps.setInt(7,oldPackage.getPackageId());
+            ps.setString(1,pkg.getPkgName());
+            ps.setString(2,pkg.getPkgDesc());
+            ps.setDate(3,pkg.getPkgStartDate());
+            ps.setDate(4,pkg.getPkgEndDate());
+            ps.setDouble(5,pkg.getPkgBasePrice());
+            ps.setDouble(6,pkg.getPkgAgencyCommission());
+            ps.setInt(7,pkg.getPackageId());
 
             ps.executeUpdate();
             dbConnect.close();
@@ -72,18 +84,31 @@ public class PackageDB {
         }
     }
 
-    public static void DeletePackage (int tp){
+    public static boolean DeletePackage (Package pkg){
+
+        boolean isPkgDeleted = false;
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         try {
-            PreparedStatement ps = dbConnect.prepareStatement("DELETE FROM [Packages] WHERE PackageId = ? ");
-            ps.setInt(1, tp);
+            //first delete package referenced in packages_prodcuts_suppliers if any
+            PreparedStatement stmt = dbConnect.prepareStatement("DELETE Packages_Products_Suppliers WHERE PackageId = ? ");
+            stmt.setInt(1, pkg.getPackageId());
+            stmt.executeUpdate();
 
-            ps.execute();
+            PreparedStatement ps = dbConnect.prepareStatement("DELETE [Packages] WHERE PackageId = ? ");
+            ps.setInt(1, pkg.getPackageId());
+
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected > 0)
+            {
+                isPkgDeleted = true;
+            }
             dbConnect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return isPkgDeleted;
     }
 
     public static ObservableList<Package> getPackageNameTableView(ObservableList<Package> pkgData)
@@ -112,6 +137,42 @@ public class PackageDB {
         }
         catch (SQLException e) {
         e.printStackTrace();
+        }
+
+        return pkgData;
+    }
+
+    //method to search values in database targeted for Packages GUI
+    public static ArrayList<Package> PackageSearchResult(ArrayList<Package> pkgData, String userInput)
+    {
+        Connection conn = TravelExpertsDB.getConnection();
+
+        String sql = "select * from Packages where lower(CONCAT(PkgName,PkgDesc, PkgBasePrice, PkgAgencyCommission)) like ?";
+
+        try
+        {
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1,"%"+userInput.toLowerCase()+"%");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                pkgData.add(new Package(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDate(3),
+                        rs.getDate(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7)
+                ));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return pkgData;

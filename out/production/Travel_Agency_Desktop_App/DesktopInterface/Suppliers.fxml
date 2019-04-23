@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="suppliers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.SuppliersController">
+<AnchorPane fx:id="suppliers" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.SuppliersController">
     <children>
         <Label prefHeight="17.0" prefWidth="375.0" text="Suppliers Page">
             <font>

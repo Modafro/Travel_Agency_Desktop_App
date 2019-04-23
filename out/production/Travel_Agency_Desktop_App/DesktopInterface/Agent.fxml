@@ -18,37 +18,58 @@
                         <Image url="@../judy_lisle.jpg" />
                     </image>
                 </ImageView>
-                <Button fx:id="btnHome" layoutX="10.0" layoutY="219.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Home" />
-                <Button fx:id="btnCustomers" layoutX="10.0" layoutY="270.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Customers" />
-                <Button fx:id="btnPackages" layoutX="10.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Packages" />
-                <Button fx:id="btnSuppliers" layoutX="10.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Suppliers" />
-                <Button fx:id="btnProducts" layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Products" />
-                <Button fx:id="btnBookings" layoutX="10.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Bookings" />
-                <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="151.0" prefHeight="30.0" prefWidth="176.0" text="Welcome back Judy Lisle" textFill="#f5f4f4">
+                <Button fx:id="btnHome" layoutX="10.0" layoutY="219.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Home">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Button fx:id="btnCustomers" layoutX="10.0" layoutY="270.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Customers">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Button fx:id="btnPackages" layoutX="10.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Packages">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Button fx:id="btnSuppliers" layoutX="10.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Suppliers">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Button fx:id="btnProducts" layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Products">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Button fx:id="btnBookings" layoutX="10.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Bookings">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+                <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="151.0" prefHeight="30.0" prefWidth="227.0" text="Welcome back Judy Lisle" textFill="#f5f4f4">
                     <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-            <Button fx:id="btnLogout" layoutX="11.0" layoutY="548.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Exit" />
+            <Button fx:id="btnLogout" layoutX="11.0" layoutY="548.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="38.0" prefWidth="269.0" text="Exit">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
             </children>
         </Pane>
-        <Pane layoutX="291.0" prefHeight="38.0" prefWidth="709.0" style="-fx-background-color: #373636;">
+        <Pane layoutX="291.0" prefHeight="56.0" prefWidth="709.0" style="-fx-background-color: #373636;">
             <children>
-                <Label contentDisplay="CENTER" layoutY="4.0" prefHeight="30.0" prefWidth="176.0" text="Travel Experts" textFill="#f5f4f4">
+                <Label fx:id="lbltitletravel" contentDisplay="CENTER" layoutX="267.0" layoutY="6.0" prefHeight="30.0" prefWidth="176.0" stylesheets="@css/desktopStyling.css" text="Travel Experts" textFill="#f5f4f4">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <ImageView fitHeight="30.0" fitWidth="144.0" layoutX="612.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="45.0" fitWidth="156.0" layoutX="562.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../company_logo.png" />
+                        <Image url="@../map1.png" />
                     </image>
                 </ImageView>
             </children>
         </Pane>
-      <Pane layoutX="291.0" layoutY="38.0" prefHeight="87.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
+      <Pane fx:id="pnDirectory" layoutX="291.0" layoutY="54.0" opacity="0.9" prefHeight="84.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css">
          <children>
-            <Label fx:id="lblCurrentDirectory" contentDisplay="CENTER" layoutX="7.0" layoutY="26.0" prefHeight="35.0" prefWidth="252.0" text="Home" textFill="WHITE">
+            <Label fx:id="lblCurrentDirectory" contentDisplay="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="35.0" prefWidth="252.0" stylesheets="@css/desktopStyling.css" text="Home" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -57,11 +78,11 @@
       </Pane>
       <StackPane fx:id="vwStackPane" layoutX="291.0" layoutY="138.0" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;">
          <children>
-            <fx:include fx:id="customers" source="Customers.fxml" />
             <fx:include fx:id="packages" source="Packages.fxml" />
-            <fx:include fx:id="suppliers" source="Suppliers.fxml" />
-            <fx:include fx:id="products" source="Products.fxml" />
             <fx:include fx:id="bookings" source="Bookings.fxml" />
+            <fx:include fx:id="suppliers" source="Suppliers.fxml" />
+            <fx:include fx:id="customers" source="Customers.fxml" />
+            <fx:include fx:id="products" source="Products.fxml" />
             <fx:include fx:id="home" source="Home.fxml" />
          </children>
       </StackPane>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -11,28 +12,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #d2cfcf;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.LoginController">
+<AnchorPane fx:id="pnlogin" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.LoginController">
     <children>
-        <Pane prefHeight="400.0" prefWidth="301.0" style="-fx-background-color: #373636;">
-            <children>
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="191.0" prefHeight="30.0" prefWidth="210.0" text="Travel Experts" textFill="WHITE" underline="true">
-                    <font>
-                        <Font name="Century" size="24.0" />
-                    </font>
-                </Label>
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="232.0" prefHeight="30.0" prefWidth="276.0" text="Management System" textFill="WHITE" underline="true">
-                    <font>
-                        <Font name="Century" size="24.0" />
-                    </font>
-                </Label>
-                <ImageView fitHeight="92.0" fitWidth="224.0" layoutX="39.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../company_logo.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </Pane>
-        <FontAwesomeIcon glyphName="LOCK" layoutX="439.0" layoutY="110.0" size="60" />
+        <Pane opacity="0.85" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #6A98C5;" />
+        <FontAwesomeIcon fill="WHITE" glyphName="LOCK" layoutX="439.0" layoutY="110.0" size="60" />
         <TextField fx:id="txtUsername" layoutX="360.0" layoutY="163.0" onKeyReleased="#verifyEmpty" prefHeight="37.0" prefWidth="198.0" promptText="Username">
             <font>
                 <Font size="16.0" />
@@ -43,18 +26,36 @@
                 <Font size="16.0" />
             </font>
         </PasswordField>
-        <Button fx:id="btnLogin" layoutX="360.0" layoutY="323.0" mnemonicParsing="false" onAction="#loginAgent" prefHeight="37.0" prefWidth="198.0" style="-fx-background-color: #373636;" text="Login" textFill="#f8f7f7">
+        <Button fx:id="btnLogin" layoutX="360.0" layoutY="323.0" mnemonicParsing="false" onAction="#loginAgent" prefHeight="37.0" prefWidth="198.0" stylesheets="@css/desktopStyling.css" text="Login" textFill="#f8f7f7">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Button>
-        <FontAwesomeIcon glyphName="USER" layoutX="318.0" layoutY="192.0" size="30" />
-        <FontAwesomeIcon glyphName="KEY" layoutX="315.0" layoutY="268.0" size="30" />
+        <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="318.0" layoutY="192.0" selectionFill="#eb1717" size="30" />
+        <FontAwesomeIcon fill="WHITE" glyphName="KEY" layoutX="315.0" layoutY="268.0" size="30" />
       <Label fx:id="lblErrorLogin" layoutX="362.0" layoutY="119.0" prefHeight="37.0" prefWidth="198.0" text="Username and/or password is incorrect. Please verify your credentials and try again." textFill="#f80202" wrapText="true">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <FontAwesomeIcon fx:id="btnClose" glyphName="CLOSE" layoutX="574.0" layoutY="25.0" selectionFill="#f5f5f5" size="1.5em" onMousePressed="#exitApplication" />
+      <FontAwesomeIcon fx:id="btnClose" fill="WHITE" glyphName="CLOSE" layoutX="574.0" layoutY="25.0" onMousePressed="#exitApplication" selectionFill="#f5f5f5" size="1.5em" />
+          <ImageView fitHeight="112.0" fitWidth="300.0" layoutX="40.0" layoutY="30.0" opacity="0.85" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@../map1.png" />
+              </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+          </ImageView>
+          <Label fx:id="title2" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="235.0" prefHeight="30.0" prefWidth="276.0" text="Management System" textFill="WHITE">
+              <font>
+                  <Font name="Cambria Bold" size="24.0" />
+              </font>
+          </Label>
+          <Label fx:id="title1" alignment="CENTER" contentDisplay="CENTER" layoutX="45.0" layoutY="205.0" prefHeight="30.0" prefWidth="210.0" text="Travel Experts" textFill="WHITE">
+              <font>
+                  <Font name="Cambria Bold" size="24.0" />
+              </font>
+          </Label>
     </children>
 </AnchorPane>

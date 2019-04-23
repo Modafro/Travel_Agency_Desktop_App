@@ -1,3 +1,5 @@
+//Objective: Create various queries to manipulate the database based on end-user requests
+
 package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;

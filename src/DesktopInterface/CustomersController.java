@@ -7,17 +7,20 @@ import DesktopInterface.TravelExpertClasses.Agents;
 import DesktopInterface.TravelExpertClasses.Customer;
 import DesktopInterface.TravelExpertClasses.CustomerDB;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import javax.tools.Tool;
 
@@ -179,7 +182,7 @@ public class CustomersController {
 
     private ObservableList<Customer> custData = FXCollections.observableArrayList();
 
-    private ObservableList<String> provData = FXCollections.observableArrayList("AB",
+    private ObservableList<String> provData = FXCollections.observableArrayList("Prov","AB",
             "BC","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT");
 
     private Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
@@ -189,8 +192,26 @@ public class CustomersController {
     //string object used to know which button was clicked : Insert / Update / Delete
     private String crudBtnClicked = new String();
 
+    //field for focus listener returning true or false
+    private boolean booleanForFocusExitListeners;
+
     @FXML
     void initialize() {
+        //validation on focus exit
+        isTextfieldNotEmptyOnFoucsExit(txtCustFirstName, lblCustFirstNameError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustLastName, lblCustLastNameError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustAddress, lblCustAddressError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustCity, lblCustCityError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustPostal, lblCustPostalError);
+        isProvinceValidOnFoucsExit(cbProvince, lblCustProvError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustEmail,lblCustEmailError);
+        isTextfieldNotEmptyOnFoucsExit(txtCustHomePhone,lblCustHomePhoneError);
+        isNameValidOnFoucsExit(txtCustFirstName, lblCustFirstNameError);
+        isNameValidOnFoucsExit(txtCustLastName, lblCustLastNameError);
+        isEmailValidOnFoucsExit(txtCustEmail,lblCustEmailError);
+        isPostalValidOnFoucsExit(txtCustPostal, lblCustPostalError);
+        isPhoneValidOnFoucsExit(txtCustHomePhone, lblCustHomePhoneError);
+        isPhoneValidOnFoucsExit(txtCustBusPhone, lblCustBusPhoneError);
 
         //hide CRUD operations (texfields)
         crudCustomers.setExpanded(false);
@@ -198,29 +219,15 @@ public class CustomersController {
         //load combo box for province
         cbProvince.setItems(provData);
 
-        //set visibility of error labels
-        lblCustFirstNameError.setVisible(false);
-        lblCustLastNameError.setVisible(false);
-        lblCustAddressError.setVisible(false);
-        lblCustPostalError.setVisible(false);
-        lblCustCityError.setVisible(false);
-        lblCustProvError.setVisible(false);
-        lblCustEmailError.setVisible(false);
-        lblCustHomePhoneError.setVisible(false);
-        lblCustBusPhoneError.setVisible(false);
-
-        //disable customer fields on load
-        pncustomerfields.setDisable(true);
-
-        //set visibility of buttons
-        setVisibilityButtons(true);
+        //set default visibility and edit settings
+        cancelCustChanges();
 
         //set textfields values from the selected customer in the table with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
         setCustTextfieldsFromTableOnArrowKeyReleased();
 
         //tooltips
-        Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
+        //Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
     }
 
     //method to get the agent object from Agent Controller
@@ -237,7 +244,6 @@ public class CustomersController {
 
         try {
             colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("CustomerId"));
-            colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
             colCustFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustFirstName"));
             colCustLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustLastName"));
             colCustAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("CustAddress"));
@@ -295,14 +301,14 @@ public class CustomersController {
                     " has successfully been deleted.");
             alert_info.showAndWait();
 
-            //set visibility
+            //set visibility to default settings and clear textfields
             cancelCustChanges();
 
             //refresh table view
             refreshCustTable();
 
             //refresh table in BookingsController GUI
-            bookingsController.refreshCustTable();
+            //bookingsController.refreshCustTable();
             }
         else
         {
@@ -323,7 +329,7 @@ public class CustomersController {
         setVisibilityButtons(true);
         tvcustomers.setDisable(false);
         clearTexfieldDataAndLabels();
-        cbProvince.setPromptText("Prov");
+        cbProvince.getSelectionModel().select(0);
     }
 
     //method to clear textfields and remove error labels
@@ -466,6 +472,7 @@ public class CustomersController {
     public void refreshCustTable()
     {
         custData.clear();
+        txtSearch.setText("");
         getCustomersByAgtID(loggedAgent, custData);
     }
 
@@ -476,8 +483,9 @@ public class CustomersController {
         pncustomerfields.setDisable(false);
         setVisibilityButtons(false);
         tvcustomers.setDisable(true);
+        setEditFields(true);
         clearTexfieldDataAndLabels();
-        cbProvince.setPromptText("Prov");
+        cbProvince.getSelectionModel().select(0);
     }
 
     //change buttons visibility to only show "save" and "cancel" button
@@ -495,6 +503,7 @@ public class CustomersController {
             crudBtnClicked = "update";
             pncustomerfields.setDisable(false);
             setVisibilityButtons(false);
+            setEditFields(true);
             tvcustomers.setDisable(true);
         }
     }
@@ -513,7 +522,8 @@ public class CustomersController {
         else
         {
             crudBtnClicked = "delete";
-            pncustomerfields.setDisable(true);
+            pncustomerfields.setDisable(false);
+            setEditFields(false);
             setVisibilityButtons(false);
             btnSave.setVisible(false);
             imgSave.setVisible(false);
@@ -521,6 +531,174 @@ public class CustomersController {
             imgConfirmDelete.setVisible(true);
             tvcustomers.setDisable(true);
         }
+    }
+
+    //method to set edit fields
+    public void setEditFields(boolean boolValue)
+    {
+        if(!boolValue)
+        {
+            txtCustFirstName.setEditable(false);
+            txtCustLastName.setEditable(false);
+            txtCustAddress.setEditable(false);
+            txtCustCity.setEditable(false);
+            txtCustPostal.setEditable(false);
+            cbProvince.setDisable(true);
+            txtCustEmail.setEditable(false);
+            txtCustHomePhone.setEditable(false);
+            txtCustBusPhone.setEditable(false);
+        }
+        else
+        {
+            txtCustFirstName.setEditable(true);
+            txtCustLastName.setEditable(true);
+            txtCustAddress.setEditable(true);
+            txtCustCity.setEditable(true);
+            txtCustPostal.setEditable(true);
+            cbProvince.setDisable(false);
+            txtCustEmail.setEditable(true);
+            txtCustHomePhone.setEditable(true);
+            txtCustBusPhone.setEditable(true);
+        }
+
+    }
+
+    //method to validate if textfields are empty on focus exit
+    public boolean isTextfieldNotEmptyOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(!Validator.isEmpty(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if province is valid
+    public boolean isProvinceValidOnFoucsExit(ComboBox<String> cbName, Label lblName)
+    {
+        cbName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isProvinceValid(cbName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if first name or last name is valid
+    public boolean isNameValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isNameValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if email is valid
+    public boolean isEmailValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isEmailValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if postal code is valid
+    public boolean isPostalValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isPostalValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
+    }
+
+    //method to validate if phone is valid
+    public boolean isPhoneValidOnFoucsExit(TextField txtName, Label lblName)
+    {
+        txtName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                {
+                    if(Validator.isPhoneValid(txtName, lblName))
+                    {
+                        booleanForFocusExitListeners =  true;
+                    }
+                    else
+                    {
+                        booleanForFocusExitListeners = false;
+                    }
+                }
+            }
+        });
+
+        return booleanForFocusExitListeners;
     }
 
     //set visibility of buttons (and corresponding images)
@@ -590,10 +768,50 @@ public class CustomersController {
         txtCustLastName.setText(cust.getCustLastName());
         txtCustAddress.setText(cust.getCustAddress());
         txtCustCity.setText(cust.getCustCity());
-        txtCustPostal.setText(cust.getCustPostal());
         cbProvince.getSelectionModel().select(cust.getCustProv());
+        txtCustPostal.setText(cust.getCustPostal());
         txtCustEmail.setText(cust.getCustEmail());
         txtCustHomePhone.setText(cust.getCustHomePhone());
         txtCustBusPhone.setText(cust.getCustBusPhone());
     }
+
+    //method to keep the button of a given view (customers,packages,etc.) focused when clicking anywhere in the pane of
+    //that view
+//    public void keepButtonFocusedonAnchorPaneClicked(Button button)
+//    {
+//        txtSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//
+//        btnUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//
+//        imgUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//
+//        crudCustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//
+//        tvcustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//    }
 }

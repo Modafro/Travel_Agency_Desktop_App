@@ -13,10 +13,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="customers" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersController">
+<AnchorPane fx:id="customers" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.CustomersController">
     <children>
+      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="603.0" layoutY="15.0" mnemonicParsing="false" onAction="#refreshCustTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
         <TableView fx:id="tvcustomers" layoutX="22.0" layoutY="49.0" prefHeight="196.0" prefWidth="659.0">
             <columns>
+            <TableColumn fx:id="colCustId" text="Id" visible="false" />
                 <TableColumn fx:id="colCustFirstName" text="First Name" />
                 <TableColumn fx:id="colCustLastName" prefWidth="84.0" text="Last Name" />
                 <TableColumn fx:id="colCustAddress" prefWidth="157.0" text="Address" />
@@ -27,7 +29,6 @@
                 <TableColumn fx:id="colCustHomePhone" prefWidth="123.0" text="Home Phone" />
                 <TableColumn fx:id="colCustBusPhone" prefWidth="123.0" text="Business Phone" />
                 <TableColumn fx:id="colCustEmail" prefWidth="123.0" text="Email" />
-            <TableColumn fx:id="colCustId" text="Id" visible="false" />
             </columns>
         </TableView>
         <TextField fx:id="txtSearch" layoutX="22.0" layoutY="14.0" onAction="#searchDatabase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
@@ -117,6 +118,6 @@
             </Pane>
         </TitledPane>
       <TextField fx:id="txtCustomerId" layoutX="221.0" layoutY="14.0" prefHeight="25.0" prefWidth="22.0" visible="false" />
-      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="651.0" layoutY="35.0" onMouseClicked="#refreshCustTable" size="1.8em" wrappingWidth="30.0" />
+      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="610.0" layoutY="32.0" onMouseClicked="#refreshCustTable" size="1.2em" wrappingWidth="15.999994784593582" />
     </children>
 </AnchorPane>

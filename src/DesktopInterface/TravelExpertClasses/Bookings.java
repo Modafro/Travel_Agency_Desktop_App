@@ -1,3 +1,5 @@
+//Objective: create a Bookings class
+
 package DesktopInterface.TravelExpertClasses;
 
 import java.sql.Date;
