@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css?family=Lobster");
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface");
+.button
+{
+    -fx-background-color: #C5EEEE;
+}
+
+#btnLogin
+{
+    -fx-background-color: #7BAFE3;
+}
+
+#btnLogin:hover
+{
+    -fx-background-color: #1981E9;
+}
+
+.button:hover
+{
+    -fx-background-color: #1981E9;
+}
+
+.button:pressed
+{
+    -fx-background-color: #1981E9;
+}
+
+#btnHome:focused, #btnCustomers:focused, #btnPackages:focused, #btnProducts:focused, #btnSuppliers:focused, #btnBookings:focused
+{
+    -fx-background-color: #1981E9;
+}
+
+#btnCustomers:hover
+{
+    -fx-background-color: #1981E9;
+}
+
+.button:selected
+{
+    -fx-background-color: #1981E9;
+}
+
+#btnLogin:pressed
+{
+    -fx-background-color: #1981E9;
+}
+
+#pnlogin
+{
+    -fx-background-image: url("/beach.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+#title1, #title2
+{
+    -fx-font-family: Lobster, cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}
+
+#lbltitletravel
+{
+    -fx-font-family: Lobster, cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}
+
+#lblCurrentDirectory
+{
+    -fx-font-family: Lobster, cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}
+
+#home, #customers, #packages, #products, #suppliers, #bookings
+{
+    -fx-background-image: url("/ocean.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+#pnDirectory
+{
+    -fx-background-image: url("/palmtrees.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}

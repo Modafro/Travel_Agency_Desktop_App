@@ -10,13 +10,16 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="bookings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.BookingsController">
+<AnchorPane fx:id="bookings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.BookingsController">
    <children>
       <Pane fx:id="pnSelectCustPkgNumTravelers" layoutX="35.0" layoutY="14.0">
          <children>
             <TextField fx:id="txtSearchCustomer" onAction="#searchCustomer" prefHeight="25.0" prefWidth="160.0" promptText="Search Customer" />
             <TextField fx:id="txtSearchPackage" layoutX="277.0" onAction="#searchPackage" prefHeight="25.0" prefWidth="160.0" promptText="Search Package" />
-            <Label layoutX="498.0" layoutY="4.0" text="Enter Number of Travelers" />
+            <Label layoutX="498.0" layoutY="4.0" text="Enter Number of Travelers">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
             <TableView fx:id="tvcustomers" layoutY="33.0" prefHeight="126.0" prefWidth="244.0">
               <columns>
                   <TableColumn fx:id="colCustId" prefWidth="75.0" text="Id" visible="false" />
@@ -48,14 +51,14 @@
          </children>
       </Pane>
       <Line endX="594.0" layoutX="100.0" layoutY="187.0" startX="-86.5" />
-      <Label layoutX="234.0" layoutY="188.0" text="Vacation Package Summary">
+      <Label fx:id="lblVacationSummary" layoutX="234.0" layoutY="188.0" text="Vacation Package Summary">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Pane fx:id="pnsummary" layoutX="37.0" layoutY="218.0" prefHeight="231.0" prefWidth="630.0" style="-fx-border-color: black;">
+      <Pane fx:id="pnsummary" layoutX="37.0" layoutY="218.0" prefHeight="236.0" prefWidth="630.0" style="-fx-border-color: black; -fx-background-color: white;">
          <children>
-            <Button fx:id="btnSendInvoice" layoutX="476.0" layoutY="203.0" mnemonicParsing="false" onAction="#sendInvoice" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />
+            <Button fx:id="btnSendInvoice" layoutX="476.0" layoutY="168.0" mnemonicParsing="false" onAction="#sendInvoice" prefHeight="25.0" prefWidth="139.0" text="Send Invoice" />
             <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="98.0" text="Full Name">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -129,14 +132,14 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Line endX="22.5" endY="-83.0" layoutX="445.0" layoutY="83.0" startX="22.5" startY="147.0" />
+            <Line endX="22.5" endY="-83.0" layoutX="445.0" layoutY="83.0" startX="22.5" startY="153.0" />
             <Label alignment="CENTER" layoutX="497.0" layoutY="3.0" prefHeight="17.0" prefWidth="98.0" text="Travelers">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnCancel" layoutX="476.0" layoutY="134.0" mnemonicParsing="false" onAction="#cancelBooking" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
-            <Button fx:id="btnPdfViewer" layoutX="476.0" layoutY="168.0" mnemonicParsing="false" onAction="#showInvoiceInPdf" prefHeight="25.0" prefWidth="139.0" text="View Invoice" />
+            <Button fx:id="btnCancel" layoutX="476.0" layoutY="202.0" mnemonicParsing="false" onAction="#cancelBooking" prefHeight="25.0" prefWidth="139.0" text="Cancel" />
+            <Button fx:id="btnPdfViewer" layoutX="476.0" layoutY="134.0" mnemonicParsing="false" onAction="#showInvoiceInPdf" prefHeight="25.0" prefWidth="139.0" text="View Invoice" />
          </children>
       </Pane>
       <Label fx:id="lblErrorMessage" alignment="CENTER" layoutX="520.0" layoutY="165.0" prefHeight="17.0" prefWidth="170.0" text="error message" textFill="#f80707" />

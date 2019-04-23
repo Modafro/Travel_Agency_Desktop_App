@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="packages" prefHeight="463.0" prefWidth="709.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.PackagesController">
+<AnchorPane fx:id="packages" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.PackagesController">
    <children>
-      <TableView fx:id="tblPackages" editable="true" layoutX="22.0" layoutY="39.0" prefHeight="196.0" prefWidth="666.0" AnchorPane.bottomAnchor="213.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="39.0">
+      <TableView fx:id="tblPackages" editable="true" layoutX="22.0" layoutY="47.0" maxWidth="1.7976931348623157E308" prefHeight="206.0" prefWidth="666.0" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="47.0">
         <columns>
           <TableColumn fx:id="pkgName" prefWidth="142.0" text="Package Name" />
           <TableColumn fx:id="pkgStartDate" minWidth="8.0" prefWidth="65.0" text="Start Date" />
@@ -26,7 +26,7 @@
             <TableColumn fx:id="pkgId" prefWidth="142.0" text="Package Id" visible="false" />
         </columns>
       </TableView>
-      <TitledPane fx:id="crudPackages" layoutX="22.0" layoutY="255.0" prefHeight="206.0" prefWidth="666.0" text="Options">
+      <TitledPane fx:id="crudPackages" layoutX="22.0" layoutY="260.0" prefHeight="199.0" prefWidth="666.0" text="Options">
          <content>
             <Pane prefHeight="181.0" prefWidth="661.0">
                <children>
@@ -78,7 +78,6 @@
                   <Button fx:id="btnInsert" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="21.0" mnemonicParsing="false" onAction="#insertBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Insert" />
                   <Button fx:id="btnUpdate" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="76.0" mnemonicParsing="false" onAction="#updateBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Update" />
                   <Button fx:id="btnDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteBtnClicked" prefHeight="25.0" prefWidth="78.0" text="Delete" />
-                  <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" onMouseClicked="#insertBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
                   <FontAwesomeIcon fx:id="imgUpdate" glyphName="RETWEET" layoutX="566.0" layoutY="93.0" onMouseClicked="#updateBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
                   <FontAwesomeIcon fx:id="imgDelete" glyphName="TRASH" layoutX="566.0" layoutY="146.0" onMouseClicked="#deleteBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
                   <Button fx:id="btnSave" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#savePkgChanges" prefHeight="25.0" prefWidth="78.0" text="Save" />
@@ -87,12 +86,13 @@
                   <FontAwesomeIcon fx:id="imgCancel" glyphName="TIMES" layoutX="566.0" layoutY="121.0" onMouseClicked="#cancelPkgChanges" size="1.2em" wrappingWidth="14.857142448425293" />
                   <Button fx:id="btnConfirmDelete" alignment="CENTER_RIGHT" layoutX="557.0" layoutY="54.0" mnemonicParsing="false" onAction="#deletePkg" prefHeight="25.0" prefWidth="78.0" text="Confirm" />
                   <FontAwesomeIcon fx:id="imgConfirmDelete" glyphName="TRASH" layoutX="566.0" layoutY="71.0" onMouseClicked="#deletePkg" size="1.2em" wrappingWidth="14.857142448425293" />
+                  <FontAwesomeIcon fx:id="imgInsert" glyphName="PLUS" layoutX="566.0" layoutY="38.0" onMouseClicked="#insertBtnClicked" size="1.2em" wrappingWidth="14.857142448425293" />
                </children>
             </Pane>
          </content>
       </TitledPane>
-      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="6.0" mnemonicParsing="false" onAction="#updateTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
-      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="23.0" onMouseClicked="#updateTable" size="1.2em" wrappingWidth="12.999994784593582" />
-      <TextField fx:id="txtSearch" layoutX="22.0" layoutY="5.0" onAction="#searchDataBase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
+      <Button fx:id="btnRefresh" alignment="CENTER_RIGHT" layoutX="610.0" layoutY="14.0" mnemonicParsing="false" onAction="#updateTable" prefHeight="25.0" prefWidth="78.0" text="Refresh" />
+      <FontAwesomeIcon fx:id="imgRefresh" glyphName="UNDO" layoutX="620.0" layoutY="31.0" onMouseClicked="#updateTable" size="1.2em" wrappingWidth="12.999994784593582" />
+      <TextField fx:id="txtSearch" layoutX="22.0" layoutY="14.0" onAction="#searchDataBase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
    </children>
 </AnchorPane>

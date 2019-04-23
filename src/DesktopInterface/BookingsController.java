@@ -21,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,8 +30,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -141,6 +142,9 @@ public class BookingsController extends JPanel {
     private Button btnSendInvoice;
 
     @FXML
+    private Label lblVacationSummary;
+
+    @FXML
     private Label lblCustName;
 
     @FXML
@@ -201,6 +205,7 @@ public class BookingsController extends JPanel {
 
         //hide error labels
         lblErrorMessage.setVisible(false);
+        lblVacationSummary.setVisible(false);
 
         //set textfields values from the selected customer and package in their tables with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
@@ -319,6 +324,7 @@ public class BookingsController extends JPanel {
                 lblTotalPrice.setText(currencyFormat.format(totalPrice));
 
                 pnsummary.setVisible(true);
+                lblVacationSummary.setVisible(true);
                 pnSelectCustPkgNumTravelers.setDisable(true);
             }
             else
@@ -414,6 +420,7 @@ public class BookingsController extends JPanel {
     {
         //hide summary info
         pnsummary.setVisible(false);
+        lblVacationSummary.setVisible(false);
 
         //for customer info
         txtCustId.setText("");
@@ -528,9 +535,9 @@ public class BookingsController extends JPanel {
 
             // creates message part
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent("Congratulations"+cust.getCustFirstName()+"!\n\n\n. " +
-                    "You have successfully booked your vacation. All the details pertaining to your booking are in the attachment\n\n" +
-                    "Enjoy your vacation and thank you for choosing Travel Experts", "text/html");
+            messageBodyPart.setContent("Congratulations <b>"+cust.getCustFirstName()+"</b>!<br/><br/>" +
+                    "You have successfully booked your vacation. All the details pertaining to your booking are in the attachment.<br/><br/>" +
+                    "Enjoy your vacation and thank you for choosing Travel Experts.", "text/html");
 
             // creates multi-part
             Multipart multipart = new MimeMultipart();
@@ -643,7 +650,7 @@ public class BookingsController extends JPanel {
 
             // now we add a cell with rowspan 2
 
-            Image img = Image.getInstance("src/company_logo.png");
+            Image img = Image.getInstance("src/map1.png");
             img.scaleAbsolute(85f,75f);
             cell = new PdfPCell(img);
             cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -819,4 +826,58 @@ public class BookingsController extends JPanel {
             System.out.println("Awt Desktop is not supported!");
         }
     }
+
+    //method to keep the button of a given view (customers,packages,etc.) focused when clicking anywhere in the pane of
+    //that view
+//    public void keepButtonFocusedonAnchorPaneClicked(Button button)
+//    {
+//        txtSearchCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.web("#1981E9"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY)));
+//            }
+//        });
+//
+//        txtSearchPackage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.web("#1981E9"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY)));
+//            }
+//        });
+//
+//        pnsummary.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.web("#1981E9"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY)));
+//            }
+//        });
+//
+//        btnSummary.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.web("#1981E9"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY)));
+//            }
+//        });
+//
+//        txtNumTravelers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.web("#1981E9"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY)));
+//            }
+//        });
+//
+//        tvcustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//
+//        tvpackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
+//            }
+//        });
+//    }
 }
