@@ -59,6 +59,29 @@
     -fx-font-size: 30px;
 }
 
+#lblHomeNews,#lblHomeDealofMonth, #lblHomeAgtStats, #lblHomeAgcyStats
+{
+    -fx-font-family: Lobster, cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+#pnHomeNews, #pnHomeAgcyStat, #pnHomeAgtStat, #pnDealMonth
+{
+    -fx-border-color: #C5EEEE;
+    -fx-border-width: 2;
+}
+
+#txtHomeNews, #txtHomeNews .viewport, #txtHomeNews .content,#txtHomeNews .scroll-bar,
+#txtHomeAgcyStat,#txtHomeAgcyStat .viewport, #txtHomeAgcyStat .content,
+#txtHomeAgtStat, #txtHomeAgtStat .viewport, #txtHomeAgtStat .content
+{
+    -fx-font-family: Abril, cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-color: transparent;
+}
+
 #lbltitletravel
 {
     -fx-font-family: Lobster, cursive;

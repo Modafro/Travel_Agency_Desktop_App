@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="home" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.HomeController">
-    <children>
-    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="331.0" style="-fx-background-color: grey;" text="Home Page">
-        <font>
-            <Font size="24.0" />
-        </font>
-    </Label>
-</children>
+   <children>
+      <Pane fx:id="pnHomeNews" layoutX="66.0" layoutY="30.0" prefHeight="241.0" prefWidth="264.0">
+         <children>
+            <Label fx:id="lblHomeNews" layoutX="80.0" prefHeight="43.0" prefWidth="105.0" stylesheets="@css/desktopStyling.css" text="Latest News!" />
+            <TextArea fx:id="txtHomeNews" editable="false" layoutX="8.0" layoutY="43.0" prefHeight="195.0" prefWidth="257.0" stylesheets="@css/desktopStyling.css" text="***A new milestone has been achieved &#10;by Travel Experts: &#10;we officially have 10,000 customers&#10;registered as off yesterday!! Great &#10;job everyone!!***&#10;&#10;***Please send a warm welcome to our&#10;newest agent:  Michael Kim!***&#10;&#10;***Quote of the day:&#10;&quot;Those who say it can not be done,&#10;should not interrupt those doing&#10;it***&#10;" />
+         </children>
+      </Pane>
+      <Pane fx:id="pnDealMonth" layoutX="405.0" layoutY="30.0" prefHeight="238.0" prefWidth="264.0">
+         <children>
+            <Label fx:id="lblHomeDealofMonth" layoutX="55.0" prefHeight="43.0" prefWidth="154.0" stylesheets="@css/desktopStyling.css" text="Deal of the Month!" />
+            <Label fx:id="lblHomeRockies" layoutX="94.0" layoutY="43.0" prefHeight="17.0" prefWidth="76.0" stylesheets="@css/desktopStyling.css" text="The Rockies">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="170.0" fitWidth="241.0" layoutX="12.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../rockies.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="pnHomeAgtStat" layoutX="66.0" layoutY="296.0" prefHeight="152.0" prefWidth="264.0">
+         <children>
+            <Label fx:id="lblHomeAgtStats" layoutX="43.0" prefHeight="43.0" prefWidth="180.0" stylesheets="@css/desktopStyling.css" text="Your Stats this Month" />
+            <TextArea fx:id="txtHomeAgtStat" layoutX="61.0" layoutY="43.0" prefHeight="100.0" prefWidth="145.0" stylesheets="@css/desktopStyling.css" text="New Customers: 2&#10;&#10;Packages Sold: 4&#10;&#10;Sales Value: $7,000" />
+         </children>
+      </Pane>
+      <Pane fx:id="pnHomeAgcyStat" layoutX="405.0" layoutY="296.0" prefHeight="147.0" prefWidth="264.0">
+         <children>
+            <Label fx:id="lblHomeAgcyStats" layoutX="32.0" prefHeight="43.0" prefWidth="200.0" stylesheets="@css/desktopStyling.css" text="Agency Stats this Month" />
+            <TextArea fx:id="txtHomeAgcyStat" layoutX="60.0" layoutY="43.0" prefHeight="100.0" prefWidth="145.0" stylesheets="@css/desktopStyling.css" text="New Customers: 12&#10;&#10;Packages Sold: 24&#10;&#10;Sales Value: $158,000" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
