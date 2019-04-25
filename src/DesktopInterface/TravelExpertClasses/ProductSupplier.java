@@ -53,7 +53,7 @@ public class ProductSupplier {
     }
 
     public ProductSupplier(int productId, String productName, String supplierName, int supplierId) {
-        //this.productSupplierId = productSupplierId;
+        this.productSupplierId = productSupplierId;
         this.productId = productId;
         this.productName = productName;
         this.supplierName = supplierName;

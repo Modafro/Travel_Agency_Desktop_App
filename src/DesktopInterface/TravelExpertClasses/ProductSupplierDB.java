@@ -66,7 +66,7 @@ public class ProductSupplierDB {
             }
             else
             {
-                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Suppliers S Join Products_Suppliers SP on S.SupplierId = SP.SupplierId Join Products P on SP.ProductId = P.ProductId where SP.SupplierId = ?");
+                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId, SP.ProductSupplierId from Suppliers S Join Products_Suppliers SP on S.SupplierId = SP.SupplierId Join Products P on SP.ProductId = P.ProductId where SP.SupplierId = ?");
                 ps.setInt(1, ID);
             }
             ResultSet rs = ps.executeQuery();
@@ -77,6 +77,7 @@ public class ProductSupplierDB {
                 ProSupp.setSupplierName(rs.getString(3));
                 ProSupp.setProductId(rs.getInt(1));
                 ProSupp.setSupplierId(rs.getInt(4));
+                ProSupp.setProductSupplierId(rs.getInt(5));
                 proSuppList.add(ProSupp);
             }
 
@@ -86,4 +87,18 @@ public class ProductSupplierDB {
         }
         return proSuppList;
     }
+
+    public static void deleteProdSupp(int prodsupp){
+        Connection dbConnect = TravelExpertsDB.getConnection();
+
+        try {
+            PreparedStatement ps = dbConnect.prepareStatement("Delete From Products_Suppliers where ProductSupplierId = ? ");
+            ps.setInt(1, prodsupp);
+
+            ps.execute();
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }
 }
