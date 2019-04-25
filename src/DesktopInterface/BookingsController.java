@@ -391,28 +391,42 @@ public class BookingsController extends JPanel {
     //set values of labelfields in summary pane (pnsummary) to corresponding values of selected customer and package in respective tables
     public void setCustLabelFieldsFromTable()
     {
-        //labels related to customer information
-        cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
-        txtCustId.setText(Integer.toString(cust.getCustomerId()));
-        lblCustName.setText(cust.getCustFirstName() + " "+ cust.getCustLastName());
-        lblCustHomePhone.setText(cust.getCustHomePhone());
-        lblCustEmail.setText(cust.getCustEmail().trim());
-        lblCustAddress.setText(cust.getCustAddress());
+        try
+        {
+            //labels related to customer information
+            cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+            txtCustId.setText(Integer.toString(cust.getCustomerId()));
+            lblCustName.setText(cust.getCustFirstName() + " "+ cust.getCustLastName());
+            lblCustHomePhone.setText(cust.getCustHomePhone());
+            lblCustEmail.setText(cust.getCustEmail().trim());
+            lblCustAddress.setText(cust.getCustAddress());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            //do nothing
+        }
+
     }
 
     //set values of labelfields in summary pane (pnsummary) to corresponding values of selected package from package table
     public void setPkgLabelFieldsFromTable() {
+        try
+        {
+            pkg = tvpackages.getItems().get(tvpackages.getSelectionModel().getSelectedIndex());
+            txtPkgId.setText(Integer.toString(pkg.getPackageId()));
+            lblPkgName.setText(pkg.getPkgName());
+            lblPkgDesc.setText(pkg.getPkgDesc());
+            lblPkgStartDate.setText(df.format(pkg.getPkgStartDate()));
+            lblPkgEndDate.setText(df.format(pkg.getPkgEndDate()));
+            lblBasePrice.setText(currencyFormat.format(pkg.getPkgBasePrice()));
 
-        pkg = tvpackages.getItems().get(tvpackages.getSelectionModel().getSelectedIndex());
-        txtPkgId.setText(Integer.toString(pkg.getPackageId()));
-        lblPkgName.setText(pkg.getPkgName());
-        lblPkgDesc.setText(pkg.getPkgDesc());
-        lblPkgStartDate.setText(df.format(pkg.getPkgStartDate()));
-        lblPkgEndDate.setText(df.format(pkg.getPkgEndDate()));
-        lblBasePrice.setText(currencyFormat.format(pkg.getPkgBasePrice()));
-
-        //number of travelers
-        lblNumTravelers.setText(txtNumTravelers.getText());
+            //number of travelers
+            lblNumTravelers.setText(txtNumTravelers.getText());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            //do nothing
+        }
     }
 
     //reset all fields to original format

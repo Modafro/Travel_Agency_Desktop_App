@@ -762,56 +762,24 @@ public class CustomersController {
     //set values of textfields to corresponding values of selected customer in table
     private void setCustTextfieldsFromTable()
     {
-        Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
-        txtCustomerId.setText(Integer.toString(cust.getCustomerId()));
-        txtCustFirstName.setText(cust.getCustFirstName());
-        txtCustLastName.setText(cust.getCustLastName());
-        txtCustAddress.setText(cust.getCustAddress());
-        txtCustCity.setText(cust.getCustCity());
-        cbProvince.getSelectionModel().select(cust.getCustProv());
-        txtCustPostal.setText(cust.getCustPostal());
-        txtCustEmail.setText(cust.getCustEmail());
-        txtCustHomePhone.setText(cust.getCustHomePhone());
-        txtCustBusPhone.setText(cust.getCustBusPhone());
-    }
+        try
+        {
+            Customer cust = tvcustomers.getItems().get(tvcustomers.getSelectionModel().getSelectedIndex());
+            txtCustomerId.setText(Integer.toString(cust.getCustomerId()));
+            txtCustFirstName.setText(cust.getCustFirstName());
+            txtCustLastName.setText(cust.getCustLastName());
+            txtCustAddress.setText(cust.getCustAddress());
+            txtCustCity.setText(cust.getCustCity());
+            cbProvince.getSelectionModel().select(cust.getCustProv());
+            txtCustPostal.setText(cust.getCustPostal());
+            txtCustEmail.setText(cust.getCustEmail());
+            txtCustHomePhone.setText(cust.getCustHomePhone());
+            txtCustBusPhone.setText(cust.getCustBusPhone());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            //do nothing
+        }
 
-    //method to keep the button of a given view (customers,packages,etc.) focused when clicking anywhere in the pane of
-    //that view
-//    public void keepButtonFocusedonAnchorPaneClicked(Button button)
-//    {
-//        txtSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        btnUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        imgUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        crudCustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        tvcustomers.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//    }
+    }
 }
