@@ -27,6 +27,13 @@ public class Supplier {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Supplier)
+            return this.supName == ((Supplier) obj).supName;
+        return false;
+    }
+
+    @Override
     public String toString() {
         return supName;
     }
