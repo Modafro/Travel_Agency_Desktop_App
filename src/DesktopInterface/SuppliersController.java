@@ -107,11 +107,13 @@ public class SuppliersController {
             supplierList = SupplierDB.GetSuppliers();
             cmbSupplier.setItems(getSuppNames());
         }
-
     }
 
     @FXML
     void editSupplier(ActionEvent event) {
+        if (Validator.isEmpty(txtSupplier, lblError)){
+            return;
+        }
         if (selectedSupplier != null){
             String newSuppName = txtSupplier.getText().toUpperCase();
             boolean valid = false;
