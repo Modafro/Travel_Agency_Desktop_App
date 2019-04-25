@@ -316,22 +316,30 @@ public class PackagesController {
     //set values of textfields to corresponding values of selected package in table
     private void setPkgTextfieldsFromTable()
     {
-        Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
-        txtPackageId.setText(Integer.toString(pkg.getPackageId()));
-        txtPkgName.setText(pkg.getPkgName());
-        txtPkgDescription.setText(pkg.getPkgDesc());
+        try
+        {
+            Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
+            txtPackageId.setText(Integer.toString(pkg.getPackageId()));
+            txtPkgName.setText(pkg.getPkgName());
+            txtPkgDescription.setText(pkg.getPkgDesc());
 
-        //convert sql date to localdate type
-        Date pkgStartDate = (pkg.getPkgStartDate());
-        Instant instantPkgStartDate = Instant.ofEpochMilli(pkgStartDate.getTime());
-        dpPkgStartDate.setValue(LocalDateTime.ofInstant(instantPkgStartDate,ZoneId.systemDefault()).toLocalDate());
+            //convert sql date to localdate type
+            Date pkgStartDate = (pkg.getPkgStartDate());
+            Instant instantPkgStartDate = Instant.ofEpochMilli(pkgStartDate.getTime());
+            dpPkgStartDate.setValue(LocalDateTime.ofInstant(instantPkgStartDate,ZoneId.systemDefault()).toLocalDate());
 
-        Date pkgEndDate = (pkg.getPkgEndDate());
-        Instant instantPkgEndDate = Instant.ofEpochMilli(pkgEndDate.getTime());
-        dpPkgEndDate.setValue(LocalDateTime.ofInstant(instantPkgEndDate,ZoneId.systemDefault()).toLocalDate());
+            Date pkgEndDate = (pkg.getPkgEndDate());
+            Instant instantPkgEndDate = Instant.ofEpochMilli(pkgEndDate.getTime());
+            dpPkgEndDate.setValue(LocalDateTime.ofInstant(instantPkgEndDate,ZoneId.systemDefault()).toLocalDate());
 
-        txtPkgBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
-        txtPkgCommission.setText(Double.toString(pkg.getPkgAgencyCommission()));
+            txtPkgBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
+            txtPkgCommission.setText(Double.toString(pkg.getPkgAgencyCommission()));
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            //do nothing
+        }
+
     }
 
     //set visibility of buttons (and corresponding images)
