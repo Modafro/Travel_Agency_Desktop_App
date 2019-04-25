@@ -127,12 +127,6 @@ public class AgentController {
         {
             lblCurrentDirectory.setText("Home");
             home.toFront();
-//            btnCustomers.setBackground(new Background(new BackgroundFill(Color.web("#C5EEEE"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            btnHome.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            btnPackages.setBackground(new Background(new BackgroundFill(Color.web("#C5EEEE"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            btnProducts.setBackground(new Background(new BackgroundFill(Color.web("#C5EEEE"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            btnSuppliers.setBackground(new Background(new BackgroundFill(Color.web("#C5EEEE"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            btnBookings.setBackground(new Background(new BackgroundFill(Color.web("#C5EEEE"), CornerRadii.EMPTY, Insets.EMPTY)));
             btnCustomers.setStyle("-fx-background-color: #C5EEEE");
             hoverBackgroundColor(btnCustomers,true);
             btnHome.setStyle("-fx-background-color: #1981E9");

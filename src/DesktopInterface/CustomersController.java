@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -213,6 +214,8 @@ public class CustomersController {
         isPhoneValidOnFoucsExit(txtCustHomePhone, lblCustHomePhoneError);
         isPhoneValidOnFoucsExit(txtCustBusPhone, lblCustBusPhoneError);
 
+        tvcustomers.setEditable(true);
+
         //hide CRUD operations (texfields)
         crudCustomers.setExpanded(false);
 
@@ -225,6 +228,218 @@ public class CustomersController {
         //set textfields values from the selected customer in the table with a mouse click or arrow key released
         setCustTextfieldsFromTableOnMouseClicked();
         setCustTextfieldsFromTableOnArrowKeyReleased();
+
+        //make cells ready for edit
+        colCustFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustLastName.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustAddress.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustCIty.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustProv.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustPostal.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustHomePhone.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustBusPhone.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCustEmail.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        //edit cells from tableview
+        colCustFirstName.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()) && Validator.isNameValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustFirstName(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustFirstName.setText(c.getCustFirstName());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Name Invalid");
+                    alert.setHeaderText("Valid name needed");
+                    alert.setContentText("Please enter a valid name");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustLastName.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()) && Validator.isNameValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustLastName(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustLastName.setText(c.getCustLastName());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Name Invalid");
+                    alert.setHeaderText("Valid name needed");
+                    alert.setContentText("Please enter a valid name");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustAddress.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustAddress(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustAddress.setText(c.getCustAddress());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Address Invalid");
+                    alert.setHeaderText("Valid address needed");
+                    alert.setContentText("Please enter a valid address");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+
+            }
+        });
+
+        colCustCIty.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustCity(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustCity.setText(c.getCustCity());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("City Invalid");
+                    alert.setHeaderText("Valid city needed");
+                    alert.setContentText("Please enter a valid city");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustProv.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(Validator.isProvinceValid(event.getNewValue().toUpperCase()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustProv(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    cbProvince.setValue(c.getCustProv().toUpperCase());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Province Invalid");
+                    alert.setHeaderText("Valid province needed");
+                    alert.setContentText("Please enter a valid province in the format of: AB");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustPostal.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()) && Validator.isPostalValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustPostal(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustPostal.setText(c.getCustPostal());
+                }
+               else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Postal Code Invalid");
+                    alert.setHeaderText("Valid postal code needed");
+                    alert.setContentText("Please enter a valid postal code in the format of: X3X 3X3");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustHomePhone.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()) && Validator.isPhoneValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustHomePhone(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustHomePhone.setText(c.getCustHomePhone());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Phone number Invalid");
+                    alert.setHeaderText("Valid phone number needed");
+                    alert.setContentText("Please enter a valid phone number in the format of: XXX-XXX-XXXX");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
+
+        colCustBusPhone.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(Validator.isPhoneValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustBusPhone(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustBusPhone.setText(c.getCustBusPhone());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Phone number Invalid");
+                    alert.setHeaderText("Valid phone number needed");
+                    alert.setContentText("Please enter a valid phone number in the format of: XXX-XXX-XXXX");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+
+            }
+        });
+
+        colCustEmail.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Customer, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Customer, String> event) {
+                if(!Validator.isEmpty(event.getNewValue()) && Validator.isEmailValid(event.getNewValue()))
+                {
+                    Customer c = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    c.setCustEmail(event.getNewValue());
+                    CustomerDB.updateCustomer(c);
+                    txtCustEmail.setText(c.getCustEmail());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Email Invalid");
+                    alert.setHeaderText("Valid email needed");
+                    alert.setContentText("Please enter a valid email");
+                    alert.showAndWait();
+                    refreshCustTable();
+                }
+            }
+        });
 
         //tooltips
         //Tooltip.install(imgRefresh,new Tooltip("Refresh table"));
