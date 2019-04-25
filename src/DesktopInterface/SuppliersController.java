@@ -199,18 +199,6 @@ public class SuppliersController {
 
     @FXML
     void initialize() {
-        assert suppliers != null : "fx:id=\"suppliers\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert btnAddProductToSupplier != null : "fx:id=\"btnAddProductToSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert btnRemoveProductToSupplier != null : "fx:id=\"btnRemoveProductToSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert cmbSupplier != null : "fx:id=\"cmbSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert lstProductBySupplier != null : "fx:id=\"lstProductBySupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert lstProductToAdd != null : "fx:id=\"lstProductToAdd\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert crudSuppliers != null : "fx:id=\"crudSuppliers\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert btnRemoveSupplier != null : "fx:id=\"btnRemoveSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert btnEditSupplier != null : "fx:id=\"btnEditSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert txtSupplier != null : "fx:id=\"txtSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert btnAddSupplier != null : "fx:id=\"btnAddSupplier\" was not injected: check your FXML file 'Suppliers.fxml'.";
-        assert lblError != null : "fx:id=\"lblError\" was not injected: check your FXML file 'Suppliers.fxml'.";
 
         productsToRemove = new ArrayList<Product>();
         crudSuppliers.setExpanded(false);

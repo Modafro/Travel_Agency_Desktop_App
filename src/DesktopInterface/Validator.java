@@ -33,13 +33,36 @@ public class Validator {
             lblNameError.setText("Format invalid");
             return false;
         }
+    }
 
+    public static boolean regexResult(String regexPattern, String txtName)
+    {
+        Pattern pattern = Pattern.compile(regexPattern);
+        Matcher matcher = pattern.matcher(txtName.trim());
+        if(matcher.matches())
+        {
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     //method to verify if textfield is empty
     public static boolean isEmpty(TextField txtName)
     {
         if (!txtName.getText().isEmpty() || !txtName.getText().trim().isEmpty())
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isEmpty(String txtName)
+    {
+        if (!txtName.isEmpty() || !txtName.trim().isEmpty())
         {
             return false;
         }
@@ -116,6 +139,40 @@ public class Validator {
         }
     }
 
+    public static boolean isDateAfterSpecificDate (Date dpSpecificDate, Date dpName)
+    {
+        //Date dateSpecific = DateConverter.FromDatePickerToUtilDate(dpSpecificDate);
+        //Date dateToValidate= DateConverter.FromDatePickerToUtilDate(dpName);
+
+        if(dpName.compareTo(dpSpecificDate) > 0)
+        {
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static boolean isDateAfterSpecificDate (DatePicker dpSpecificDate, DatePicker dpName)
+    {
+        Date dateSpecific = DateConverter.FromDatePickerToUtilDate(dpSpecificDate);
+        Date dateToValidate= DateConverter.FromDatePickerToUtilDate(dpName);
+
+        if(dateToValidate.compareTo(dateSpecific) > 0)
+        {
+            //lblNameError.setVisible(false);
+            return true;
+        }
+        else
+        {
+            //lblNameError.setVisible(true);
+           // lblNameError.setText("Date must be after start date");
+            return false;
+        }
+    }
+
     //method to verify if email format is valid and set relevant error label visible true/false
     public static boolean isEmailValid(TextField txtName, Label lblNameError)
     {
@@ -132,6 +189,20 @@ public class Validator {
         }
     }
 
+    public static boolean isEmailValid(String txtName)
+    {
+        //validate pattern only if textfield not empty
+        if(!isEmpty(txtName))
+        {
+            String Pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            return regexResult(Pattern, txtName);
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
     //method to verify if postal code format is valid
     public static boolean isPostalValid(TextField txtName, Label lblName)
     {
@@ -148,6 +219,21 @@ public class Validator {
         }
     }
 
+    public static boolean isPostalValid(String txtName)
+    {
+        //validate pattern only if textfield not empty
+        if(!isEmpty(txtName))
+        {
+            String Pattern = "^([A-Za-z]\\d[A-Za-z][- ]?\\d[A-Za-z]\\d)+$";
+            return regexResult(Pattern, txtName);
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
+
     //method to verify if phone number format is valid
     public static boolean isPhoneValid(TextField txtName, Label lblName)
     {
@@ -156,6 +242,21 @@ public class Validator {
         {
             String Pattern = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
             return regexResult(Pattern, txtName, lblName);
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
+
+    public static boolean isPhoneValid(String txtName)
+    {
+        //validate pattern only if textfield not empty
+        if(!isEmpty(txtName))
+        {
+            String Pattern = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
+            return regexResult(Pattern, txtName);
         }
         //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
         else
@@ -181,6 +282,21 @@ public class Validator {
         }
     }
 
+    public static boolean isNameValid(String txtName)
+    {
+        //validate pattern only if textfield not empty
+        if(!isEmpty(txtName))
+        {
+            String Pattern = "^[a-zA-Z -'.]+$";
+            return regexResult(Pattern, txtName);
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return true;
+        }
+    }
+
     //method to validate if value for a given comboxbox was selected
     public static boolean isProvinceValid(ComboBox<String> cbName, Label lblName)
     {
@@ -193,6 +309,19 @@ public class Validator {
         {
             lblName.setVisible(true);
             lblName.setText("Select a province");
+            return false;
+        }
+    }
+
+    public static boolean isProvinceValid(String txtName)
+    {
+        if(txtName.equals("AB") ||txtName.equals("BC") ||txtName.equals("MB") ||txtName.equals("NB") ||txtName.equals("NL") ||txtName.equals("NT") ||txtName.equals("NS") ||
+                txtName.equals("NU") ||txtName.equals("ON") ||txtName.equals("PE") ||txtName.equals("QC") ||txtName.equals("SK") ||txtName.equals("YT"))
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
@@ -256,6 +385,35 @@ public class Validator {
         else
         {
             return true;
+        }
+    }
+
+    public static boolean isPositiveDouble(String txtName)
+    {
+
+        if(!isEmpty(txtName))
+        {
+            try {
+                double isNumber = Double.parseDouble(txtName);
+
+                if (isNumber>=0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            } catch (NumberFormatException e) {
+                return false; //if an exception is caught, parseInt is false
+            }
+            //return false;
+        }
+        //return true if textfield empty (run "isEmpty" method before current method if textfield is not to be empty)
+        else
+        {
+            return false;
         }
     }
 }

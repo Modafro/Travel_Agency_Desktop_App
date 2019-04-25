@@ -3,6 +3,7 @@ package DesktopInterface;
 import DesktopInterface.TravelExpertClasses.Package;
 import DesktopInterface.TravelExpertClasses.PackageDB;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -200,6 +201,7 @@ public class PackagesController {
 
         pkgName.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        //formatter.format(object)
         StringConverter<Date> dateStringConverter = new StringConverter<Date>() {
             @Override
             public String toString(Date object) {
@@ -212,9 +214,9 @@ public class PackagesController {
                     Date d = formatter.parse(string);
                     return d;
                 } catch (ParseException e) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Date Format Error");
-                    alert.setHeaderText(null);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Date Invalid");
+                    alert.setHeaderText("Date format invalid");
                     alert.setContentText("The date has been formatted incorrectly, please format the date in the form:\nYYYY-MM-DD (eg. 2019-1-31)");
                     alert.showAndWait();
                     //e.printStackTrace();
@@ -223,19 +225,82 @@ public class PackagesController {
             }
         };
 
+       StringConverter<Double> doubleStringConverter = new StringConverter<Double>() {
+           @Override
+           public String toString(Double object) {
+               return Double.toString(object);
+           }
+
+           @Override
+           public Double fromString(String string) {
+                  if(Validator.isPositiveDouble(string))
+                  {
+                      double doubleNumber = Double.parseDouble(string);
+                      return doubleNumber;
+                  }
+                  else
+                  {
+                      Alert alert = new Alert(Alert.AlertType.ERROR);
+                      alert.setTitle("Number Invalid");
+                      alert.setHeaderText("Number formatted incorrectly");
+                      alert.setContentText("Please enter a valid number");
+                      alert.showAndWait();
+                  }
+                  return null;
+               }
+       };
+
+       StringConverter<String> stringStringConverter = new StringConverter<String>() {
+           @Override
+           public String toString(String object) {
+               return object;
+           }
+
+           @Override
+           public String fromString(String string) {
+               if(!Validator.isEmpty(string))
+               {
+                   return string;
+               }
+               else
+               {
+                   Alert alert = new Alert(Alert.AlertType.ERROR);
+                   alert.setTitle("Invalid input");
+                   alert.setHeaderText("Field required");
+                   alert.setContentText("Please enter a valid value");
+                   alert.showAndWait();
+               }
+               return null;
+           }
+       };
+
         pkgStartDate.setCellFactory(TextFieldTableCell.forTableColumn(dateStringConverter));
         pkgEndDate.setCellFactory(TextFieldTableCell.forTableColumn(dateStringConverter));
         pkgDescription.setCellFactory(TextFieldTableCell.forTableColumn());
-        pkgBasePrice.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
-        pkgCommission.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        pkgBasePrice.setCellFactory(TextFieldTableCell.forTableColumn(doubleStringConverter));
+        pkgCommission.setCellFactory(TextFieldTableCell.forTableColumn(doubleStringConverter));
 
         //apply event handlers for all columns
         pkgName.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Package, String> event) {
-                Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                p.setPkgName(event.getNewValue());
-                txtPkgName.setText(p.getPkgName());
+                if(!Validator.isEmpty(event.getNewValue()))
+                {
+                    Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    p.setPkgName(event.getNewValue());
+                    PackageDB.UpdatePackage(p);
+                    txtPkgName.setText(p.getPkgName());
+                    updateTable();
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Name Invalid");
+                    alert.setHeaderText("Valid name needed");
+                    alert.setContentText("Please enter a valid name");
+                    alert.showAndWait();
+                    updateTable();
+                }
             }
         });
 
@@ -244,20 +309,57 @@ public class PackagesController {
             public void handle(TableColumn.CellEditEvent<Package, Date> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
                 p.setPkgStartDate(new java.sql.Date(event.getNewValue().getTime()));
+                PackageDB.UpdatePackage(p);
+                //convert sql date to localdate type
+                Date pkgStartDate = (p.getPkgStartDate());
+                Instant instantPkgStartDate = Instant.ofEpochMilli(pkgStartDate.getTime());
+                dpPkgStartDate.setValue(LocalDateTime.ofInstant(instantPkgStartDate,ZoneId.systemDefault()).toLocalDate());
             }
         });
         pkgEndDate.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, java.util.Date>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Package, java.util.Date> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                p.setPkgEndDate(new java.sql.Date(event.getNewValue().getTime()));
+                if(Validator.isDateAfterSpecificDate(p.getPkgStartDate(), event.getNewValue()))
+                {
+                    p.setPkgEndDate(new java.sql.Date(event.getNewValue().getTime()));
+                    PackageDB.UpdatePackage(p);
+
+                    Date pkgEndDate = (p.getPkgEndDate());
+                    Instant instantPkgEndDate = Instant.ofEpochMilli(pkgEndDate.getTime());
+                    dpPkgEndDate.setValue(LocalDateTime.ofInstant(instantPkgEndDate,ZoneId.systemDefault()).toLocalDate());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Date Invalid");
+                    alert.setHeaderText("Date specified incorrect");
+                    alert.setContentText("Please enter an end date that is after the start date");
+                    alert.showAndWait();
+                    updateTable();
+                }
             }
         });
+
         pkgDescription.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Package, String> event) {
-                Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                p.setPkgDesc(event.getNewValue());
+                if(!Validator.isEmpty(event.getNewValue()))
+                {
+                    Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                    p.setPkgDesc(event.getNewValue());
+                    PackageDB.UpdatePackage(p);
+                    txtPkgDescription.setText(p.getPkgDesc());
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Description Invalid");
+                    alert.setHeaderText("Valid description needed");
+                    alert.setContentText("Please enter a valid description");
+                    alert.showAndWait();
+                    updateTable();
+                }
             }
         });
         pkgBasePrice.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, Double>>() {
@@ -265,6 +367,8 @@ public class PackagesController {
             public void handle(TableColumn.CellEditEvent<Package, Double> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
                 p.setPkgBasePrice(event.getNewValue());
+                PackageDB.UpdatePackage(p);
+                txtPkgBasePrice.setText(Double.toString(p.getPkgBasePrice()));
             }
         });
         pkgCommission.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Package, Double>>() {
@@ -272,7 +376,8 @@ public class PackagesController {
             public void handle(TableColumn.CellEditEvent<Package, Double> event) {
                 Package p = event.getTableView().getItems().get(event.getTablePosition().getRow());
                 p.setPkgAgencyCommission(event.getNewValue());
-
+                PackageDB.UpdatePackage(p);
+                txtPkgCommission.setText(Double.toString(p.getPkgAgencyCommission()));
             }
         });
         tblPackages.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -737,7 +842,6 @@ public class PackagesController {
                 }
             }
         });
-
         return booleanForFocusExitListeners;
     }
 
