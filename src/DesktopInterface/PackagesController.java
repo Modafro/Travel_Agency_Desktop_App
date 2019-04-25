@@ -1,12 +1,13 @@
 package DesktopInterface;
 
+import DesktopInterface.TravelExpertClasses.*;
 import DesktopInterface.TravelExpertClasses.Package;
-import DesktopInterface.TravelExpertClasses.PackageDB;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -276,6 +277,14 @@ public class PackagesController {
             }
         });
         tblPackages.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        //load combo box
+        productList = ProductDB.GetProducts();
+        cmbProduct.setItems(getProdNames());
+        cmbSupplier.setDisable(true);
+        btnLinkPSP.setDisable(true);
+
+
         //updateTable();
 
 /*        TableColumn dateColumn = new TableColumn("Date");
@@ -297,6 +306,13 @@ public class PackagesController {
         tblPackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
+                ArrayList<ProductSupplier> packageProSup = PackageProductSupplierDB.getPackageProSup(pkg.getPackageId());
+                ObservableList<String> proSuppStrings = FXCollections.observableArrayList();
+                for (ProductSupplier ps: packageProSup){
+                    proSuppStrings.add(ps.getProductName() + ", " + ps.getSupplierName());
+                }
+                lvPkgProSup.setItems(proSuppStrings);
                 setPkgTextfieldsFromTable();
             }
         });
@@ -799,6 +815,64 @@ public class PackagesController {
             return booleanForFocusExitListeners;
         }
 
+
+     //titled pane added late in development
+
+    @FXML
+    private Button btnLinkPSP;
+
+    @FXML
+    private TitledPane tvLinkPSP;
+
+    @FXML
+    private ComboBox<Product> cmbProduct;
+
+    @FXML
+    private ComboBox<Supplier> cmbSupplier;
+
+    @FXML
+    private ListView<String> lvPkgProSup;
+
+
+    int selectedProd;
+    int selectedSupp;
+    int proSupp;
+    private ArrayList<Supplier> supplierList;
+    private ArrayList<Product> productList;
+
+    @FXML
+    void cmbProdSelect(ActionEvent event) {
+        selectedProd = cmbProduct.getSelectionModel().getSelectedItem().getProductId();
+        supplierList = SupplierDB.GetSpecSupplier(selectedProd);
+        cmbSupplier.setItems(getSuppNames());
+        cmbSupplier.setDisable(false);
+    }
+
+    @FXML
+    void cmbSuppSelect(ActionEvent event) {
+        selectedSupp = cmbSupplier.getSelectionModel().getSelectedItem().getSupplierId();
+        proSupp = ProductSupplierDB.getSpecProSuppId(selectedProd, selectedSupp);
+        btnLinkPSP.setDisable(false);
+    }
+
+    @FXML
+    void linkPSP(ActionEvent event) {
+        int pkgId = Integer.parseInt(txtPackageId.getText());
+        PackageProductSupplierDB.LinkPackageProdSupp(pkgId, proSupp);
+
+    }
+
+    private ObservableList<Product> getProdNames() {
+        ArrayList<Product> prodNames = new ArrayList<>(productList);
+        ObservableList<Product> options = FXCollections.observableArrayList(prodNames);
+        return options;
+    }
+
+    private ObservableList<Supplier> getSuppNames() {
+        ArrayList<Supplier> suppNames = new ArrayList<>(supplierList);
+        ObservableList<Supplier> options = FXCollections.observableArrayList(suppNames);
+        return options;
+    }
 
 
 //    public void keepButtonFocusedonAnchorPaneClicked(Button button)

@@ -61,7 +61,7 @@ public class ProductSupplierDB {
 
         try {
             if (type == "Product") {
-                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId where SP.ProductId = ?");
+                ps = dbConnect.prepareStatement("Select SP.ProductId, P.ProdName, S.SupName, SP.SupplierId, SP.ProductSupplierId from Products P Join Products_Suppliers SP on P.ProductId = SP.ProductId Join Suppliers S on SP.SupplierId = S.SupplierId where SP.ProductId = ?");
                 ps.setInt(1, ID);
             }
             else
@@ -101,4 +101,23 @@ public class ProductSupplierDB {
             e.printStackTrace();
         }
         }
+
+    public static int getSpecProSuppId (int prod, int supp){
+        int proSuppID = -1;
+        Connection dbConnect = TravelExpertsDB.getConnection();
+
+        try {
+            PreparedStatement ps = dbConnect.prepareStatement("SELECT ProductSupplierId From Products_Suppliers where ProductId = ? AND SupplierId = ? ");
+            ps.setInt(1, prod);
+            ps.setInt(2, supp);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                proSuppID = rs.getInt(1);
+            }
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return proSuppID;
+    }
 }

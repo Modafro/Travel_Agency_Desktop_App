@@ -87,7 +87,8 @@ public class SupplierDB {
         PreparedStatement ps;
         try {
 
-            ps = dbConnect.prepareStatement("SELECT SupplierId, SupName FROM Suppliers WHERE SupplierId != ? ORDER BY SupplierId");
+            ps = dbConnect.prepareStatement("select Suppliers.SupplierId, SupName from Products join Products_Suppliers on Products.ProductId = Products_Suppliers.ProductId" +
+                    " join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId where Products.ProductId = ?");
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
