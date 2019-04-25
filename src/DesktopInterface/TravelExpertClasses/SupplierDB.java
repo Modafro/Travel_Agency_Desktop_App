@@ -80,4 +80,28 @@ public class SupplierDB {
         }
         return success;
     }
+
+    public static ArrayList<Supplier> GetSpecSupplier(Integer id){
+        ArrayList<Supplier> supplierSpecList = new ArrayList<>();
+        Connection dbConnect = TravelExpertsDB.getConnection();
+        PreparedStatement ps;
+        try {
+
+            ps = dbConnect.prepareStatement("select Suppliers.SupplierId, SupName from Products join Products_Suppliers on Products.ProductId = Products_Suppliers.ProductId" +
+                    " join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId where Products.ProductId = ?");
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                Supplier supplier = new Supplier(rs.getInt(1), rs.getString(2));
+                supplierSpecList.add(supplier);
+            }
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return supplierSpecList;
+    }
 }

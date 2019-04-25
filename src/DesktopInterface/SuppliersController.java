@@ -170,7 +170,7 @@ public class SuppliersController {
         }else{
             alert_error.setTitle("Delete Status");
             alert_error.setHeaderText("Supplier was not deleted");
-            alert_error.setContentText("An error occurred while trying to deleted the supplier to the database. Please" +
+            alert_error.setContentText("An error occurred while trying to deleted the supplier from the database. Please" +
                     " try again. If issue persists, contact your database administrator.");
             alert_error.showAndWait();
         }
