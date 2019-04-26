@@ -4,6 +4,8 @@ public class PackageProductSupplier {
 
     private int packageId;
     private int productSupplierId;
+    private String prodName;
+    private String suppName;
 
     public int getPackageId() {
         return packageId;
@@ -21,15 +23,34 @@ public class PackageProductSupplier {
         this.productSupplierId = productSupplierId;
     }
 
+    public String getProdName() {
+        return prodName;
+    }
+
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
+    public String getSuppName() {
+        return suppName;
+    }
+
+    public void setSuppName(String suppName) {
+        this.suppName = suppName;
+    }
+
     public PackageProductSupplier() {
+    }
+
+    public PackageProductSupplier(int productSupplierId, String prodName, String suppName) {
+        this.productSupplierId = productSupplierId;
+        this.prodName = prodName;
+        this.suppName = suppName;
     }
 
     @Override
     public String toString() {
-        return "DesktopInterface.TravelExpertClasses.PackageProductSupplier{" +
-                "packageId=" + packageId +
-                ", productSupplierId='" + productSupplierId + '\'' +
-                '}';
+        return suppName + ", " + prodName;
     }
 
 }

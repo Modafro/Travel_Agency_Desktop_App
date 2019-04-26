@@ -388,6 +388,16 @@ public class PackagesController {
         cmbProduct.setItems(getProdNames());
         cmbSupplier.setDisable(true);
         btnLinkPSP.setDisable(true);
+        btnDeletePSP.setDisable(true);
+        btnCancelLink.setDisable(true);
+        tvLinkPSP.setDisable(true);
+
+        lvPkgProSup.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                btnDeletePSP.setDisable(false);
+            }
+        });
 
 
         //updateTable();
@@ -411,13 +421,12 @@ public class PackagesController {
         tblPackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Package pkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
-                ArrayList<ProductSupplier> packageProSup = PackageProductSupplierDB.getPackageProSup(pkg.getPackageId());
-                ObservableList<String> proSuppStrings = FXCollections.observableArrayList();
-                for (ProductSupplier ps: packageProSup){
-                    proSuppStrings.add(ps.getProductName() + ", " + ps.getSupplierName());
-                }
+                tvLinkPSP.setDisable(false);
+                selectPkg = tblPackages.getItems().get(tblPackages.getSelectionModel().getSelectedIndex());
+                packageProSup = PackageProductSupplierDB.getPackageProSup(selectPkg.getPackageId());
+                ObservableList<PackageProductSupplier> proSuppStrings = FXCollections.observableArrayList(packageProSup);
                 lvPkgProSup.setItems(proSuppStrings);
+
                 setPkgTextfieldsFromTable();
             }
         });
@@ -941,34 +950,88 @@ public class PackagesController {
     private ComboBox<Supplier> cmbSupplier;
 
     @FXML
-    private ListView<String> lvPkgProSup;
+    private ListView<PackageProductSupplier> lvPkgProSup;
+
+    @FXML
+    private Button btnCancelLink;
+
+    @FXML
+    private Button btnDeletePSP;
 
 
     int selectedProd;
     int selectedSupp;
     int proSupp;
+    private ArrayList<PackageProductSupplier> packageProSup;
     private ArrayList<Supplier> supplierList;
     private ArrayList<Product> productList;
+    private Package selectPkg;
 
     @FXML
     void cmbProdSelect(ActionEvent event) {
-        selectedProd = cmbProduct.getSelectionModel().getSelectedItem().getProductId();
-        supplierList = SupplierDB.GetSpecSupplier(selectedProd);
-        cmbSupplier.setItems(getSuppNames());
+        if (selectPkg != null || cmbProduct.getSelectionModel().getSelectedIndex() != -1){
+            selectedProd = cmbProduct.getSelectionModel().getSelectedItem().getProductId();
+            supplierList = SupplierDB.GetSpecSupplier(selectedProd, selectPkg.getPackageId());
+            cmbSupplier.setItems(getSuppNames());
+        }
         cmbSupplier.setDisable(false);
+        btnCancelLink.setDisable(false);
     }
 
     @FXML
     void cmbSuppSelect(ActionEvent event) {
-        selectedSupp = cmbSupplier.getSelectionModel().getSelectedItem().getSupplierId();
-        proSupp = ProductSupplierDB.getSpecProSuppId(selectedProd, selectedSupp);
-        btnLinkPSP.setDisable(false);
+        if (cmbSupplier.getSelectionModel().getSelectedIndex() != -1){
+            selectedSupp = cmbSupplier.getSelectionModel().getSelectedItem().getSupplierId();
+            proSupp = ProductSupplierDB.getSpecProSuppId(selectedProd, selectedSupp);
+            btnLinkPSP.setDisable(false);
+            tblPackages.setDisable(true);
+        }
     }
 
     @FXML
     void linkPSP(ActionEvent event) {
         int pkgId = Integer.parseInt(txtPackageId.getText());
         PackageProductSupplierDB.LinkPackageProdSupp(pkgId, proSupp);
+        cmbSupplier.setDisable(true);
+        btnLinkPSP.setDisable(true);
+        tblPackages.setDisable(false);
+        btnCancelLink.setDisable(true);
+
+        cmbSupplier.getSelectionModel().clearSelection();
+        cmbProduct.getSelectionModel().clearSelection();
+        lvPkgProSup.getItems().clear();
+        cmbSupplier.getItems().clear();
+
+        if (selectPkg != null) {
+            ArrayList<PackageProductSupplier> packageProSup = PackageProductSupplierDB.getPackageProSup(selectPkg.getPackageId());
+            ObservableList<PackageProductSupplier> proSuppStrings = FXCollections.observableArrayList(packageProSup);
+            lvPkgProSup.setItems(proSuppStrings);
+        }
+    }
+
+    @FXML
+    void btnCancelLink(ActionEvent event){
+        cmbSupplier.getSelectionModel().clearSelection();
+        cmbProduct.getSelectionModel().clearSelection();
+        cmbSupplier.setDisable(true);
+        tblPackages.setDisable(false);
+        btnLinkPSP.setDisable(true);
+    }
+
+    @FXML
+    void deletePSP(ActionEvent event) {
+        PackageProductSupplierDB.deleteProSupp(selectPkg.getPackageId() ,lvPkgProSup.getSelectionModel().getSelectedItem().getProductSupplierId());
+
+        lvPkgProSup.getItems().clear();
+        cmbSupplier.getSelectionModel().clearSelection();
+
+        supplierList = SupplierDB.GetSpecSupplier(selectedProd, selectPkg.getPackageId());
+        cmbSupplier.setItems(getSuppNames());
+
+        ArrayList<PackageProductSupplier> packageProSup = PackageProductSupplierDB.getPackageProSup(selectPkg.getPackageId());
+        ObservableList<PackageProductSupplier> proSuppStrings = FXCollections.observableArrayList(packageProSup);
+        lvPkgProSup.setItems(proSuppStrings);
+        btnDeletePSP.setDisable(true);
 
     }
 
@@ -983,181 +1046,5 @@ public class PackagesController {
         ObservableList<Supplier> options = FXCollections.observableArrayList(suppNames);
         return options;
     }
-
-
-//    public void keepButtonFocusedonAnchorPaneClicked(Button button)
-//    {
-//        txtSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        btnUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        imgUpdate.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        crudPackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//
-//        tblPackages.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                button.setBackground(new Background(new BackgroundFill(Color.web("#1981E9"), CornerRadii.EMPTY, Insets.EMPTY)));
-//            }
-//        });
-//    }
 }
 
-//    /**
-//     * Internal class for date cells
-//     * @param <S>
-//     * @param <T>
-//     */
-//
-//
-//    public class DatePickerCell<S, T> extends TableCell<Package, Date> {
-//
-//        private DatePicker datePicker;
-//        private ObservableList<Package> packageData;
-//
-//        public DatePickerCell(ObservableList<Package> packageData, String cellType) {
-//            super();
-//
-//            this.packageData = packageData;
-//
-//            if (datePicker == null) {
-//                createDatePicker(cellType);
-//            }
-//            setGraphic(datePicker);
-//            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//
-//            Platform.runLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                    datePicker.requestFocus();
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public void updateItem(Date item, boolean empty) {
-//
-//            super.updateItem(item, empty);
-//
-//            SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-//
-//            if (null == this.datePicker) {
-//                System.out.println("datePicker is NULL");
-//            }
-//
-//            if (empty) {
-//                setText(null);
-//                setGraphic(null);
-//            } else {
-//
-//                if (isEditing()) {
-//                    setContentDisplay(ContentDisplay.TEXT_ONLY);
-//                } else {
-//                    setDatePickerDate(smp.format(item));
-//                    setText(smp.format(item));
-//                    setGraphic(this.datePicker);
-//                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//                }
-//            }
-//        }
-//
-//        private void setDatePickerDate(String dateAsStr) {
-//
-//            LocalDate ld = null;
-//            int jour, mois, annee;
-//
-//            jour = mois = annee = 0;
-//            try {
-//                jour = Integer.parseInt(dateAsStr.substring(0, 2));
-//                mois = Integer.parseInt(dateAsStr.substring(3, 5));
-//                annee = Integer.parseInt(dateAsStr.substring(6, dateAsStr.length()));
-//            } catch (NumberFormatException e) {
-//                System.out.println("setDatepikerDate / unexpected error " + e);
-//            }
-//
-//            ld = LocalDate.of(annee, mois, jour);
-//            datePicker.setValue(ld);
-//        }
-//
-//        private void createDatePicker(String cellType) {
-//            this.datePicker = new DatePicker();
-//            datePicker.setPromptText("jj/mm/aaaa");
-//            datePicker.setEditable(true);
-//            datePicker.setOnAction(new EventHandler() {
-//                public void handle(Event t) {
-//                    LocalDate date = datePicker.getValue();
-//                    int index = getIndex();
-//                    SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-//                    Calendar cal = Calendar.getInstance();
-//                    cal.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
-//                    cal.set(Calendar.MONTH, date.getMonthValue() - 1);
-//                    cal.set(Calendar.YEAR, date.getYear());
-//
-//                    setText(smp.format(cal.getTime()));
-//                    commitEdit(cal.getTime());
-//
-//                    ObservableList<Package> observableList = getBirthdayData();
-//
-//                    if (getTableRow() != null && null != getBirthdayData() && cellType.equals("endDate")) {
-//                        getTableRow().getItem().setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
-//                        //getBirthdayData().get(index).setPkgEndDate(new java.sql.Date(cal.getTime().getTime()));
-//                    }
-//                    else if(null != getBirthdayData() && cellType.equals("startDate")) {
-//                        getBirthdayData().get(index).setPkgStartDate(new java.sql.Date(cal.getTime().getTime()));
-//                    }
-//
-//                }
-//            });
-//
-//            setAlignment(Pos.CENTER);
-//        }
-//
-//        @Override
-//        public void startEdit() {
-//            super.startEdit();
-//        }
-//
-//        @Override
-//        public void cancelEdit() {
-//            super.cancelEdit();
-//            setContentDisplay(ContentDisplay.TEXT_ONLY);
-//        }
-//
-//        public ObservableList<Package> getBirthdayData() {
-//            return packageData;
-//        }
-//
-//        public void setBirthdayData(ObservableList<Package> birthdayData) {
-//            this.packageData = birthdayData;
-//        }
-//
-//        public DatePicker getDatePicker() {
-//            return datePicker;
-//        }
-//
-//        public void setDatePicker(DatePicker datePicker) {
-//            this.datePicker = datePicker;
-//        }
-//    }
-//}
