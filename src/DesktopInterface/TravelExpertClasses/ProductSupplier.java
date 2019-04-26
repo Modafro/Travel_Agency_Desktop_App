@@ -1,3 +1,12 @@
+/**
+ * Author: James Sharpe
+ * Date: April 2019
+ * Objective: ProductSupplier Class for storing and retrieving productsupplier data
+ */
+
+
+
+
 package DesktopInterface.TravelExpertClasses;
 
 public class ProductSupplier {

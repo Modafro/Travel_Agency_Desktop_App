@@ -1,3 +1,12 @@
+/**
+ * Author: James Sharpe and Yosuke Saito
+ * Date: April 2019
+ * Objective: PackageProductSupplierDB Class for Database connection with SQL to retrieve data
+ */
+
+
+
+
 package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;

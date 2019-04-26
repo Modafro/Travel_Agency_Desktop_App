@@ -1,3 +1,11 @@
+/**
+ * Author: James Sharpe
+ * Date: April 2019
+ * Objective: PackageProductSupplier Class for storing and retrieving PackageProductSupplier information
+ */
+
+
+
 package DesktopInterface.TravelExpertClasses;
 
 public class PackageProductSupplier {

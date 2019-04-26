@@ -1,3 +1,11 @@
+/**
+ * Author: Mo Sagnia and James Sharpe
+ * Date: April 2019
+ * Objective: PackageDB Class for connecting to the database using SQL statements
+ */
+
+
+
 package DesktopInterface.TravelExpertClasses;
 
 import DesktopInterface.TravelExpertsDB;

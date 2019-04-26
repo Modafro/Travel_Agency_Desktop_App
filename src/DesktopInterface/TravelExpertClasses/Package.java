@@ -1,3 +1,10 @@
+/**
+ * Author: Mo Sagnia and James Sharpe
+ * Date: April 2019
+ * Objective: Package Class for storing and retrieving package information
+ */
+
+
 package DesktopInterface.TravelExpertClasses;
 
 import javafx.beans.property.SimpleDoubleProperty;

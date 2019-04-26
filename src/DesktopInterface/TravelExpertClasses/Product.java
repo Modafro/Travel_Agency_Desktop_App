@@ -1,3 +1,11 @@
+/**
+ * Author: James Sharpe
+ * Date: April 2019
+ * Objective: Product Class for storing and retrieving product
+ */
+
+
+
 package DesktopInterface.TravelExpertClasses;
 
 public class Product {
