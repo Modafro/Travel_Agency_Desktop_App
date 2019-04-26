@@ -1,4 +1,8 @@
-
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a class controller for interaction of Custom information based on Agent Login UI with the database
+ */
 
 package DesktopInterface;
 

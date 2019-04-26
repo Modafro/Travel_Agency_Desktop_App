@@ -1,3 +1,10 @@
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a class controller for interaction of CustomersUI to the database
+ */
+
+
 package DesktopInterface;
 
 import java.net.URL;

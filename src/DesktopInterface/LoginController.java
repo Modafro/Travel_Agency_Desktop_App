@@ -1,3 +1,11 @@
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a class controller for interaction of LoginUI to the database
+ */
+
+
+
 /*
 Login controller, use the following users to login
 username: jdelton or jlisle

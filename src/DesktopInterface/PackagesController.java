@@ -1,3 +1,11 @@
+/**
+ * Author: Mo Sagnia, Yosuke Saito, and James Sharpe
+ * Date: April 2019
+ * Objective: Create a class controller for interaction of packagesUI to the database
+ */
+
+
+
 package DesktopInterface;
 
 import DesktopInterface.TravelExpertClasses.*;

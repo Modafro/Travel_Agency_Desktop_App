@@ -1,3 +1,10 @@
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a class to convert Dates for CRUD operations in the Database
+ */
+
+
 //Objective: create classes to convert date formats
 package DesktopInterface;
 

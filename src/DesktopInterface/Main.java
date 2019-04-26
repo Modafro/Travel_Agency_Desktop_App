@@ -1,3 +1,10 @@
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Main Class to execute and display the UI
+ */
+
+
 package DesktopInterface;
 
 import javafx.application.Application;
