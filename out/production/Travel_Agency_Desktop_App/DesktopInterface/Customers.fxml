@@ -32,7 +32,7 @@
             </columns>
         </TableView>
         <TextField fx:id="txtSearch" layoutX="22.0" layoutY="14.0" onAction="#searchDatabase" prefHeight="25.0" prefWidth="188.0" promptText="Search" />
-        <TitledPane fx:id="crudCustomers" layoutX="22.0" layoutY="253.0" prefHeight="206.0" prefWidth="659.0" text="Options">
+        <TitledPane fx:id="crudCustomers" layoutX="22.0" layoutY="253.0" prefHeight="206.0" prefWidth="659.0" text="Insert - Update - Delete (Customer)">
             <Pane prefHeight="181.0" prefWidth="661.0">
             <children>
                <Pane fx:id="pncustomerfields" layoutX="14.0" layoutY="21.0">

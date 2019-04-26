@@ -31,7 +31,7 @@
       </TableView>
       <Accordion layoutX="22.0" layoutY="260.0" prefWidth="666.0">
          <panes>
-            <TitledPane fx:id="crudPackages" prefHeight="190.0" prefWidth="666.0" snapToPixel="false" text="Insert-Update-Delete (Package)">
+            <TitledPane fx:id="crudPackages" prefHeight="190.0" prefWidth="666.0" snapToPixel="false" text="Insert - Update - Delete (Package)">
                <content>
                   <Pane prefHeight="181.0" prefWidth="661.0">
                      <children>

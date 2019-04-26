@@ -30,7 +30,7 @@
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <TitledPane fx:id="crudSuppliers" animated="false" layoutX="188.0" layoutY="316.0" prefHeight="133.0" prefWidth="333.0" text="Insert-Update-Delete (Supplier)">
+      <TitledPane fx:id="crudSuppliers" animated="false" layoutX="188.0" layoutY="316.0" prefHeight="133.0" prefWidth="333.0" text="Insert - Update - Delete (Supplier)">
          <content>
             <Pane prefHeight="87.0" prefWidth="331.0">
                <children>
