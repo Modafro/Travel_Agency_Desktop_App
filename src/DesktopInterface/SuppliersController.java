@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 
 import DesktopInterface.TravelExpertClasses.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,6 +59,37 @@ public class SuppliersController {
     private Label lblError;
 
     @FXML
+    private FontAwesomeIcon imgInsert;
+
+    @FXML
+    private FontAwesomeIcon imgUpdate;
+
+    @FXML
+    private FontAwesomeIcon imgDelete;
+
+    @FXML
+    private Button btnSave;
+
+    @FXML
+    private FontAwesomeIcon imgSave;
+
+    @FXML
+    private Button btnCancel;
+
+    @FXML
+    private FontAwesomeIcon imgCancel;
+
+    @FXML
+    private Button btnConfirmRemove;
+
+
+    @FXML
+    private FontAwesomeIcon imgConfirmRemove;
+
+    //string object used to know which button was clicked : Insert / Update / Delete
+    private String crudBtnClicked = new String();
+
+    @FXML
     void addProdToSupp(ActionEvent event) {
 
         int selectedProd = (lstProductToAdd.getSelectionModel().getSelectedItem().getProductId());
@@ -66,12 +98,116 @@ public class SuppliersController {
         lstProductToAdd.setItems(addSuppsProds());
     }
 
-    @FXML
-    void addSupplier(ActionEvent event)
+    //change buttons visibility to only show "save" and "cancel" button
+    public void insertBtnClicked()
+    {
+        crudBtnClicked = "insert";
+        txtSupplier.setText("");
+        setVisibilityButtons(false);
+        btnSave.setVisible(true);
+        imgSave.setVisible(true);
+        cmbSupplier.setDisable(true);
+    }
+
+    //change buttons visibility to only show "save" and "cancel" button
+    public void updateBtnClicked()
+    {
+        if (Validator.isEmpty(txtSupplier))
+        {
+            alert_error.setTitle("Supplier Invalid");
+            alert_error.setHeaderText("No supplier selected");
+            alert_error.setContentText("Please select a supplier to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "update";
+            setVisibilityButtons(false);
+            btnSave.setVisible(true);
+            imgSave.setVisible(true);
+            cmbSupplier.setDisable(true);
+        }
+
+    }
+
+    public void removeBtnClicked()
+    {
+        if (Validator.isEmpty(txtSupplier))
+        {
+            alert_error.setTitle("Supplier Invalid");
+            alert_error.setHeaderText("No supplier selected");
+            alert_error.setContentText("Please select a supplier to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            crudBtnClicked = "remove";
+            setVisibilityButtons(false);
+            btnConfirmRemove.setVisible(true);
+            imgConfirmRemove.setVisible(true);
+            cmbSupplier.setDisable(true);
+        }
+    }
+
+    //visibility of buttons
+    public void setVisibilityButtons(boolean showCrud)
+    {
+        if (showCrud == true)
+        {
+            btnAddSupplier.setVisible(true);
+            imgInsert.setVisible(true);
+            btnEditSupplier.setVisible(true);
+            imgUpdate.setVisible(true);
+            btnRemoveSupplier.setVisible(true);
+            imgDelete.setVisible(true);
+            btnSave.setVisible(false);
+            imgSave.setVisible(false);
+            btnCancel.setVisible(false);
+            imgCancel.setVisible(false);
+            btnConfirmRemove.setVisible(false);
+            imgConfirmRemove.setVisible(false);
+            txtSupplier.setDisable(true);
+            cmbSupplier.setDisable(false);
+        }
+        else if (showCrud == false)
+        {
+            btnAddSupplier.setVisible(false);
+            imgInsert.setVisible(false);
+            btnEditSupplier.setVisible(false);
+            imgUpdate.setVisible(false);
+            btnRemoveSupplier.setVisible(false);
+            imgDelete.setVisible(false);
+            btnSave.setVisible(true);
+            imgSave.setVisible(true);
+            btnCancel.setVisible(true);
+            imgCancel.setVisible(true);
+            txtSupplier.setDisable(false);
+
+        }
+    }
+
+    //method to insert or delete package
+    public void saveSupChanges()
+    {
+        System.out.println("method savePkgChanges called");
+        //if insert button was clicked
+        if(crudBtnClicked.equals("insert"))
+        {
+            addSupplier();
+        }
+        //if update button was clicked
+        else
+        {
+            editSupplier();
+        }
+    }
+
+
+    void addSupplier()
     {
         if (Validator.isEmpty(txtSupplier, lblError)){
-            return;
-        }
+            return;}
+
         String suppCompare = txtSupplier.getText().toUpperCase();
         boolean valid = true;
         for (Supplier s : supplierList){
@@ -106,11 +242,20 @@ public class SuppliersController {
 
             supplierList = SupplierDB.GetSuppliers();
             cmbSupplier.setItems(getSuppNames());
+
+            setVisibilityButtons(true);
+            cmbSupplier.getSelectionModel().selectFirst();
         }
     }
 
-    @FXML
-    void editSupplier(ActionEvent event) {
+    //method to cancel any ongoing changes
+    public void cancelSupChanges()
+    {
+        cmbSupplier.setDisable(false);
+        setVisibilityButtons(true);
+    }
+
+    void editSupplier() {
         if (Validator.isEmpty(txtSupplier, lblError)){
             return;
         }
@@ -150,6 +295,8 @@ public class SuppliersController {
 
         supplierList = SupplierDB.GetSuppliers();
         cmbSupplier.setItems(getSuppNames());
+        cmbSupplier.getSelectionModel().selectFirst();
+        setVisibilityButtons(true);
     }
 
     @FXML
@@ -182,6 +329,8 @@ public class SuppliersController {
 
         supplierList = SupplierDB.GetSuppliers();
         cmbSupplier.setItems(getSuppNames());
+
+        setVisibilityButtons(true);
     }
 
     //select supplier from combo box and set list boxes to specific products
@@ -207,6 +356,13 @@ public class SuppliersController {
         productList = ProductDB.GetProducts();
         txtSupplier.isEditable();
         lblError.setVisible(false);
+        btnSave.setVisible(false);
+        imgSave.setVisible(false);
+        btnCancel.setVisible(false);
+        imgCancel.setVisible(false);
+        btnConfirmRemove.setVisible(false);
+        imgConfirmRemove.setVisible(false);
+        setVisibilityButtons(true);
     }
 
     private Alert alert_info = new Alert(Alert.AlertType.INFORMATION);

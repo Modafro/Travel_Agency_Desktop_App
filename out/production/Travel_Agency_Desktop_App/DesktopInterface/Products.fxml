@@ -10,14 +10,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="products" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.ProductsController">
+<AnchorPane fx:id="products" onMouseClicked="#updateClick" prefHeight="463.0" prefWidth="709.0" stylesheets="@css/desktopStyling.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopInterface.ProductsController">
     <children>
-        <Label prefHeight="17.0" prefWidth="375.0" text="Products Page">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
-      <Label layoutX="325.0" layoutY="27.0" text="Products:" />
+      <Label layoutX="325.0" layoutY="27.0" text="Products:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <ListView fx:id="lvProducts" layoutX="255.0" layoutY="52.0" onKeyReleased="#selectKeyProd" onMouseClicked="#selectProd" prefHeight="179.0" prefWidth="200.0" />
       <TitledPane fx:id="tvCrud" layoutX="208.0" layoutY="253.0" prefHeight="196.0" prefWidth="334.0" text="Add, Update, Remove Products">
          <content>
@@ -34,7 +32,7 @@
                   <Button fx:id="btnSaveUpdate" alignment="CENTER_RIGHT" layoutX="239.0" layoutY="45.0" mnemonicParsing="false" onAction="#saveUpdate" prefHeight="25.0" prefWidth="79.0" text="Save" />
                   <FontAwesomeIcon fx:id="icPlus" glyphName="PLUS" layoutX="249.0" layoutY="31.0" onMouseClicked="#plusClickAws" />
                   <FontAwesomeIcon fx:id="icSave" glyphName="SAVE" layoutX="248.0" layoutY="62.0" onMouseClicked="#saveClickAws" />
-                  <FontAwesomeIcon fx:id="icUpdate" glyphName="RETWEET" layoutX="248.0" layoutY="87.0" onMouseClicked="#updateClickAws" />
+                  <FontAwesomeIcon fx:id="icUpdate" glyphName="RETWEET" layoutX="248.0" layoutY="87.0" onMouseClicked="#updateMouseClick" />
                   <FontAwesomeIcon fx:id="icCancel" glyphName="TIMES" layoutX="248.0" layoutY="126.0" onMouseClicked="#cancelClickAws" />
                   <FontAwesomeIcon fx:id="icDelete" glyphName="TRASH" layoutX="248.0" layoutY="151.0" onMouseClicked="#deleteClickAws" />
                   <FontAwesomeIcon fx:id="icTrashConfirm" glyphName="TRASH" layoutX="247.0" layoutY="62.0" onMouseClicked="#deleteConfirmClickAws" />

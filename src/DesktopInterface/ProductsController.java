@@ -100,6 +100,7 @@ public class ProductsController {
         btnAddProduct.setVisible(true);
         btnUpdate.setVisible(true);
         btnDelete.setVisible(true);
+        btnDelete.setDisable(false);
 
         //confirm disable
         btnSave.setVisible(false);
@@ -167,27 +168,39 @@ public class ProductsController {
 
     @FXML
     void clickDelete(ActionEvent event) {
-        //crud button disable
-        btnAddProduct.setVisible(false);
-        btnUpdate.setVisible(false);
-        btnDelete.setVisible(false);
+        if (Validator.isEmpty(txtProduct))
+        {
+            alert_error.setTitle("Product Invalid");
+            alert_error.setHeaderText("No product selected");
+            alert_error.setContentText("Please select a product to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            //crud button disable
+            btnAddProduct.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnDelete.setVisible(false);
 
-        //confirm disable
-        btnSaveUpdate.setVisible(false);
+            //confirm disable
+            btnSaveUpdate.setVisible(false);
 
-        //confirm btn enable
-        btnCancel.setVisible(true);
-        btnConfirm.setVisible(true);
+            //confirm btn enable
+            btnCancel.setVisible(true);
+            btnConfirm.setVisible(true);
 
-        //confirm icon enable
-        icCancel.setVisible(true);
-        icTrashConfirm.setVisible(true);
+            //confirm icon enable
+            icCancel.setVisible(true);
+            icTrashConfirm.setVisible(true);
 
-        //icon crud disable
-        icPlus.setVisible(false);
-        icUpdate.setVisible(false);
-        icDelete.setVisible(false);
-        icSave.setVisible(false);
+            //icon crud disable
+            icPlus.setVisible(false);
+            icUpdate.setVisible(false);
+            icDelete.setVisible(false);
+            icSave.setVisible(false);
+            lvProducts.setDisable(true);
+        }
+
     }
 
     @FXML
@@ -294,30 +307,76 @@ public class ProductsController {
         productList = ProductDB.GetProducts();
         lvProducts.setItems(allProducts());
         resetCrud();
+        lvProducts.setDisable(false);
     }
 
     @FXML
     void updateClick(ActionEvent event) {
+        if (Validator.isEmpty(txtProduct))
+        {
+            alert_error.setTitle("Product Invalid");
+            alert_error.setHeaderText("No product selected");
+            alert_error.setContentText("Please select a product to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            txtProduct.setDisable(false);
 
-        txtProduct.setDisable(false);
+            //crud button disable
+            btnAddProduct.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnDelete.setVisible(false);
 
-        //crud button disable
-        btnAddProduct.setVisible(false);
-        btnUpdate.setVisible(false);
-        btnDelete.setVisible(false);
+            //confirm disable
+            btnSaveUpdate.setVisible(true);
+            btnCancel.setVisible(true);
 
-        //confirm disable
-        btnSaveUpdate.setVisible(true);
-        btnCancel.setVisible(true);
+            //confirm icon enable
+            icSave.setVisible(true);
+            icCancel.setVisible(true);
 
-        //confirm icon enable
-        icSave.setVisible(true);
-        icCancel.setVisible(true);
+            //icon crud disable
+            icPlus.setVisible(false);
+            icUpdate.setVisible(false);
+            icDelete.setVisible(false);
+            lvProducts.setDisable(true);
+        }
 
-        //icon crud disable
-        icPlus.setVisible(false);
-        icUpdate.setVisible(false);
-        icDelete.setVisible(false);
+    }
+
+    public void updateMouseClick() {
+        if (Validator.isEmpty(txtProduct))
+        {
+            alert_error.setTitle("Product Invalid");
+            alert_error.setHeaderText("No product selected");
+            alert_error.setContentText("Please select a product to update.");
+            alert_error.showAndWait();
+        }
+        else
+        {
+            txtProduct.setDisable(false);
+
+            //crud button disable
+            btnAddProduct.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnDelete.setVisible(false);
+
+            //confirm disable
+            btnSaveUpdate.setVisible(true);
+            btnCancel.setVisible(true);
+
+            //confirm icon enable
+            icSave.setVisible(true);
+            icCancel.setVisible(true);
+
+            //icon crud disable
+            icPlus.setVisible(false);
+            icUpdate.setVisible(false);
+            icDelete.setVisible(false);
+            lvProducts.setDisable(true);
+        }
+
     }
 
     @FXML
