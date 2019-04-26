@@ -31,7 +31,7 @@
       </TableView>
       <Accordion layoutX="22.0" layoutY="260.0" prefWidth="666.0">
          <panes>
-            <TitledPane fx:id="crudPackages" prefHeight="190.0" prefWidth="666.0" snapToPixel="false" text="Insert, Update, or Delete Package">
+            <TitledPane fx:id="crudPackages" prefHeight="190.0" prefWidth="666.0" snapToPixel="false" text="Insert-Update-Delete (Package)">
                <content>
                   <Pane prefHeight="181.0" prefWidth="661.0">
                      <children>
@@ -96,13 +96,13 @@
                   </Pane>
                </content>
             </TitledPane>
-            <TitledPane fx:id="tvLinkPSP" prefHeight="160.0" prefWidth="666.0" text="Add Product/Suppliers to Package">
+            <TitledPane fx:id="tvLinkPSP" prefHeight="160.0" prefWidth="666.0" text="Insert Products/Suppliers to Package">
                <content>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <ComboBox fx:id="cmbProduct" layoutX="48.0" layoutY="105.0" onAction="#cmbProdSelect" prefWidth="150.0" />
                         <ComboBox fx:id="cmbSupplier" layoutX="246.0" layoutY="105.0" onAction="#cmbSuppSelect" prefWidth="150.0" />
-                        <Button fx:id="btnLinkPSP" alignment="CENTER" contentDisplay="CENTER" layoutX="464.0" layoutY="11.0" mnemonicParsing="false" onAction="#linkPSP" prefHeight="60.0" prefWidth="138.0" text="Add Product/Supplier to Package" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="btnLinkPSP" alignment="CENTER" contentDisplay="CENTER" layoutX="464.0" layoutY="11.0" mnemonicParsing="false" onAction="#linkPSP" prefHeight="60.0" prefWidth="138.0" text="Insert Product/Supplier to Package" textAlignment="CENTER" wrapText="true" />
                         <Label layoutX="48.0" layoutY="85.0" text="Product:" />
                         <Label layoutX="246.0" layoutY="85.0" text="Supplier" />
                         <ListView fx:id="lvPkgProSup" layoutX="157.0" layoutY="4.0" prefHeight="73.0" prefWidth="248.0" />
