@@ -1,4 +1,12 @@
-//Objective: Create a class with static methods to verify various inputs from end-user
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a class with static methods to verify various inputs from end-user
+ */
+
+
+
+
 package DesktopInterface;
 
 import javafx.scene.control.ComboBox;

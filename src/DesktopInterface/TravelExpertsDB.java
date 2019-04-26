@@ -1,4 +1,9 @@
-//Objective: Create a static class to connect to database stored in a web service (Azure)
+/**
+ * Author: Mo Sagnia
+ * Date: April 2019
+ * Objective: Create a static class to connect to database stored in a web service (Azure)
+ */
+
 package DesktopInterface;
 
 import java.sql.Connection;
