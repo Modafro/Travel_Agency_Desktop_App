@@ -1,5 +1,5 @@
 /*
-Login controller, user the following users to login
+Login controller, use the following users to login
 username: jdelton or jlisle
 password: peace
  */

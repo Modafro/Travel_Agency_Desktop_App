@@ -528,8 +528,9 @@ public class PackagesController {
     //method to insert or delete package
     public void savePkgChanges()
     {
+        System.out.println("method savePkgChanges called");
         //if insert button was clicked
-        if(crudBtnClicked =="insert")
+        if(crudBtnClicked.equals("insert"))
         {
             insertPackage();
         }
@@ -561,13 +562,15 @@ public class PackagesController {
     //insert new package
     private void insertPackage()
     {
+
+//                isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError) && isEndDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgEndDateError) &&
         if(!Validator.isEmpty(txtPkgName, lblPkgNameError)&& !Validator.isEmpty(txtPkgDescription, lblPkgDescError) &&
                 Validator.isDateValid(dpPkgStartDate, lblPkgStartDateError) && Validator.isDateAfterToday(dpPkgStartDate, lblPkgStartDateError) &&
                 Validator.isDateValid(dpPkgEndDate, lblPkgEndDateError) && Validator.isDateAfterSpecificDate(dpPkgStartDate,dpPkgEndDate, lblPkgEndDateError) &&
-                isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError) && isEndDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgEndDateError) &&
                 !Validator.isEmpty(txtPkgBasePrice, lblPkgBasePriceError) && Validator.isPositiveDouble(txtPkgBasePrice, lblPkgBasePriceError) &&
                 !Validator.isEmpty(txtPkgCommission, lblPkgCommissionError) && Validator.isPositiveDouble(txtPkgCommission, lblPkgCommissionError)
-                ) {
+                )
+        {
 
             Package newPackage = new Package(txtPkgName.getText(), java.sql.Date.valueOf(dpPkgStartDate.getValue()),
                     java.sql.Date.valueOf(dpPkgEndDate.getValue()), txtPkgDescription.getText(), Double.parseDouble(txtPkgBasePrice.getText()),
@@ -586,6 +589,10 @@ public class PackagesController {
 
             //refresh table view
             updateTable();
+        }
+        else
+        {
+            System.out.println("not doing it");
         }
     }
 
@@ -622,7 +629,6 @@ public class PackagesController {
         if(!Validator.isEmpty(txtPkgName, lblPkgNameError)&& !Validator.isEmpty(txtPkgDescription, lblPkgDescError)&&
             Validator.isDateValid(dpPkgStartDate, lblPkgStartDateError) && Validator.isDateAfterToday(dpPkgStartDate, lblPkgStartDateError) &&
             Validator.isDateValid(dpPkgEndDate, lblPkgEndDateError) && Validator.isDateAfterSpecificDate(dpPkgStartDate,dpPkgEndDate, lblPkgEndDateError) &&
-            isStartDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgStartDateError) && isEndDateValidOnFocusExit(dpPkgStartDate, dpPkgEndDate, lblPkgEndDateError) &&
             !Validator.isEmpty(txtPkgBasePrice, lblPkgBasePriceError) && Validator.isPositiveDouble(txtPkgBasePrice, lblPkgBasePriceError) &&
             !Validator.isEmpty(txtPkgCommission, lblPkgCommissionError) && Validator.isPositiveDouble(txtPkgCommission, lblPkgCommissionError))
         {
