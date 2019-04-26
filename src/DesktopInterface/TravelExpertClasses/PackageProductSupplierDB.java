@@ -90,14 +90,14 @@ public class PackageProductSupplierDB
         return result;
     }
 
-    public static ArrayList<ProductSupplier> getPackageProSup (int pkgId){
-        ArrayList<ProductSupplier> list = new ArrayList<>();
+    public static ArrayList<PackageProductSupplier> getPackageProSup ( int pkgId){
+        ArrayList<PackageProductSupplier> list = new ArrayList<>();
         Connection dbConnect = TravelExpertsDB.getConnection();
 
         PreparedStatement ps;
         try
         {
-            ps = dbConnect.prepareStatement("select  Products.ProductId, ProdName, SupName, Suppliers.SupplierId" +
+            ps = dbConnect.prepareStatement("select Products_Suppliers.ProductSupplierId, ProdName, SupName" +
                     "    from Packages_Products_Suppliers" +
                     "    join Products_Suppliers on Packages_Products_Suppliers.ProductSupplierId = Products_Suppliers.ProductSupplierId" +
                     "    join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId" +
@@ -108,7 +108,7 @@ public class PackageProductSupplierDB
 
             while (rs.next())
             {
-                list.add(new ProductSupplier(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+                list.add(new PackageProductSupplier(rs.getInt(1), rs.getString(2), rs.getString(3)));
             }
             dbConnect.close();
         }
@@ -117,14 +117,47 @@ public class PackageProductSupplierDB
             e.printStackTrace();
         }
         return list;
-
-    /*
-    select Suppliers.SupplierId, SupName, Products.ProductId, ProdName
-    from Packages_Products_Suppliers
-    join Products_Suppliers on Packages_Products_Suppliers.ProductSupplierId = Products_Suppliers.ProductSupplierId
-    join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId
-    join Products on Products.ProductId = Products_Suppliers.ProductId
-    where packageid = 59
-    */
     }
+
+    public static void deleteProSupp (int pkg, int proSupp){
+        Connection dbConnect = TravelExpertsDB.getConnection();
+        try {
+            PreparedStatement ps = dbConnect.prepareStatement("DELETE FROM Packages_Products_Suppliers WHERE PackageId = ? AND ProductSupplierId = ?");
+            ps.setInt(1, pkg);
+            ps.setInt(2, proSupp);
+
+            ps.execute();
+            dbConnect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<PackageProductSupplier> getFullPackageProSup (){
+        ArrayList<PackageProductSupplier> list = new ArrayList<>();
+        Connection dbConnect = TravelExpertsDB.getConnection();
+
+        PreparedStatement ps;
+        try
+        {
+            ps = dbConnect.prepareStatement("select Products_Suppliers.ProductSupplierId, ProdName, SupName" +
+                    "    from Packages_Products_Suppliers" +
+                    "    join Products_Suppliers on Packages_Products_Suppliers.ProductSupplierId = Products_Suppliers.ProductSupplierId" +
+                    "    join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId" +
+                    "    join Products on Products.ProductId = Products_Suppliers.ProductId");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                list.add(new PackageProductSupplier(rs.getInt(1), rs.getString(2), rs.getString(3)));
+            }
+            dbConnect.close();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

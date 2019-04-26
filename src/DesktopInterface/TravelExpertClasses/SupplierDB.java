@@ -81,15 +81,25 @@ public class SupplierDB {
         return success;
     }
 
-    public static ArrayList<Supplier> GetSpecSupplier(Integer id){
+    public static ArrayList<Supplier> GetSpecSupplier(Integer prodId, int pkgId){
         ArrayList<Supplier> supplierSpecList = new ArrayList<>();
         Connection dbConnect = TravelExpertsDB.getConnection();
         PreparedStatement ps;
         try {
 
-            ps = dbConnect.prepareStatement("select Suppliers.SupplierId, SupName from Products join Products_Suppliers on Products.ProductId = Products_Suppliers.ProductId" +
-                    " join Suppliers on Suppliers.SupplierId = Products_Suppliers.SupplierId where Products.ProductId = ?");
-            ps.setInt(1, id);
+            ps = dbConnect.prepareStatement("select products_suppliers.SupplierId, supName " +
+                    "from Products_Suppliers " +
+                    "join Suppliers on Products_Suppliers.SupplierId = Suppliers.SupplierId " +
+                    "join products on products.productId = products_suppliers.productId " +
+                    "where products.ProductId = ? and Products_Suppliers.ProductSupplierId not in " +
+                    "(" +
+                    "select Products_Suppliers.ProductSupplierId " +
+                    "from Packages_Products_Suppliers " +
+                    "join Products_Suppliers on Packages_Products_Suppliers.ProductSupplierId = Products_Suppliers.ProductSupplierId " +
+                    "where PackageId = ?" +
+                    ")");
+            ps.setInt(1, prodId);
+            ps.setInt(2, pkgId);
 
             ResultSet rs = ps.executeQuery();
 
